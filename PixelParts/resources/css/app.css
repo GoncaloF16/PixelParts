@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Se quiseres adicionar estilos personalizados */
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-cyan-400 to-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:from-cyan-500 hover:to-blue-800 transition duration-300;
+  }
+}

@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.logo-hover {
+  transition: transform 0.6s ease;
+}
+.logo-hover:hover {
+  transform: rotate(50deg);
+}
+
+.hero-particles {
+  position: relative;
+  overflow: hidden;
+}
+
+.particles-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #00ff88 0%, #0044aa 70%, transparent 100%);
+  border-radius: 50%;
+  opacity: 0;
+  animation: float-up 15s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
+}
+
+@keyframes float-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh) translateX(0px);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) translateX(var(--drift-x, 0px));
+  }
+}
+
+.particle-1 { left: 10%; animation-duration: 12s; animation-delay: 0s; --drift-x: 20px; }
+.particle-2 { left: 20%; animation-duration: 18s; animation-delay: 2s; --drift-x: -10px; width: 6px; height: 6px; }
+.particle-3 { left: 30%; animation-duration: 15s; animation-delay: 4s; --drift-x: 15px; }
+.particle-4 { left: 40%; animation-duration: 20s; animation-delay: 1s; --drift-x: -5px; box-shadow: 0 0 12px rgba(0, 68, 170, 0.6); }
+.particle-5 { left: 50%; animation-duration: 14s; animation-delay: 6s; --drift-x: 30px; }
+.particle-6 { left: 60%; animation-duration: 16s; animation-delay: 3s; --drift-x: -20px; width: 5px; height: 5px; }
+.particle-7 { left: 70%; animation-duration: 19s; animation-delay: 5s; --drift-x: 10px; }
+.particle-8 { left: 80%; animation-duration: 13s; animation-delay: 7s; --drift-x: -15px; }
+.particle-9 { left: 90%; animation-duration: 17s; animation-delay: 8s; --drift-x: 25px; box-shadow: 0 0 10px rgba(0, 255, 136, 0.4); }
+.particle-10 { left: 15%; animation-duration: 11s; animation-delay: 9s; --drift-x: -30px; width: 3px; height: 3px; }
+.particle-11 { left: 65%; animation-duration: 16s; animation-delay: 10s; --drift-x: 5px; }
+.particle-12 { left: 85%; animation-duration: 14s; animation-delay: 11s; --drift-x: -25px; }
+.particle-13 { left: 5%; animation-duration: 22s; animation-delay: 12s; --drift-x: 40px; width: 5px; height: 5px; box-shadow: 0 0 6px rgba(0, 68, 170, 0.7); }
+.particle-14 { left: 25%; animation-duration: 10s; animation-delay: 13s; --drift-x: -35px; }
+.particle-15 { left: 35%; animation-duration: 25s; animation-delay: 14s; --drift-x: 0px; width: 7px; height: 7px; background: radial-gradient(circle, #0044aa 0%, #00ff88 70%, transparent 100%); }
+.particle-16 { left: 45%; animation-duration: 13s; animation-delay: 15s; --drift-x: 20px; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+.particle-17 { left: 55%; animation-duration: 18s; animation-delay: 16s; --drift-x: -40px; width: 4px; height: 4px; }
+.particle-18 { left: 75%; animation-duration: 16s; animation-delay: 17s; --drift-x: 15px; }
+.particle-19 { left: 95%; animation-duration: 21s; animation-delay: 18s; --drift-x: -20px; width: 6px; height: 6px; box-shadow: 0 0 9px rgba(0, 68, 170, 0.5); }
+.particle-20 { left: 12%; animation-duration: 15s; animation-delay: 19s; --drift-x: 30px; }
+.particle-21 { left: 42%; animation-duration: 12s; animation-delay: 20s; --drift-x: -10px; width: 3px; height: 3px; }
+.particle-22 { left: 68%; animation-duration: 24s; animation-delay: 21s; --drift-x: 25px; box-shadow: 0 0 12px rgba(0, 255, 136, 0.6); }
+.particle-23 { left: 82%; animation-duration: 17s; animation-delay: 22s; --drift-x: -30px; }
+.particle-24 { left: 28%; animation-duration: 19s; animation-delay: 23s; --drift-x: 10px; width: 5px; height: 5px; }
+.particle-25 { left: 75%; animation-duration: 16s; animation-delay: 17s; --drift-x: 15px; }
+.particle-26 { left: 63%; animation-duration: 23s; animation-delay: 18s; --drift-x: -25px; width: 6px; height: 6px; box-shadow: 0 0 9px rgba(0, 68, 170, 0.5); }
+.particle-27 { left: 18%; animation-duration: 19s; animation-delay: 19s; --drift-x: 38px; }
+.particle-28 { left: 51%; animation-duration: 14s; animation-delay: 20s; --drift-x: -19px; width: 3px; height: 3px; }
+.particle-29 { left: 64%; animation-duration: 24s; animation-delay: 21s; --drift-x: 21px; box-shadow: 0 0 12px rgba(0, 255, 136, 0.6); }
+.particle-30 { left: 34%; animation-duration: 17s; animation-delay: 22s; --drift-x: -39px; }
+.particle-31 { left: 69%; animation-duration: 19s; animation-delay: 23s; --drift-x: 13px; width: 5px; height: 5px; }
+
+@media (max-width: 768px) {
+  .particle-13,
+  .particle-14,
+  .particle-15,
+  .particle-16,
+  .particle-17,
+  .particle-18,
+  .particle-19,
+  .particle-20,
+  .particle-21,
+  .particle-22,
+  .particle-23,
+  .particle-24,
+  .particle-25,
+  .particle-26,
+  .particle-27,
+  .particle-28,
+  .particle-29,
+  .particle-30,
+  .particle-31 {
+    display: none;
+  }
+  .particle {
+    animation-duration: 20s;
+    width: 3px;
+    height: 3px;
+    box-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+  }
+}
