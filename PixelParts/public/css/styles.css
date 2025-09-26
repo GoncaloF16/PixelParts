@@ -1,0 +1,533 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-cyan-400 to-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:from-cyan-500 hover:to-blue-800 transition duration-300;
+  }
+}
+
+:root {
+  /* Colors */
+  --background: 222 17% 8%;
+  --foreground: 220 15% 95%;
+  --card: 222 17% 12%;
+  --card-foreground: 220 15% 95%;
+  --popover: 222 17% 12%;
+  --popover-foreground: 220 15% 95%;
+  --primary: 142 76% 36%;
+  --primary-foreground: 220 15% 5%;
+  --secondary: 217 32% 17%;
+  --secondary-foreground: 220 15% 95%;
+  --muted: 215 28% 17%;
+  --muted-foreground: 220 9% 46%;
+  --accent: 215 28% 17%;
+  --accent-foreground: 220 15% 95%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 220 15% 95%;
+  --border: 215 28% 17%;
+  --input: 215 28% 17%;
+  --ring: 142 76% 36%;
+  --radius: 0.5rem;
+
+  /* Brand Colors */
+  --brand-green: 142 76% 36%;
+  --brand-blue: 217 91% 60%;
+  --brand-purple: 271 81% 56%;
+
+  /* Surface Colors */
+  --surface: 222 17% 8%;
+  --surface-card: 222 17% 12%;
+  --surface-elevated: 215 28% 17%;
+  --surface-dark: 220 15% 5%;
+
+  /* Text Colors */
+  --text-primary: 220 15% 95%;
+  --text-secondary: 220 9% 46%;
+  --text-inverse: 220 15% 5%;
+
+  /* Gradients */
+  --gradient-brand: linear-gradient(135deg, hsl(var(--brand-green)), hsl(var(--brand-blue)));
+  --gradient-radial: radial-gradient(circle at center, var(--color1), var(--color2));
+  --shadow-glow: 0 0 30px hsl(var(--brand-green) / 0.3);
+}
+
+/* Base Styles */
+* {
+  border-color: hsl(var(--border));
+}
+
+@layer utilities {
+  .from-brand-green {
+    --tw-gradient-from: hsl(var(--brand-green));
+    --tw-gradient-to: rgb(0 0 0 / 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+
+  .to-brand-blue {
+    --tw-gradient-to: hsl(var(--brand-blue));
+  }
+
+  .text-brand-green {
+    color: hsl(var(--brand-green));
+  }
+
+  .bg-brand-green {
+    background-color: hsl(var(--brand-green));
+  }
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Custom Utility Classes */
+.text-gradient-brand {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-brand {
+  box-shadow: var(--shadow-glow);
+}
+
+.bg-surface {
+  background-color: hsl(var(--surface));
+}
+
+.bg-surface-card {
+  background-color: hsl(var(--surface-card));
+}
+
+.bg-surface-elevated {
+  background-color: hsl(var(--surface-elevated));
+}
+
+.bg-surface-dark {
+  background-color: hsl(var(--surface-dark));
+}
+
+.text-text-primary {
+  color: hsl(var(--text-primary));
+}
+
+.text-text-secondary {
+  color: hsl(var(--text-secondary));
+}
+
+.text-text-inverse {
+  color: hsl(var(--text-inverse));
+}
+
+.text-brand-green {
+  color: hsl(var(--brand-green));
+}
+
+.border-brand-green {
+  border-color: hsl(var(--brand-green));
+}
+
+.hover\:bg-brand-green:hover {
+  background-color: hsl(var(--brand-green));
+}
+
+.hover\:text-surface-dark:hover {
+  color: hsl(var(--surface-dark));
+}
+
+/* Header Styles */
+#header {
+  background-color: rgba(34, 30, 39, 0);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+#header.scrolled {
+  background-color: rgba(34, 30, 39, 0.95);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Hover Effect */
+.logo-hover {
+  transition: all 0.3s ease;
+}
+
+.logo-hover:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 20px hsl(var(--brand-green) / 0.5));
+}
+
+/* Particle Animation */
+.particles-container {
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, hsl(var(--brand-green)), transparent);
+  border-radius: 50%;
+  animation: float-particle 6s infinite linear;
+}
+
+.particle:nth-child(1) {
+  left: 10%;
+  top: 20%;
+  animation-delay: 0s;
+  animation-duration: 8s;
+}
+
+.particle:nth-child(2) {
+  left: 20%;
+  top: 80%;
+  animation-delay: 2s;
+  animation-duration: 6s;
+}
+
+.particle:nth-child(3) {
+  left: 80%;
+  top: 10%;
+  animation-delay: 1s;
+  animation-duration: 7s;
+}
+
+.particle:nth-child(4) {
+  left: 70%;
+  top: 70%;
+  animation-delay: 3s;
+  animation-duration: 5s;
+}
+
+.particle:nth-child(5) {
+  left: 50%;
+  top: 30%;
+  animation-delay: 1.5s;
+  animation-duration: 9s;
+}
+
+.particle:nth-child(6) {
+  left: 30%;
+  top: 60%;
+  animation-delay: 4s;
+  animation-duration: 6s;
+}
+
+.particle:nth-child(7) {
+  left: 90%;
+  top: 40%;
+  animation-delay: 0.5s;
+  animation-duration: 8s;
+}
+
+.particle:nth-child(8) {
+  left: 15%;
+  top: 90%;
+  animation-delay: 2.5s;
+  animation-duration: 7s;
+}
+
+.particle:nth-child(9) {
+  left: 60%;
+  top: 15%;
+  animation-delay: 3.5s;
+  animation-duration: 5s;
+}
+
+.particle:nth-child(10) {
+  left: 85%;
+  top: 85%;
+  animation-delay: 1s;
+  animation-duration: 6s;
+}
+
+/* Product Card Styles */
+.product-card {
+  position: relative;
+  background-color: hsl(var(--surface-card));
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  height: 320px;
+  group: true;
+}
+
+.product-card:hover {
+  background-color: hsl(var(--surface-elevated));
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.product-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 20;
+  background: var(--gradient-brand);
+  color: hsl(var(--surface-dark));
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.product-image {
+  position: relative;
+  height: 320px;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.1);
+}
+
+.product-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(34, 30, 39, 0.9) 0%, rgba(34, 30, 39, 0.2) 50%, transparent 100%);
+}
+
+.product-hover-actions {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(34, 30, 39, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.product-card:hover .product-hover-actions {
+  opacity: 1;
+}
+
+.hover-action-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid hsl(var(--brand-green));
+  background: transparent;
+  color: hsl(var(--brand-green));
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.hover-action-btn:hover {
+  background-color: hsl(var(--brand-green));
+  color: hsl(var(--surface-dark));
+}
+
+.product-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.product-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+}
+
+.product-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 12px 0;
+}
+
+.product-add-btn {
+  width: 100%;
+  background: var(--gradient-brand);
+  color: hsl(var(--surface-dark));
+  padding: 12px 16px;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.product-add-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes float-particle {
+  0%, 100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-100px) translateX(50px) rotate(180deg);
+    opacity: 0.8;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s ease-out forwards;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-card {
+    height: 280px;
+  }
+
+  .product-image {
+    height: 280px;
+  }
+
+  .product-info {
+    padding: 16px;
+  }
+
+  .product-title {
+    font-size: 1.125rem;
+  }
+
+  .product-price {
+    font-size: 1.25rem;
+  }
+}
+
+@layer utilities {
+  /* Gradients baseados nas tuas cores */
+  .from-brand-green {
+    --tw-gradient-from: hsl(var(--brand-green)) var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+  .to-brand-green {
+    --tw-gradient-to: hsl(var(--brand-green)) var(--tw-gradient-to-position);
+  }
+
+  .from-brand-blue {
+    --tw-gradient-from: hsl(var(--brand-blue)) var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+  .to-brand-blue {
+    --tw-gradient-to: hsl(var(--brand-blue)) var(--tw-gradient-to-position);
+  }
+
+  .from-brand-purple {
+    --tw-gradient-from: hsl(var(--brand-purple)) var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+  .to-brand-purple {
+    --tw-gradient-to: hsl(var(--brand-purple)) var(--tw-gradient-to-position);
+  }
+
+  /* Transparências tipo /20 */
+  .from-brand-blue\/20 {
+    --tw-gradient-from: hsl(var(--brand-blue) / 0.2) var(--tw-gradient-from-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+  .via-brand-purple\/20 {
+    --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--brand-purple) / 0.2), var(--tw-gradient-to);
+  }
+  .to-brand-green\/20 {
+    --tw-gradient-to: hsl(var(--brand-green) / 0.2) var(--tw-gradient-to-position);
+  }
+
+  /* Gradiente radial extra */
+  .bg-gradient-radial {
+    background-image: radial-gradient(var(--tw-gradient-stops));
+  }
+
+  /* Textos e superfícies */
+  .text-text-primary {
+    color: hsl(var(--text-primary));
+  }
+  .text-text-secondary {
+    color: hsl(var(--text-secondary));
+  }
+  .text-surface-dark {
+    color: hsl(var(--surface-dark));
+  }
+
+  .bg-surface-card {
+    background-color: hsl(var(--surface-card));
+  }
+  .border-border {
+    border-color: hsl(var(--border));
+  }
+}
+
+

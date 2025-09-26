@@ -1,78 +1,290 @@
-@extends('.layouts/master')
-  <!-- Hero / Particles Floating Background -->
-  <section class="relative h-screen flex items-center justify-center text-white hero-particles">
-    <div class="absolute inset-0 particles-container bg-black"> <!-- Fundo preto para contraste com partículas -->
-      <div class="particle particle-1"></div>
-      <div class="particle particle-2"></div>
-      <div class="particle particle-3"></div>
-      <div class="particle particle-4"></div>
-      <div class="particle particle-5"></div>
-      <div class="particle particle-6"></div>
-      <div class="particle particle-7"></div>
-      <div class="particle particle-8"></div>
-      <div class="particle particle-9"></div>
-      <div class="particle particle-10"></div>
-      <div class="particle particle-11"></div>
-      <div class="particle particle-12"></div>
-      <div class="particle particle-13"></div>
-      <div class="particle particle-14"></div>
-      <div class="particle particle-15"></div>
-      <div class="particle particle-16"></div>
-      <div class="particle particle-17"></div>
-      <div class="particle particle-18"></div>
-      <div class="particle particle-19"></div>
-      <div class="particle particle-20"></div>
-      <div class="particle particle-21"></div>
-      <div class="particle particle-22"></div>
-      <div class="particle particle-23"></div>
-      <div class="particle particle-24"></div>
-      <div class="particle particle-25"></div>
-      <div class="particle particle-26"></div>
-      <div class="particle particle-27"></div>
-      <div class="particle particle-28"></div>
-      <div class="particle particle-29"></div>
-      <div class="particle particle-30"></div>
-      <div class="particle particle-31"></div>
-    </div>
-    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
+ @extends('layouts.master')
 
-    <div class="relative z-10 text-center px-6">
-      <h1 class="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">Componentes de Alta Performance</h1>
-      <p class="text-lg md:text-2xl text-gray-200 mb-6">Constrói o setup dos teus sonhos com a PixelParts</p>
-      <a href="#produtos" class="bg-gradient-to-r from-brand-green to-brand-darkblue text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition">Explorar Produtos</a>
-    </div>
-  </section>
+ <main>
+        <!-- Hero Section -->
+        <section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('assets/hero-bg.jpg');">
+                <div class="absolute inset-0 bg-gradient-to-r from-surface-dark/90 via-surface-dark/60 to-surface-dark/90"></div>
+            </div>
 
-  <!-- Produtos -->
-  <main id="produtos" class="flex-1 py-20 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center text-brand-darkblue mb-12">Produtos em Destaque</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+            <!-- Particles -->
+            <div class="particles-container absolute inset-0">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
 
-        <!-- Produto -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2">
-          <img src="https://m.media-amazon.com/images/I/81k2Gmal+VL._AC_SL1500_.jpg" alt="Placa Gráfica" class="h-48 w-full object-contain p-6 bg-gray-100">
-          <div class="p-6 text-center">
-            <h3 class="text-xl font-semibold text-brand-darkblue">NVIDIA RTX 4070</h3>
-            <p class="text-gray-500">8GB GDDR6X</p>
-            <span class="block text-2xl font-bold text-brand-green my-4">€699,99</span>
-            <button class="bg-gradient-to-r from-brand-green to-brand-darkblue text-white px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition">Adicionar ao Carrinho</button>
-          </div>
-        </div>
+            <!-- Hero Content -->
+            <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
+                <h1 class="text-5xl md:text-7xl font-bold text-text-primary mb-6 animate-fade-up">
+                    Componentes Gaming <br>
+                    de <span class="text-gradient-brand">Elite</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-text-secondary mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-up" style="animation-delay: 0.2s;">
+                    Eleva o teu setup gaming com os melhores componentes do mercado.
+                    Performance extrema, qualidade premium, resultados extraordinários.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up" style="animation-delay: 0.4s;">
+                    <button class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
+                        Explorar Produtos
+                    </button>
+                    <button class="border-2 border-brand-green text-brand-green px-8 py-4 rounded-lg font-bold text-lg hover:bg-brand-green hover:text-surface-dark transition-all duration-300">
+                        Saber Mais
+                    </button>
+                </div>
+            </div>
 
-      </div>
-    </div>
-  </main>
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <i data-lucide="chevron-down" class="w-6 h-6 text-text-secondary"></i>
+            </div>
+        </section>
 
-  <!-- Newsletter -->
-  <section class="bg-gradient-to-r from-brand-green to-brand-lightblue py-16">
-    <div class="container mx-auto px-6 text-center">
-      <h3 class="text-3xl font-bold text-white mb-4">Subscreve à nossa Newsletter</h3>
-      <p class="text-white/80 mb-6">Recebe novidades, promoções e dicas exclusivas no teu email.</p>
-      <form class="flex flex-col md:flex-row justify-center gap-4 max-w-xl mx-auto">
-        <input type="email" placeholder="O teu email" class="rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-brand-darkblue" required>
-        <button type="submit" class="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-darkblue transition">Subscrever</button>
-      </form>
-    </div>
-  </section>
+        <!-- Products Section -->
+        <section id="produtos" class="py-20 bg-surface">
+            <div class="container mx-auto px-6">
+                <!-- Section Header -->
+                <div class="text-center mb-16 animate-fade-up">
+                    <h2 class="text-4xl md:text-5xl font-bold text-text-primary mb-4">
+                        Produtos em <span class="text-gradient-brand">Destaque</span>
+                    </h2>
+                    <p class="text-text-secondary text-lg max-w-2xl mx-auto">
+                        Descobre a nossa seleção cuidadosa de componentes de alta performance
+                        para elevar o teu setup gaming ao próximo nível.
+                    </p>
+                </div>
 
+                <!-- Products Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Product 1 -->
+                    <div class="product-card animate-scale-in">
+                        <div class="product-badge">NOVO</div>
+                        <div class="product-image">
+                            <img src="assets/rtx-4070.jpg" alt="NVIDIA RTX 4070">
+                            <div class="product-overlay"></div>
+                            <div class="product-hover-actions">
+                                <button class="hover-action-btn">
+                                    <i data-lucide="eye"></i>
+                                </button>
+                                <button class="hover-action-btn">
+                                    <i data-lucide="heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">NVIDIA RTX 4070</h3>
+                            <p class="product-description">8GB GDDR6X - Ray Tracing</p>
+                            <div class="product-price">€699,99</div>
+                            <button class="!text-white product-add-btn ">
+                                <i data-lucide="shopping-cart" ></i>
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card animate-scale-in" style="animation-delay: 0.1s;">
+                        <div class="product-badge">POPULAR</div>
+                        <div class="product-image">
+                            <img src="assets/rtx-4070.jpg" alt="AMD Ryzen 7 7700X">
+                            <div class="product-overlay"></div>
+                            <div class="product-hover-actions">
+                                <button class="hover-action-btn">
+                                    <i data-lucide="eye"></i>
+                                </button>
+                                <button class="hover-action-btn">
+                                    <i data-lucide="heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">AMD Ryzen 7 7700X</h3>
+                            <p class="product-description">8-Core, 16-Thread Processor</p>
+                            <div class="product-price">€399,99</div>
+                            <button class="product-add-btn">
+                                <i data-lucide="shopping-cart"></i>
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card animate-scale-in" style="animation-delay: 0.2s;">
+                        <div class="product-image">
+                            <img src="assets/rtx-4070.jpg" alt="Corsair Vengeance DDR5">
+                            <div class="product-overlay"></div>
+                            <div class="product-hover-actions">
+                                <button class="hover-action-btn">
+                                    <i data-lucide="eye"></i>
+                                </button>
+                                <button class="hover-action-btn">
+                                    <i data-lucide="heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Corsair Vengeance DDR5</h3>
+                            <p class="product-description">32GB (2x16GB) 5600MHz</p>
+                            <div class="product-price">€189,99</div>
+                            <button class="product-add-btn">
+                                <i data-lucide="shopping-cart"></i>
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card animate-scale-in" style="animation-delay: 0.3s;">
+                        <div class="product-badge">OFERTA</div>
+                        <div class="product-image">
+                            <img src="assets/rtx-4070.jpg" alt="Samsung 980 PRO SSD">
+                            <div class="product-overlay"></div>
+                            <div class="product-hover-actions">
+                                <button class="hover-action-btn">
+                                    <i data-lucide="eye"></i>
+                                </button>
+                                <button class="hover-action-btn">
+                                    <i data-lucide="heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Samsung 980 PRO SSD</h3>
+                            <p class="product-description">1TB NVMe M.2 PCIe 4.0</p>
+                            <div class="product-price">€129,99</div>
+                            <button class="product-add-btn">
+                                <i data-lucide="shopping-cart"></i>
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product 5 -->
+                    <div class="product-card animate-scale-in" style="animation-delay: 0.4s;">
+                        <div class="product-image">
+                            <img src="assets/rtx-4070.jpg" alt="ASUS ROG Strix B650">
+                            <div class="product-overlay"></div>
+                            <div class="product-hover-actions">
+                                <button class="hover-action-btn">
+                                    <i data-lucide="eye"></i>
+                                </button>
+                                <button class="hover-action-btn">
+                                    <i data-lucide="heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">ASUS ROG Strix B650</h3>
+                            <p class="product-description">AMD AM5 Gaming Motherboard</p>
+                            <div class="product-price">€249,99</div>
+                            <button class="product-add-btn">
+                                <i data-lucide="shopping-cart"></i>
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product 6 -->
+                    <div class="product-card animate-scale-in" style="animation-delay: 0.5s;">
+                        <div class="product-image">
+                            <img src="assets/rtx-4070.jpg" alt="Corsair RM850x">
+                            <div class="product-overlay"></div>
+                            <div class="product-hover-actions">
+                                <button class="hover-action-btn">
+                                    <i data-lucide="eye"></i>
+                                </button>
+                                <button class="hover-action-btn">
+                                    <i data-lucide="heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Corsair RM850x</h3>
+                            <p class="product-description">850W 80+ Gold Modular PSU</p>
+                            <div class="product-price">€149,99</div>
+                            <button class="product-add-btn">
+                                <i data-lucide="shopping-cart"></i>
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View All Button -->
+                <div class="text-center mt-16">
+                    <button class="bg-gradient-to-r from-brand-green to-brand-blue text-white  px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
+                        Ver Todos os Produtos
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="relative py-20 overflow-hidden">
+            <!-- Background -->
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-green to-brand-blue"></div>
+
+
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <div class="animate-fade-up">
+                        <h2 class="text-4xl md:text-5xl font-bold text-text-primary mb-6">
+                            Mantém-te Atualizado
+                        </h2>
+                        <p class="text-4xl text-lg mb-8 max-w-2xl mx-auto">
+                            Recebe as últimas novidades sobre lançamentos, ofertas exclusivas e dicas de gaming
+                            diretamente no teu email.
+                        </p>
+
+                        <!-- Newsletter Form -->
+                        <div id="newsletter-form" class="max-w-md mx-auto space-y-4">
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <input
+                                    type="email"
+                                    id="email-input"
+                                    placeholder="O teu email"
+                                    class="flex-1 px-4 py-3 bg-surface-card border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
+                                >
+                                <button
+                                    id="subscribe-btn"
+                                    class="bg-white text-black px-6 py-3 rounded-lg font-bold hover:scale-105 transition-transform duration-300 whitespace-nowrap"
+                                >
+                                    Subscrever
+                                </button>
+                            </div>
+
+                            <div class="flex items-center justify-center gap-6 text-sm text-text-secondary">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+                                    <span class="text-white">Sem spam</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="star" class="w-4 h-4 text-white"></i>
+                                    <span class="text-white">Apenas conteúdo relevante</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Success Message -->
+                        <div id="success-message" class="hidden max-w-md mx-auto text-center">
+                            <div class="mb-6">
+                                <div class="w-16 h-16 bg-gradient-to-r from-brand-green to-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="check" class="w-8 h-8 text-surface-dark"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-text-primary mb-2">Obrigado!</h3>
+                                <p class="text-text-secondary">A tua subscrição foi confirmada. Vais receber as nossas novidades em breve!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
