@@ -122,7 +122,7 @@
             <div class="w-full max-w-md">
                 <!-- Mobile Logo -->
                 <div class="lg:hidden flex items-center justify-center space-x-3 mb-8 transition-all duration-300 hover:scale-105">
-                    <img src="{{ asset('assets/pixelparts-logo.png') }}" alt="PixelParts Logo" class="h-12 w-12">
+                    <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo" class="h-[50px] w-[70px]">
                     <span class="text-3xl font-bold bg-gradient-to-r from-brand-green to-brand-blue bg-clip-text text-transparent">PixelParts</span>
                 </div>
 

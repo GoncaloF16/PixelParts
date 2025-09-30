@@ -31,7 +31,35 @@
                     <a href="#servicos" class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Serviços</a>
                     <a href="#sobre" class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Sobre</a>
                     <a href="#contacto" class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Contacto</a>
+
+                    @guest
+                        <a href="{{ route('login') }}"
+                        class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-4 py-2 rounded-md font-semibold text-sm hover:scale-105 transition-transform duration-300 glow-brand">
+                            Entrar
+                        </a>
+                    @endguest
+
+                    @auth
+                        <form method="POST" action="{{ route('logout') }}"
+                            class="flex items-center m-0 p-0">
+                            @csrf
+                            <button type="submit"
+                                    class="inline-flex items-center bg-red-600 text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-red-700 transition-colors duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="w-4 h-4 mr-2"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5m0 6v1" />
+                                </svg>
+                                Logout
+                            </button>
+                        </form>
+                    @endauth
                 </nav>
+
+
 
                 <!-- Mobile Menu Button -->
                 <button id="mobile-menu-btn" class="md:hidden text-text-primary">
@@ -47,6 +75,7 @@
                     <a href="#servicos" class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Serviços</a>
                     <a href="#sobre" class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Sobre</a>
                     <a href="#contacto" class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Contacto</a>
+                    <a href="{{ route('login') }}" class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-4 py-2 rounded-md font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">Entrar</a>
                 </div>
             </nav>
         </div>

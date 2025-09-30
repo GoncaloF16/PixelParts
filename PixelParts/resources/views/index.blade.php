@@ -63,160 +63,40 @@
                 </div>
 
                 <!-- Products Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <!-- Product 1 -->
-                    <div class="product-card animate-scale-in">
-                        <div class="product-badge">NOVO</div>
-                        <div class="product-image">
-                            <img src="assets/rtx-4070.jpg" alt="NVIDIA RTX 4070">
-                            <div class="product-overlay"></div>
-                            <div class="product-hover-actions">
-                                <button class="hover-action-btn">
-                                    <i data-lucide="eye"></i>
-                                </button>
-                                <button class="hover-action-btn">
-                                    <i data-lucide="heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">NVIDIA RTX 4070</h3>
-                            <p class="product-description">8GB GDDR6X - Ray Tracing</p>
-                            <div class="product-price">€699,99</div>
-                            <button class="!text-white product-add-btn ">
-                                <i data-lucide="shopping-cart" ></i>
-                                Adicionar ao Carrinho
-                            </button>
-                        </div>
-                    </div>
 
-                    <!-- Product 2 -->
-                    <div class="product-card animate-scale-in" style="animation-delay: 0.1s;">
-                        <div class="product-badge">POPULAR</div>
-                        <div class="product-image">
-                            <img src="assets/rtx-4070.jpg" alt="AMD Ryzen 7 7700X">
-                            <div class="product-overlay"></div>
-                            <div class="product-hover-actions">
-                                <button class="hover-action-btn">
-                                    <i data-lucide="eye"></i>
-                                </button>
-                                <button class="hover-action-btn">
-                                    <i data-lucide="heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">AMD Ryzen 7 7700X</h3>
-                            <p class="product-description">8-Core, 16-Thread Processor</p>
-                            <div class="product-price">€399,99</div>
-                            <button class="product-add-btn">
-                                <i data-lucide="shopping-cart"></i>
-                                Adicionar ao Carrinho
-                            </button>
-                        </div>
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    @foreach($products as $product)
+        <div class="product-card w-100 bg-white shadow-lg rounded-lg overflow-hidden animate-scale-in">
+            <!-- Imagem do produto -->
+            <div class="relative">
+                <img src="{{ $product->image ?? 'https://via.placeholder.com/400x300' }}"
+                     alt="{{ $product->name }}"
+                     class="w-full h-48 object-cover">
 
-                    <!-- Product 3 -->
-                    <div class="product-card animate-scale-in" style="animation-delay: 0.2s;">
-                        <div class="product-image">
-                            <img src="assets/rtx-4070.jpg" alt="Corsair Vengeance DDR5">
-                            <div class="product-overlay"></div>
-                            <div class="product-hover-actions">
-                                <button class="hover-action-btn">
-                                    <i data-lucide="eye"></i>
-                                </button>
-                                <button class="hover-action-btn">
-                                    <i data-lucide="heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Corsair Vengeance DDR5</h3>
-                            <p class="product-description">32GB (2x16GB) 5600MHz</p>
-                            <div class="product-price">€189,99</div>
-                            <button class="product-add-btn">
-                                <i data-lucide="shopping-cart"></i>
-                                Adicionar ao Carrinho
-                            </button>
-                        </div>
+                <!-- Badge NOVO -->
+                @if($loop->first) <!-- Exemplo: só o primeiro produto como NOVO -->
+                    <div class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                        NOVO
                     </div>
+                @endif
+            </div>
 
-                    <!-- Product 4 -->
-                    <div class="product-card animate-scale-in" style="animation-delay: 0.3s;">
-                        <div class="product-badge">OFERTA</div>
-                        <div class="product-image">
-                            <img src="assets/rtx-4070.jpg" alt="Samsung 980 PRO SSD">
-                            <div class="product-overlay"></div>
-                            <div class="product-hover-actions">
-                                <button class="hover-action-btn">
-                                    <i data-lucide="eye"></i>
-                                </button>
-                                <button class="hover-action-btn">
-                                    <i data-lucide="heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Samsung 980 PRO SSD</h3>
-                            <p class="product-description">1TB NVMe M.2 PCIe 4.0</p>
-                            <div class="product-price">€129,99</div>
-                            <button class="product-add-btn">
-                                <i data-lucide="shopping-cart"></i>
-                                Adicionar ao Carrinho
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product 5 -->
-                    <div class="product-card animate-scale-in" style="animation-delay: 0.4s;">
-                        <div class="product-image">
-                            <img src="assets/rtx-4070.jpg" alt="ASUS ROG Strix B650">
-                            <div class="product-overlay"></div>
-                            <div class="product-hover-actions">
-                                <button class="hover-action-btn">
-                                    <i data-lucide="eye"></i>
-                                </button>
-                                <button class="hover-action-btn">
-                                    <i data-lucide="heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">ASUS ROG Strix B650</h3>
-                            <p class="product-description">AMD AM5 Gaming Motherboard</p>
-                            <div class="product-price">€249,99</div>
-                            <button class="product-add-btn">
-                                <i data-lucide="shopping-cart"></i>
-                                Adicionar ao Carrinho
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product 6 -->
-                    <div class="product-card animate-scale-in" style="animation-delay: 0.5s;">
-                        <div class="product-image">
-                            <img src="assets/rtx-4070.jpg" alt="Corsair RM850x">
-                            <div class="product-overlay"></div>
-                            <div class="product-hover-actions">
-                                <button class="hover-action-btn">
-                                    <i data-lucide="eye"></i>
-                                </button>
-                                <button class="hover-action-btn">
-                                    <i data-lucide="heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Corsair RM850x</h3>
-                            <p class="product-description">850W 80+ Gold Modular PSU</p>
-                            <div class="product-price">€149,99</div>
-                            <button class="product-add-btn">
-                                <i data-lucide="shopping-cart"></i>
-                                Adicionar ao Carrinho
-                            </button>
-                        </div>
-                    </div>
+            <!-- Parte inferior preta com info e botão -->
+            <div class="bg-gray-900 text-white p-4 flex flex-col gap-2">
+                <h3 class="font-bold text-lg">{{ $product->name }}</h3>
+                <p class="text-sm text-gray-300">{{ $product->description }}</p>
+                <div class="flex items-center justify-between mt-2">
+                    <span class="font-bold text-lg">€{{ number_format($product->price, 2, ',', '.') }}</span>
+                    <button class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-3 py-1 rounded-md font-semibold text-sm hover:scale-105 transition-transform duration-300 glow-brand flex items-center gap-1">
+                        <i data-lucide="shopping-cart"></i>
+                        Adicionar
+                    </button>
                 </div>
+            </div>
+        </div>
+    @endforeach
+</div>
+
 
                 <!-- View All Button -->
                 <div class="text-center mt-16">
