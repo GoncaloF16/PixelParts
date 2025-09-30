@@ -530,4 +530,9 @@ body {
   }
 }
 
-
+@media (max-width: 768px) {
+    #header .container {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+}
