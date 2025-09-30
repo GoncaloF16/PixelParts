@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PixelParts - Componentes Gaming de Elite</title>
     <meta name="description" content="Descobre componentes gaming de alta performance. Placas gráficas, processadores, memórias e mais para elevar o teu setup gaming.">
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
