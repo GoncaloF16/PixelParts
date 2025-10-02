@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -14,6 +13,7 @@ class Product extends Model
         'category_id',
         'name',
         'slug',
+        'brand',
         'description',
         'price',
         'stock',
@@ -25,16 +25,28 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    protected static function boot()
+    public function specifications()
     {
-        parent::boot();
+        return $this->hasMany(ProductSpecification::class);
+    }
 
-        static::creating(function ($product) {
-            $product->slug = Str::slug($product->name);
-        });
+    public function features()
+    {
+        return $this->hasMany(ProductFeature::class);
+    }
 
-        static::updating(function ($product) {
-            $product->slug = Str::slug($product->name);
-        });
+    public function compatibility()
+    {
+        return $this->hasMany(ProductCompatibility::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating');
     }
 }
