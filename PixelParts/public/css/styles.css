@@ -531,3 +531,9 @@ body {
         padding-bottom: 1rem;
     }
 }
+
+footer {
+  background-color: hsl(var(--surface));
+  border-top: none;
+  border-bottom: none;
+}

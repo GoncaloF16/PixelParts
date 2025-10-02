@@ -9,6 +9,8 @@ class ProductCompatibility extends Model
 {
     use HasFactory;
 
+    protected $table = 'product_compatibility';
+    
     protected $fillable = [
         'product_id',
         'compatible_with',

@@ -153,7 +153,7 @@
             </div>
 
             <!-- Bottom Bar -->
-            <div class="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="border-t border-gray-700 border-border pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-text-secondary text-sm mb-4 md:mb-0">
                     © 2024 PixelParts. Todos os direitos reservados.
                 </p>

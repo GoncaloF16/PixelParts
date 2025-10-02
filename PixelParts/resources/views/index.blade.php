@@ -76,8 +76,8 @@
 
                          <!-- Imagem -->
                          <div class="relative flex-shrink-0">
-                             <img src="{{ $product->image ?? 'https://via.placeholder.com/400x300' }}"
-                                 alt="{{ $product->name }}" class="w-full h-48 object-cover" loading="lazy">
+                             <a href="{{ route('products.details', ['slug' => $product->slug]) }}"><img src="{{ $product->image }}"
+                                 alt="{{ $product->name }}" class="w-full h-48 object-cover" loading="lazy"> </a>
 
                              @if ($product->created_at->gt(now()->subDays(7)))
                                  <div
