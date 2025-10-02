@@ -252,7 +252,6 @@ body {
   animation-duration: 6s;
 }
 
-/* Product Card Styles */
 .product-card {
   position: relative;
   background-color: hsl(var(--surface-card));
@@ -260,7 +259,7 @@ body {
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
-  height: 320px;
+  height: 350px;
   group: true;
 }
 
@@ -394,7 +393,6 @@ body {
   transform: scale(1.05);
 }
 
-/* Animations */
 @keyframes float-particle {
   0%, 100% {
     transform: translateY(0) translateX(0) rotate(0deg);
@@ -442,7 +440,6 @@ body {
   animation: scale-in 0.4s ease-out forwards;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .product-card {
     height: 280px;
@@ -466,7 +463,6 @@ body {
 }
 
 @layer utilities {
-  /* Gradients baseados nas tuas cores */
   .from-brand-green {
     --tw-gradient-from: hsl(var(--brand-green)) var(--tw-gradient-from-position);
     --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
@@ -494,7 +490,6 @@ body {
     --tw-gradient-to: hsl(var(--brand-purple)) var(--tw-gradient-to-position);
   }
 
-  /* Transparências tipo /20 */
   .from-brand-blue\/20 {
     --tw-gradient-from: hsl(var(--brand-blue) / 0.2) var(--tw-gradient-from-position);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
