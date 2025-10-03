@@ -1,6 +1,12 @@
  @extends('layouts.master')
 
  @section('content')
+     <!-- Floating Cart Button -->
+     <a href="{{ route('cart.index') }}"
+         class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-brand-green to-brand-blue rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 z-50">
+         <i data-lucide="shopping-cart" class="w-7 h-7 text-white"></i>
+     </a>
+
      <main>
          <!-- Hero Section -->
          <section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -101,11 +107,15 @@
                                      <span class="font-bold text-lg">
                                          €{{ number_format($product->price, 2, ',', '.') }}
                                      </span>
-                                     <button
-                                         class="bg-gradient-to-r from-brand-green to-brand-blue text-white px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-transform flex items-center gap-2">
-                                         <i data-lucide="shopping-cart"></i>
-                                         Adicionar
-                                     </button>
+                                     <form action="{{ route('cart.add') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <button
+                                            class="bg-gradient-to-r from-brand-green to-brand-blue text-white px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-transform flex items-center gap-2">
+                                            <i data-lucide="shopping-cart"></i>
+                                            Adicionar
+                                        </button>
+                                     </form>
                                  </div>
 
                              </div>
@@ -174,7 +184,8 @@
                                      <i data-lucide="check" class="w-8 h-8 text-surface-dark"></i>
                                  </div>
                                  <h3 class="text-2xl font-bold text-text-primary mb-2">Obrigado!</h3>
-                                 <p class="text-white text-text-secondary">A tua subscrição foi confirmada. Vais receber as nossas
+                                 <p class="text-white text-text-secondary">A tua subscrição foi confirmada. Vais receber as
+                                     nossas
                                      novidades em breve!</p>
                              </div>
                          </div>

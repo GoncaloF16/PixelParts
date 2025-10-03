@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdsController;
 use App\Http\Controllers\UtilsController;
@@ -18,6 +19,10 @@ Route::get('/produtos/{slug}', [ProdsController::class, 'show'])->name('products
 Route::middleware('auth')->group(function() {
     Route::post('/products/{product:slug}/reviews', [ProdsController::class, 'store'])->name('reviews.store');
     Route::delete('/reviews/{review}', [ProdsController::class, 'destroy'])->name('reviews.destroy');
+
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 });
 
 

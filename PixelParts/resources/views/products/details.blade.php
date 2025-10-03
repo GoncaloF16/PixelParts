@@ -82,13 +82,16 @@
                                     class="bg-gradient-to-r from-brand-green to-brand-blue !text-white px-4 py-2">+</button>
                         </div>
                     </div>
-
-                    <div class="flex gap-4">
-                        <button onclick="addToCart({{ $product->id }})"
-                                class="flex-1 bg-gradient-to-r from-brand-green to-brand-blue text-white hover:bg-brand-green-glow h-14 text-lg font-bold rounded-lg flex items-center justify-center gap-2 glow-brand transition-all">
-                            Adicionar ao Carrinho
-                        </button>
-                    </div>
+                    <form action="{{ route('cart.add') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <div class="flex gap-4">
+                            <button onclick="addToCart({{ $product->id }})"
+                                    class="flex-1 bg-gradient-to-r from-brand-green to-brand-blue text-white hover:bg-brand-green-glow h-14 text-lg font-bold rounded-lg flex items-center justify-center gap-2 glow-brand transition-all">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
