@@ -15,5 +15,10 @@ Route::post('/register-user', [AuthController::class, 'registerUser'])->name('re
 
 Route::get('/produtos', [ProdsController::class, 'index'])->name('products.index');
 Route::get('/produtos/{slug}', [ProdsController::class, 'show'])->name('products.details');
+Route::middleware('auth')->group(function() {
+    Route::post('/products/{product}/reviews', [ProdsController::class, 'store'])->name('reviews.store');
+    Route::delete('/reviews/{review}', [ProdsController::class, 'destroy'])->name('reviews.destroy');
+});
+
 
 Route::fallback([UtilsController::class, 'fallback']);

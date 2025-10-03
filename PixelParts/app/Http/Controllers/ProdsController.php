@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\ProductReview;
 
 class ProdsController extends Controller
 {
@@ -36,4 +37,35 @@ class ProdsController extends Controller
             'averageRating' => $averageRating
         ]);
     }
+
+    public function store(Request $request, Product $product)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:1000',
+        ]);
+
+        ProductReview::create([
+            'product_id' => $product->id,
+            'user_id' => auth()->id(),
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+        ]);
+
+        return redirect()->back()->with('success', 'Avaliação enviada com sucesso!');
+    }
+
+    public function destroy(ProductReview $review)
+
+    {
+
+        if($review->user_id !== auth()->id()){
+            abort(403);
+        }
+
+        $review->delete();
+
+        return redirect()->back()->with('success', 'Comentário removido com sucesso!');
+    }
+
 }

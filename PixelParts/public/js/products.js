@@ -124,3 +124,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+const writeReviewBtn = document.getElementById('writeReviewBtn');
+    const reviewForm = document.getElementById('reviewForm');
+
+    if(writeReviewBtn){
+        writeReviewBtn.addEventListener('click', () => {
+            reviewForm.classList.toggle('hidden');
+        });
+    }
+
+    // Stars interativas
+    const stars = document.querySelectorAll('input[name="rating"] + label');
+    stars.forEach((star, idx) => {
+        star.addEventListener('click', () => {
+            stars.forEach((s, i) => {
+                s.classList.toggle('text-yellow-400', i <= idx);
+            });
+        });
+    });

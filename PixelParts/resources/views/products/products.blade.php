@@ -86,7 +86,7 @@
                     <!-- Products Grid -->
                     <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($products as $product)
-                            <div class="product-card" data-name="{{ strtolower($product->name) }}"
+                            <a href="{{ route('products.details', ['slug' => $product->slug]) }}"><div class="product-card" data-name="{{ strtolower($product->name) }}"
                                 data-price="{{ $product->price }}" data-brand="{{ strtolower($product->brand) }}"
                                 data-category="{{ $product->category ? $product->category->slug : 'uncategorized' }}">
                                 <div
@@ -124,6 +124,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </a>
                         @endforeach
                     </div>
 
