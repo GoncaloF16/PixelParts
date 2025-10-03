@@ -174,7 +174,7 @@
                                      <i data-lucide="check" class="w-8 h-8 text-surface-dark"></i>
                                  </div>
                                  <h3 class="text-2xl font-bold text-text-primary mb-2">Obrigado!</h3>
-                                 <p class="text-text-secondary">A tua subscrição foi confirmada. Vais receber as nossas
+                                 <p class="text-white text-text-secondary">A tua subscrição foi confirmada. Vais receber as nossas
                                      novidades em breve!</p>
                              </div>
                          </div>
