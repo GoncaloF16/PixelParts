@@ -168,6 +168,11 @@
 
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/products.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/lucide.min.js"></script>
+    <script>
+        lucide.replace();
+    </script>
+
 
 </body>
 </html>

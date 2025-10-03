@@ -5,7 +5,7 @@
         <div class="container mx-auto px-6">
 
             <!-- Breadcrumb -->
-            <a href="{{ route('home') }}"
+            <a href="{{ route('products.index') }}"
                 class="flex items-center gap-2 text-text-muted hover:text-brand-green transition-colors mb-8 inline-flex">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />

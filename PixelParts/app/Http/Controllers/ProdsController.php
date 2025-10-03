@@ -10,10 +10,11 @@ class ProdsController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->get();
+        $products = Product::with('category')->paginate(9);
+        $brands = Product::select('brand')->distinct()->pluck('brand');
         $categories = Category::orderBy('name')->get();
 
-        return view('products.products', compact('products', 'categories'));
+        return view('products.products', compact('products', 'categories', 'brands'));
 
     }
 

@@ -40,6 +40,23 @@
                             </div>
                         </div>
 
+                        <!-- Brand Filter -->
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-text-primary mb-3">Marca</h3>
+                            <div class="space-y-2">
+                                @foreach ($brands as $brand)
+                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                        <input type="checkbox"
+                                            class="filter-brand w-4 h-4 rounded text-brand-blue focus:ring-brand-blue"
+                                            value="{{ strtolower($brand) }}" checked>
+                                        <span class="text-text-secondary group-hover:text-text-primary transition-colors">
+                                            {{ $brand }}
+                                        </span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
                         <button id="clearFilters"
                             class="w-full bg-surface text-text-primary px-4 py-2 rounded-lg border border-border/20 hover:bg-surface-dark transition-colors">
                             Limpar Filtros
@@ -50,7 +67,7 @@
                 <!-- Products Grid -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-6">
-                        <p id="productCount" class="text-text-secondary">Mostrando {{ count($products) }} produtos</p>
+                        <p id="productCount" class="text-text-secondary">Mostrando {{ $products->count() }} produtos</p>
 
                         <div class="relative">
                             <select id="sortSelect"
@@ -69,13 +86,12 @@
                     <!-- Products Grid -->
                     <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($products as $product)
-                            <div class="product-card"
-                                data-name="{{ strtolower($product->name) }}"
-                                data-price="{{ $product->price }}"
-                                data-brand="{{ strtolower($product->brand) }}"
+                            <div class="product-card" data-name="{{ strtolower($product->name) }}"
+                                data-price="{{ $product->price }}" data-brand="{{ strtolower($product->brand) }}"
                                 data-category="{{ $product->category ? $product->category->slug : 'uncategorized' }}">
                                 <div
-                                    class="bg-surface rounded-lg overflow-hidden group transition-transform duration-300 hover:scale-[1.02]">
+                                    class="bg-surface rounded-lg overflow-hidden group transition-transform duration-300 hover:scale-[1.02] flex flex-col h-full">
+
                                     <!-- Product Image -->
                                     <div class="relative aspect-square overflow-hidden">
                                         <img src="{{ $product->image }}" alt="{{ $product->name }}"
@@ -83,23 +99,27 @@
                                     </div>
 
                                     <!-- Product Info -->
-                                    <div class="p-5 flex flex-col gap-3">
-                                        <h3
-                                            class="text-lg font-bold text-text-primary group-hover:text-brand-blue transition-colors">
-                                            {{ $product->name }}
-                                        </h3>
-                                        <p class="text-text-secondary text-sm line-clamp-2">
-                                            {{ $product->description }}
-                                        </p>
+                                    <div class="p-5 flex flex-col justify-between h-full">
+                                        <div class="mb-4">
+                                            <h3
+                                                class="text-lg font-bold text-text-primary group-hover:text-brand-blue transition-colors">
+                                                {{ $product->name }}
+                                            </h3>
+                                            <p class="text-text-secondary text-sm line-clamp-2 mt-1">
+                                                {{ $product->description }}
+                                            </p>
+                                        </div>
 
-                                        <div class="flex items-center justify-between mt-auto">
+                                        <div class="flex items-center justify-between">
                                             <span class="text-xl font-bold text-gradient-brand">
                                                 €{{ number_format($product->price, 2, ',', '.') }}
                                             </span>
                                             <button
-                                                class="bg-gradient-to-r from-brand-blue to-brand-purple text-white px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-transform">
-                                                Comprar
+                                                class="bg-gradient-to-r from-brand-green to-brand-blue text-white px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-transform flex items-center gap-2">
+                                                <i data-lucide="shopping-cart"></i>
+                                                Adicionar
                                             </button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -113,6 +133,11 @@
                         <h3 class="text-2xl font-bold text-text-primary mb-2">Nenhum produto encontrado</h3>
                         <p class="text-text-secondary">Tenta ajustar os filtros ou pesquisar por outro termo.</p>
                     </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-8 flex justify-center">
+                        {{ $products->links('vendor.pagination.tailwind') }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,6 +147,7 @@
     <script>
         const searchInput = document.getElementById('searchInput');
         const categoryFilters = document.querySelectorAll('.filter-category');
+        const brandFilters = document.querySelectorAll('.filter-brand');
         const clearFiltersBtn = document.getElementById('clearFilters');
         const productsGrid = document.getElementById('productsGrid');
         const noResults = document.getElementById('noResults');
@@ -131,16 +157,22 @@
             const selectedCategories = Array.from(categoryFilters)
                 .filter(cb => cb.checked)
                 .map(cb => cb.value);
+            const selectedBrands = Array.from(brandFilters)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
 
             let visibleCount = 0;
 
             productsGrid.querySelectorAll('.product-card').forEach(card => {
                 const name = card.dataset.name;
                 const category = card.dataset.category;
+                const brand = card.dataset.brand;
+
                 const matchesSearch = name.includes(searchValue);
                 const matchesCategory = selectedCategories.includes(category);
+                const matchesBrand = selectedBrands.includes(brand);
 
-                if (matchesSearch && matchesCategory) {
+                if (matchesSearch && matchesCategory && matchesBrand) {
                     card.style.display = '';
                     visibleCount++;
                 } else {
@@ -152,10 +184,13 @@
             document.getElementById('productCount').textContent = `Mostrando ${visibleCount} produtos`;
         }
 
+        // Eventos
         searchInput.addEventListener('input', filterProducts);
         categoryFilters.forEach(cb => cb.addEventListener('change', filterProducts));
+        brandFilters.forEach(cb => cb.addEventListener('change', filterProducts));
         clearFiltersBtn.addEventListener('click', () => {
             categoryFilters.forEach(cb => cb.checked = true);
+            brandFilters.forEach(cb => cb.checked = true);
             searchInput.value = '';
             filterProducts();
         });
