@@ -167,5 +167,7 @@
     </footer>
 
     <script src="{{ asset('js/scripts.js') }}"></script>
+    <script src="{{ asset('js/products.js') }}"></script>
+
 </body>
 </html>

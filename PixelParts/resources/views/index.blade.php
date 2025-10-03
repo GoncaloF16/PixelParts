@@ -1,5 +1,6 @@
  @extends('layouts.master')
 
+ @section('content')
  <main>
      <!-- Hero Section -->
      <section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -36,10 +37,10 @@
                  Performance extrema, qualidade premium, resultados extraordinários.
              </p>
              <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up" style="animation-delay: 0.4s;">
-                 <button
+                 <a href="#produtos"> <button
                      class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
                      Explorar Produtos
-                 </button>
+                 </button> </a>
                  <button
                      class="border-2 border-brand-green text-brand-green px-8 py-4 rounded-lg font-bold text-lg hover:bg-brand-green hover:text-surface-dark transition-all duration-300">
                      Saber Mais
@@ -115,10 +116,10 @@
 
              <!-- View All Button -->
              <div class="text-center mt-16">
-                 <button
+                 <a href="{{ route ('products.index') }}"> <button
                      class="bg-gradient-to-r from-brand-green to-brand-blue text-white  px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
                      Ver Todos os Produtos
-                 </button>
+                 </button> </a>
              </div>
          </div>
      </section>
@@ -180,3 +181,4 @@
          </div>
      </section>
  </main>
+ @endsection

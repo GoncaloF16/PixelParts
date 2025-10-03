@@ -13,6 +13,7 @@ Route::get('/', [HomeController::class, 'index']) -> name('home');
 Route::get('/register', [AuthController::class, 'registerForm']) -> name('register');
 Route::post('/register-user', [AuthController::class, 'registerUser'])->name('register.user');
 
+Route::get('/produtos', [ProdsController::class, 'index'])->name('products.index');
 Route::get('/produtos/{slug}', [ProdsController::class, 'show'])->name('products.details');
 
 Route::fallback([UtilsController::class, 'fallback']);
