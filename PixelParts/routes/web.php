@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdsController;
 use App\Http\Controllers\UtilsController;
+use App\Http\Controllers\Auth\SocialController;
 
 Route::redirect('/home', '/');
 
@@ -23,6 +24,11 @@ Route::middleware('auth')->group(function() {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+});
+
+Route::middleware('web')->group(function () {
+    Route::get('auth/google', [SocialController::class, 'redirectToGoogle'])->name('login.google');
+    Route::get('auth/google/callback', [SocialController::class, 'handleGoogleCallback']);
 });
 
 

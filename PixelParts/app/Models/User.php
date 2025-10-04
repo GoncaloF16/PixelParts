@@ -18,6 +18,8 @@ class User extends Authenticatable
         'role',
     ];
 
+    
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -41,4 +43,6 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+
 }
