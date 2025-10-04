@@ -10,7 +10,7 @@ This project was developed for academic purposes, focusing on modern full-stack 
 - ⚡ **[Laravel 10](https://laravel.com/)** — Modern PHP web development framework  
 - 💅 **[TailwindCSS](https://tailwindcss.com/)** — Utility-first CSS framework for fast and responsive styling  
 - 🛢️ **MySQL** — Relational database  
-- 🔐 **Laravel Fortify** — Authentication (login, registration, route protection)  
+- 🔐 **Laravel Fortify and Socialite** — Authentication (login, registration, route protection)  
 - 🌐 **HTML5 & Blade** — Dynamic templates using Laravel Blade
 
 ---
