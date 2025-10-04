@@ -17,7 +17,7 @@ This project was developed for academic purposes, focusing on modern full-stack 
 
 ## 🧠 Main Features
 
-- 👤 **Authentication System** with Laravel Fortify (Login / Register / Logout)  
+- 👤 **Authentication System** with Laravel Fortify and Socialite (Login / Register / Logout / Google Auth)  
 - 🛍️ **Product Catalog** with categories, brands, and dynamic details  
 - ⭐ **User Reviews & Ratings** with automatic rating average  
 - 🧩 **Product Compatibility** (e.g., compatible PC components)  
