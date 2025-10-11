@@ -12,13 +12,7 @@
                 class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Todos os Tipos</option>
                 <option value="admin">Administrador</option>
-                <option value="customer">Cliente</option>
-            </select>
-            <select id="status-filter"
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todos os Estados</option>
-                <option value="active">Ativo</option>
-                <option value="blocked">Bloqueado</option>
+                <option value="customer">Utilizador</option>
             </select>
         </div>
         <button id="add-user-btn"
@@ -62,7 +56,7 @@
                                     class="px-3 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">Administrador</span>
                             @else
                                 <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Cliente</span>
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Utilizador</span>
                             @endif
                         </td>
 
@@ -135,6 +129,6 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/users.js') }}"></script>
+    <script src="{{ asset('js/backofficeUsers.js') }}"></script>
 
 @endsection
