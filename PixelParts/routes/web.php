@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdsController;
 use App\Http\Controllers\UtilsController;
+use App\Http\Controllers\BackofficeController;
 use App\Http\Controllers\Auth\SocialController;
 
 Route::redirect('/home', '/');
@@ -31,5 +32,11 @@ Route::middleware('web')->group(function () {
     Route::get('auth/google/callback', [SocialController::class, 'handleGoogleCallback']);
 });
 
+Route::middleware(['admin']) -> group(function() {
+    Route::get('/backoffice', [BackofficeController::class, 'index'])->name('backoffice.index');
+});
+
 
 Route::fallback([UtilsController::class, 'fallback']);
+Route::get('/404', [UtilsController::class, 'fallback'])->name('fallback');
+

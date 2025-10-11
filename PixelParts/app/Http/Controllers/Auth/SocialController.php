@@ -11,9 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
 {
-    /**
-     * Redireciona para a página de login do Google
-     */
+
    public function redirectToGoogle()
 {
     return Socialite::driver('google')->redirect();
@@ -24,30 +22,24 @@ class SocialController extends Controller
 {
     try {
         $googleUser = Socialite::driver('google')->stateless()->user();
-
-        // Verifica se o usuário já existe no banco pelo email
         $user = User::where('email', $googleUser->getEmail())->first();
 
         if (!$user) {
-            // Se não existe, cria
             $user = User::create([
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
-                'password' => Str::random(16), // senha aleatória
+                'password' => Str::random(16),
                 'role' => 'user',
             ]);
         }
 
-        // Faz login com o usuário da base de dados
         Auth::login($user);
 
         return redirect()->intended('home');
 
     } catch (\Exception $e) {
-    // Regista no log do Laravel
     \Log::error('Erro no login Google: '.$e->getMessage());
 
-    // Retorna uma resposta amigável
     return response()->json([
         'status' => 'erro',
         'mensagem' => $e->getMessage(),

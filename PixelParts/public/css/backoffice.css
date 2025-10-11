@@ -1,0 +1,128 @@
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #9CA3AF;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.nav-link:hover {
+    background-color: #374151;
+    color: #fff;
+}
+
+.nav-link.active {
+    background-color: #3B82F6;
+    color: #fff;
+}
+
+.toast {
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: slideIn 0.3s ease-out;
+}
+
+.toast.success {
+    background-color: #10B981;
+    color: white;
+}
+
+.toast.error {
+    background-color: #EF4444;
+    color: white;
+}
+
+.toast.info {
+    background-color: #3B82F6;
+    color: white;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.toast.removing {
+    animation: slideOut 0.3s ease-out forwards;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-active {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.status-blocked {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+.status-low {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+.status-medium {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.status-ok {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.status-pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.status-processing {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+}
+
+.status-shipped {
+    background-color: #E0E7FF;
+    color: #3730A3;
+}
+
+.status-delivered {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.status-cancelled {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}

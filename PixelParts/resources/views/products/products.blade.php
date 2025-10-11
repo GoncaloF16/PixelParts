@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <main class="pt-24 min-h-screen">
+    <main class="lg:pt-24 min-h-screen">
         <div class="container mx-auto px-6 py-8">
             <!-- Page Header -->
             <div class="mb-8">
