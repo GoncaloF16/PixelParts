@@ -10,7 +10,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm text-gray-500">Total de Produtos</p>
-                <p class="text-3xl font-bold text-gray-800">1,247</p>
+                <p class="text-3xl font-bold text-gray-800">{{$totalProducts}}</p>
             </div>
             <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -38,7 +38,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm text-gray-500">Utilizadores</p>
-                <p class="text-3xl font-bold text-gray-800">8,492</p>
+                <p class="text-3xl font-bold text-gray-800">{{$totalUsers}}</p>
             </div>
             <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                 <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
