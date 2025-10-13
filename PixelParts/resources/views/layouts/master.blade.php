@@ -19,6 +19,33 @@
  </head>
 
  <body class="min-h-screen bg-background pt-[150px] md:pt-0">
+        <!-- Floating Cart Button -->
+    <a href="{{ route('cart.index') }}"
+        class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-brand-green to-brand-blue rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 z-50">
+        <i data-lucide="shopping-cart" class="w-7 h-7 text-white"></i>
+        <span id="cart-count"
+            class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+            {{ count(session('cart', [])) }}
+        </span>
+    </a>
+
+
+     <!-- Toast template (invisível, usado pelo JS) -->
+    <div id="toast-template" class="hidden">
+        <div id="toast"
+            class="fixed bottom-6 left-6 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 opacity-0 translate-y-4 transition-all duration-300 ease-in-out z-50"
+            style="animation: fadeInUp 0.3s ease-out forwards;">
+            <div class="flex items-center justify-center w-6 h-6 bg-white rounded-full">
+                <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+                <span class="text-green-600 font-bold" style="display: none;">✓</span>
+            </div>
+            <span class="flex-1 toast-message"></span>
+            <button class="text-white hover:text-gray-200 ml-2" onclick="closeToast(this)">
+                <i data-lucide="x" class="w-5 h-5"></i>
+                <span class="text-white font-bold" style="display: none;">&times;</span>
+            </button>
+        </div>
+    </div>
      <!-- Header -->
      <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
          <div class="container mx-auto px-6 py-4">

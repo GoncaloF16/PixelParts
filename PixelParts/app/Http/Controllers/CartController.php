@@ -39,7 +39,10 @@ class CartController extends Controller
 
         session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Produto adicionado ao carrinho!');
+        return response()->json([
+            'success' => true,
+            'cart_count' => count($cart)
+        ]);
     }
 
     // Remover item

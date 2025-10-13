@@ -19,7 +19,7 @@ Route::post('/register-user', [AuthController::class, 'registerUser'])->name('re
 Route::get('/produtos', [ProdsController::class, 'index'])->name('products.index');
 Route::get('/produtos/{slug}', [ProdsController::class, 'show'])->name('products.details');
 Route::middleware('auth')->group(function() {
-    Route::post('/products/{product:slug}/reviews', [ProdsController::class, 'store'])->name('reviews.store');
+    Route::post('/products/{product:slug}/reviews', [ProdsController::class, 'storeReview'])->name('reviews.store');
     Route::delete('/reviews/{review}', [ProdsController::class, 'destroy'])->name('reviews.destroy');
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

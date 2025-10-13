@@ -116,7 +116,7 @@
                                             <span class="text-xl font-bold text-gradient-brand">
                                                 €{{ number_format($product->price, 2, ',', '.') }}
                                             </span>
-                                            <form action="{{ route('cart.add') }}" method="POST">
+                                            <form class="add-to-cart-form" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                 <button
@@ -151,6 +151,11 @@
 
     <!-- Filtering Script -->
     <script>
+        
+        window.routes = {
+            cartAdd: "{{ route('cart.add') }}"
+        };
+
         const searchInput = document.getElementById('searchInput');
         const categoryFilters = document.querySelectorAll('.filter-category');
         const brandFilters = document.querySelectorAll('.filter-brand');

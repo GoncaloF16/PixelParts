@@ -1,140 +1,129 @@
- @extends('layouts.master')
+@extends('layouts.master')
 
- @section('content')
-     <!-- Floating Cart Button -->
-     <a href="{{ route('cart.index') }}"
-         class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-brand-green to-brand-blue rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 z-50">
-         <i data-lucide="shopping-cart" class="w-7 h-7 text-white"></i>
-     </a>
+@section('content')
 
-     <main>
-         <!-- Hero Section -->
-         <section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-             <!-- Background Image -->
-             <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                 style="background-image: url('assets/hero-bg.jpg');">
-                 <div class="absolute inset-0 bg-gradient-to-r from-surface-dark/90 via-surface-dark/60 to-surface-dark/90">
-                 </div>
-             </div>
+    <main>
+        <!-- Hero Section -->
+        <section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style="background-image: url('assets/hero-bg.jpg');">
+                <div class="absolute inset-0 bg-gradient-to-r from-surface-dark/90 via-surface-dark/60 to-surface-dark/90"></div>
+            </div>
 
-             <!-- Particles -->
-             <div class="particles-container absolute inset-0">
-                 <div class="particle"></div>
-                 <div class="particle"></div>
-                 <div class="particle"></div>
-                 <div class="particle"></div>
-                 <div class="particle"></div>
-                 <div class="particle"></div>
-                 <div class="particle"></div>
-                 <div class="particle"></div>
-                 <div class="particle"></div>
-                 <div class="particle"></div>
-             </div>
+            <!-- Particles -->
+            <div class="particles-container absolute inset-0">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
 
-             <!-- Hero Content -->
-             <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
-                 <h1 class="text-5xl md:text-7xl font-bold text-text-primary mb-6 animate-fade-up">
-                     Componentes Gaming <br>
-                     de <span class="text-gradient-brand">Elite</span>
-                 </h1>
-                 <p class="text-xl md:text-2xl text-text-secondary mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-up"
-                     style="animation-delay: 0.2s;">
-                     Eleva o teu setup gaming com os melhores componentes do mercado.
-                     Performance extrema, qualidade premium, resultados extraordinários.
-                 </p>
-                 <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up" style="animation-delay: 0.4s;">
-                     <a href="#produtos"> <button
-                             class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
-                             Explorar Produtos
-                         </button> </a>
-                     <button
-                         class="border-2 border-brand-green text-brand-green px-8 py-4 rounded-lg font-bold text-lg hover:bg-brand-green hover:text-surface-dark transition-all duration-300">
-                         Saber Mais
-                     </button>
-                 </div>
-             </div>
+            <!-- Hero Content -->
+            <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
+                <h1 class="text-5xl md:text-7xl font-bold text-text-primary mb-6 animate-fade-up">
+                    Componentes Gaming <br>
+                    de <span class="text-gradient-brand">Elite</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-text-secondary mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-up"
+                    style="animation-delay: 0.2s;">
+                    Eleva o teu setup gaming com os melhores componentes do mercado.
+                    Performance extrema, qualidade premium, resultados extraordinários.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up" style="animation-delay: 0.4s;">
+                    <a href="#produtos">
+                        <button
+                            class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
+                            Explorar Produtos
+                        </button>
+                    </a>
+                    <button
+                        class="border-2 border-brand-green text-brand-green px-8 py-4 rounded-lg font-bold text-lg hover:bg-brand-green hover:text-surface-dark transition-all duration-300">
+                        Saber Mais
+                    </button>
+                </div>
+            </div>
 
-             <!-- Scroll Indicator -->
-             <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-                 <i data-lucide="chevron-down" class="w-6 h-6 text-text-secondary"></i>
-             </div>
-         </section>
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <i data-lucide="chevron-down" class="w-6 h-6 text-text-secondary"></i>
+            </div>
+        </section>
 
-         <!-- Products Section -->
-         <section id="produtos" class="py-20 bg-surface">
-             <div class="container mx-auto px-6">
-                 <!-- Section Header -->
-                 <div class="text-center mb-16 animate-fade-up">
-                     <h2 class="text-4xl md:text-5xl font-bold text-text-primary mb-4">
-                         Produtos em <span class="text-gradient-brand">Destaque</span>
-                     </h2>
-                     <p class="text-text-secondary text-lg max-w-2xl mx-auto">
-                         Descobre a nossa seleção cuidadosa de componentes de alta performance
-                         para elevar o teu setup gaming ao próximo nível.
-                     </p>
-                 </div>
+        <!-- Products Section -->
+        <section id="produtos" class="py-20 bg-surface">
+            <div class="container mx-auto px-6">
+                <!-- Section Header -->
+                <div class="text-center mb-16 animate-fade-up">
+                    <h2 class="text-4xl md:text-5xl font-bold text-text-primary mb-4">
+                        Produtos em <span class="text-gradient-brand">Destaque</span>
+                    </h2>
+                    <p class="text-text-secondary text-lg max-w-2xl mx-auto">
+                        Descobre a nossa seleção cuidadosa de componentes de alta performance
+                        para elevar o teu setup gaming ao próximo nível.
+                    </p>
+                </div>
 
-                 <!-- Products Grid -->
+                <!-- Products Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+                    @foreach ($products as $product)
+                        <div class="product-card bg-white shadow-lg rounded-lg overflow-hidden animate-scale-in flex flex-col h-full">
+                            <div class="relative flex-shrink-0">
+                                <a href="{{ route('products.details', ['slug' => $product->slug]) }}">
+                                    <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-48 object-cover" loading="lazy">
+                                </a>
 
-                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-                     @foreach ($products as $product)
-                         <div
-                             class="product-card bg-white shadow-lg rounded-lg overflow-hidden animate-scale-in flex flex-col h-full">
+                                @if ($product->created_at->gt(now()->subDays(7)))
+                                    <div class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                        NOVO
+                                    </div>
+                                @endif
+                            </div>
 
-                             <!-- Imagem -->
-                             <div class="relative flex-shrink-0">
-                                 <a href="{{ route('products.details', ['slug' => $product->slug]) }}"><img
-                                         src="{{ $product->image }}" alt="{{ $product->name }}"
-                                         class="w-full h-48 object-cover" loading="lazy"> </a>
+                            <div class="bg-gray-900 text-white pt-4 pb-5 px-4 flex flex-col flex-1 min-h-0">
+                                <div class="flex flex-col flex-grow min-h-0 mb-4">
+                                    <h3 class="font-bold text-lg">{{ $product->name }}</h3>
+                                    <p class="text-sm text-gray-300 mt-1 leading-relaxed">
+                                        {{ $product->description }}
+                                    </p>
+                                </div>
 
-                                 @if ($product->created_at->gt(now()->subDays(7)))
-                                     <div
-                                         class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                                         NOVO
-                                     </div>
-                                 @endif
-                             </div>
-
-                             <div class="bg-gray-900 text-white pt-4 pb-5 px-4 flex flex-col flex-1 min-h-0">
-                                 <div class="flex flex-col flex-grow min-h-0 mb-4">
-                                     <h3 class="font-bold text-lg">{{ $product->name }}</h3>
-                                     <p class="text-sm text-gray-300 mt-1 leading-relaxed">
-                                         {{ $product->description }}
-                                     </p>
-                                 </div>
-
-                                 <div class="flex items-center justify-between">
-                                     <span class="font-bold text-lg">
-                                         €{{ number_format($product->price, 2, ',', '.') }}
-                                     </span>
-                                     <form action="{{ route('cart.add') }}" method="POST">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-lg">
+                                        €{{ number_format($product->price, 2, ',', '.') }}
+                                    </span>
+                                    <form class="add-to-cart-form" data-product-id="{{ $product->id }}">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <button
+                                        <button type="submit"
                                             class="bg-gradient-to-r from-brand-green to-brand-blue text-white px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-transform flex items-center gap-2">
                                             <i data-lucide="shopping-cart"></i>
                                             Adicionar
                                         </button>
-                                     </form>
-                                 </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
 
-                             </div>
-
-                         </div>
-                     @endforeach
-                 </div>
-
-
-
-                 <!-- View All Button -->
-                 <div class="text-center mt-16">
-                     <a href="{{ route('products.index') }}"> <button
-                             class="bg-gradient-to-r from-brand-green to-brand-blue text-white  px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
-                             Ver Todos os Produtos
-                         </button> </a>
-                 </div>
-             </div>
-         </section>
+                <!-- View All Button -->
+                <div class="text-center mt-16">
+                    <a href="{{ route('products.index') }}">
+                        <button
+                            class="bg-gradient-to-r from-brand-green to-brand-blue text-white px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
+                            Ver Todos os Produtos
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </section>
 
          <!-- Newsletter Section -->
          <section class="relative py-20 overflow-hidden">
@@ -194,4 +183,10 @@
              </div>
          </section>
      </main>
+
+     <script>
+        window.routes = {
+            cartAdd: "{{ route('cart.add') }}"
+        };
+    </script>
  @endsection

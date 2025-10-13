@@ -143,3 +143,62 @@ const writeReviewBtn = document.getElementById('writeReviewBtn');
             });
         });
     });
+
+    // Seleciona todos os forms de adicionar ao carrinho
+  const forms = document.querySelectorAll(".add-to-cart-form");
+
+forms.forEach((form) => {
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+
+        fetch(window.routes.cartAdd, {
+            method: "POST",
+            headers: { "X-Requested-With": "XMLHttpRequest" },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const cartCount = document.querySelector("#cart-count");
+                if (cartCount) cartCount.textContent = data.cart_count;
+
+                // Clonar template do toast
+                const template = document.querySelector("#toast-template > div");
+                const toast = template.cloneNode(true);
+
+                // Atualizar mensagem
+                toast.querySelector(".toast-message").textContent = "Produto adicionado ao carrinho!";
+
+                // Adicionar ao body
+                document.body.appendChild(toast);
+
+                // Inicializar ícones Lucide
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+
+                // Mostrar com animação
+                setTimeout(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateY(0)';
+                }, 10);
+
+                // Auto-fechar após 3 segundos
+                setTimeout(() => closeToast(toast), 3000);
+            } else {
+                console.error("Erro ao adicionar o produto");
+            }
+        })
+        .catch(err => console.error("Erro AJAX:", err));
+    });
+});
+
+function closeToast(buttonOrToast) {
+    const toast = buttonOrToast.tagName === 'DIV' ? buttonOrToast : buttonOrToast.parentElement;
+    if (!toast) return;
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(16px)';
+    setTimeout(() => toast.remove(), 300);
+}
+
+
+

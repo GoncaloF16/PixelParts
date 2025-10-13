@@ -38,7 +38,7 @@ class ProdsController extends Controller
         ]);
     }
 
-    public function store(Request $request, Product $product)
+    public function storeReview(Request $request, Product $product)
     {
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
