@@ -25,20 +25,18 @@
                             $subtotalComIva = $unitPriceComIva * $item['quantity'];
                         @endphp
 
-                        <div class="bg-gray-900 rounded-lg shadow p-4 flex justify-between items-center text-white">
+                        <div id="cart-item-{{ $item['product_id'] }}" class="bg-gray-900 rounded-lg shadow p-4 flex justify-between items-center text-white cart-item">
                             <div>
                                 <span class="font-semibold text-lg block">{{ $item['name'] }}</span>
-                                <span class="text-sm opacity-80">Quantidade: {{ $item['quantity'] }}</span>
+                                <span class="text-sm opacity-80">Quantidade:
+                                    <span class="item-quantity">{{ $item['quantity'] }}</span>
+                                </span>
                             </div>
 
                             <div class="text-right">
-                                <form action="{{ route('cart.remove', $id) }}" method="POST" class="mt-1">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="text-red-500 hover:text-red-700 text-xs">
-                                        Remover
-                                    </button>
-                                </form>
+                                <button data-id="{{ $item['product_id'] }}" class="remove-from-cart text-red-500 hover:text-red-700 text-xs">
+                                    Remover
+                                </button>
                             </div>
                         </div>
                     @endforeach
@@ -46,7 +44,6 @@
 
                 <!-- Resumo Detalhado -->
                 @php
-                    $ivaRate = 0.23;
                     $totalSemIva = 0;
                     $totalIva = 0;
                     $totalComIva = 0;
@@ -76,15 +73,15 @@
                                 <div class="border-b border-gray-700 pb-2">
                                     <div class="flex justify-between text-sm">
                                         <span class="font-semibold">{{ $item['name'] }} × {{ $item['quantity'] }}</span>
-                                        <span class="font-semibold">€{{ number_format($subtotalComIva, 2, ',', '.') }}</span>
+                                        <span class="font-semibold subtotal-com-iva">€{{ number_format($subtotalComIva, 2, ',', '.') }}</span>
                                     </div>
                                     <div class="flex justify-between text-xs opacity-80">
                                         <span>Preço s/ IVA:</span>
-                                        <span>€{{ number_format($subtotalSemIva, 2, ',', '.') }}</span>
+                                        <span class="subtotal-sem-iva">€{{ number_format($subtotalSemIva, 2, ',', '.') }}</span>
                                     </div>
                                     <div class="flex justify-between text-xs opacity-80">
                                         <span>IVA (23%):</span>
-                                        <span>€{{ number_format($subtotalIva, 2, ',', '.') }}</span>
+                                        <span class="subtotal-iva">€{{ number_format($subtotalIva, 2, ',', '.') }}</span>
                                     </div>
                                 </div>
                             @endforeach
@@ -93,23 +90,19 @@
                         <!-- Totais -->
                         <div class="flex justify-between mb-2 text-sm">
                             <span class="opacity-80">Total s/ IVA:</span>
-                            <span class="font-semibold">
-                                €{{ number_format($totalSemIva, 2, ',', '.') }}
-                            </span>
+                            <span id="total-sem-iva">€{{ number_format($totalSemIva, 2, ',', '.') }}</span>
                         </div>
 
                         <div class="flex justify-between mb-2 text-sm">
                             <span class="opacity-80">Total IVA (23%):</span>
-                            <span class="font-semibold">
-                                €{{ number_format($totalIva, 2, ',', '.') }}
-                            </span>
+                            <span id="total-iva">€{{ number_format($totalIva, 2, ',', '.') }}</span>
                         </div>
 
                         <div class="border-t border-gray-700 my-4"></div>
 
                         <div class="flex justify-between text-lg font-bold">
                             <span>Total c/ IVA:</span>
-                            <span>€{{ number_format($totalComIva, 2, ',', '.') }}</span>
+                            <span id="total-com-iva">€{{ number_format($totalComIva, 2, ',', '.') }}</span>
                         </div>
                     </div>
 

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
     const clearFiltersBtn = document.getElementById('clearFilters');
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Apply filters and search
     function applyFilters() {
-        const searchTerm = searchInput.value.toLowerCase();
+        const searchTerm = searchInput?.value.toLowerCase() || '';
 
         // Get selected categories
         const selectedCategories = Array.from(categoryFilters)
@@ -28,20 +28,14 @@ document.addEventListener('DOMContentLoaded', function() {
         let visibleCount = 0;
 
         productCards.forEach(card => {
-            const name = card.dataset.name;
+            const name = card.dataset.name.toLowerCase();
             const category = card.dataset.category;
             const brand = card.dataset.brand;
 
-            // Check if matches search
             const matchesSearch = name.includes(searchTerm);
-
-            // Check if matches category filter
             const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(category);
-
-            // Check if matches brand filter
             const matchesBrand = selectedBrands.length === 0 || selectedBrands.includes(brand);
 
-            // Show/hide card
             if (matchesSearch && matchesCategory && matchesBrand) {
                 card.style.display = 'block';
                 visibleCount++;
@@ -50,26 +44,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Update product count
-        productCount.textContent = `Mostrando ${visibleCount} produto${visibleCount !== 1 ? 's' : ''}`;
+        if (productCount)
+            productCount.textContent = `Mostrando ${visibleCount} produto${visibleCount !== 1 ? 's' : ''}`;
 
-        // Show/hide no results message
-        if (visibleCount === 0) {
-            productsGrid.style.display = 'none';
-            noResults.classList.remove('hidden');
-        } else {
-            productsGrid.style.display = 'grid';
-            noResults.classList.add('hidden');
+        if (productsGrid && noResults) {
+            if (visibleCount === 0) {
+                productsGrid.style.display = 'none';
+                noResults.classList.remove('hidden');
+            } else {
+                productsGrid.style.display = 'grid';
+                noResults.classList.add('hidden');
+            }
         }
     }
 
     // Sort products
     function sortProducts() {
+        if (!sortSelect || !productsGrid) return;
         const sortValue = sortSelect.value;
         const cardsArray = Array.from(productCards);
 
         cardsArray.sort((a, b) => {
-            switch(sortValue) {
+            switch (sortValue) {
                 case 'name-asc':
                     return a.dataset.name.localeCompare(b.dataset.name);
                 case 'name-desc':
@@ -83,16 +79,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Reorder DOM elements
-        cardsArray.forEach(card => {
-            productsGrid.appendChild(card);
-        });
+        cardsArray.forEach(card => productsGrid.appendChild(card));
     }
 
-    // Clear all filters
+    // Clear filters
     function clearFilters() {
-        searchInput.value = '';
-        sortSelect.value = 'default';
+        if (searchInput) searchInput.value = '';
+        if (sortSelect) sortSelect.value = 'default';
 
         categoryFilters.forEach(cb => cb.checked = true);
         brandFilters.forEach(cb => cb.checked = true);
@@ -102,33 +95,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Event listeners
-    searchInput.addEventListener('input', applyFilters);
-    sortSelect.addEventListener('change', sortProducts);
-    clearFiltersBtn.addEventListener('click', clearFilters);
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (sortSelect) sortSelect.addEventListener('change', sortProducts);
+    if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
 
-    categoryFilters.forEach(cb => {
-        cb.addEventListener('change', applyFilters);
-    });
-
-    brandFilters.forEach(cb => {
-        cb.addEventListener('change', applyFilters);
-    });
+    categoryFilters.forEach(cb => cb.addEventListener('change', applyFilters));
+    brandFilters.forEach(cb => cb.addEventListener('change', applyFilters));
 
     // Header scroll effect
     const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    });
-});
+    if (header) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+    }
 
-const writeReviewBtn = document.getElementById('writeReviewBtn');
+    // Review form toggle
+    const writeReviewBtn = document.getElementById('writeReviewBtn');
     const reviewForm = document.getElementById('reviewForm');
-
-    if(writeReviewBtn){
+    if (writeReviewBtn && reviewForm) {
         writeReviewBtn.addEventListener('click', () => {
             reviewForm.classList.toggle('hidden');
         });
@@ -136,69 +122,86 @@ const writeReviewBtn = document.getElementById('writeReviewBtn');
 
     // Stars interativas
     const stars = document.querySelectorAll('input[name="rating"] + label');
-    stars.forEach((star, idx) => {
-        star.addEventListener('click', () => {
-            stars.forEach((s, i) => {
-                s.classList.toggle('text-yellow-400', i <= idx);
+    if (stars.length > 0) {
+        stars.forEach((star, idx) => {
+            star.addEventListener('click', () => {
+                stars.forEach((s, i) => {
+                    s.classList.toggle('text-yellow-400', i <= idx);
+                });
             });
+        });
+    }
+
+    // Adicionar ao carrinho (AJAX)
+    const forms = document.querySelectorAll('.add-to-cart-form');
+    forms.forEach(form => {
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            fetch(window.routes.cartAdd, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const cartCount = document.querySelector('#cart-count');
+                        if (cartCount) cartCount.textContent = data.cart_count;
+
+                        const template = document.querySelector('#toast-template > div');
+                        if (!template) return;
+                        const toast = template.cloneNode(true);
+                        toast.querySelector('.toast-message').textContent = 'Produto adicionado ao carrinho!';
+                        document.body.appendChild(toast);
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                        setTimeout(() => {
+                            toast.style.opacity = '1';
+                            toast.style.transform = 'translateY(0)';
+                        }, 10);
+                        setTimeout(() => closeToast(toast), 3000);
+                    } else {
+                        console.error('Erro ao adicionar o produto');
+                    }
+                })
+                .catch(err => console.error('Erro AJAX:', err));
         });
     });
 
-    // Seleciona todos os forms de adicionar ao carrinho
-  const forms = document.querySelectorAll(".add-to-cart-form");
+    function closeToast(buttonOrToast) {
+        const toast = buttonOrToast.tagName === 'DIV' ? buttonOrToast : buttonOrToast.parentElement;
+        if (!toast) return;
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(16px)';
+        setTimeout(() => toast.remove(), 300);
+    }
 
-forms.forEach((form) => {
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const formData = new FormData(form);
+// Contador de quantidade
+const quantityDisplay = document.getElementById('quantity-display');
+const quantityInput = document.getElementById('quantity-input');
+let quantity = 1;
+const maxStock = parseInt(quantityDisplay.dataset.stock || 99);
 
-        fetch(window.routes.cartAdd, {
-            method: "POST",
-            headers: { "X-Requested-With": "XMLHttpRequest" },
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                const cartCount = document.querySelector("#cart-count");
-                if (cartCount) cartCount.textContent = data.cart_count;
-
-                // Clonar template do toast
-                const template = document.querySelector("#toast-template > div");
-                const toast = template.cloneNode(true);
-
-                // Atualizar mensagem
-                toast.querySelector(".toast-message").textContent = "Produto adicionado ao carrinho!";
-
-                // Adicionar ao body
-                document.body.appendChild(toast);
-
-                // Inicializar ícones Lucide
-                if (typeof lucide !== 'undefined') lucide.createIcons();
-
-                // Mostrar com animação
-                setTimeout(() => {
-                    toast.style.opacity = '1';
-                    toast.style.transform = 'translateY(0)';
-                }, 10);
-
-                // Auto-fechar após 3 segundos
-                setTimeout(() => closeToast(toast), 3000);
-            } else {
-                console.error("Erro ao adicionar o produto");
-            }
-        })
-        .catch(err => console.error("Erro AJAX:", err));
-    });
-});
-
-function closeToast(buttonOrToast) {
-    const toast = buttonOrToast.tagName === 'DIV' ? buttonOrToast : buttonOrToast.parentElement;
-    if (!toast) return;
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(16px)';
-    setTimeout(() => toast.remove(), 300);
+function updateQuantityDisplay() {
+    quantityDisplay.textContent = quantity;
+    quantityInput.value = quantity;
 }
 
+window.increaseQuantity = function () {
+    if (quantity < maxStock) {
+        quantity++;
+        updateQuantityDisplay();
+    }
+};
 
+window.decreaseQuantity = function () {
+    if (quantity > 1) {
+        quantity--;
+        updateQuantityDisplay();
+    }
+};
 
+updateQuantityDisplay();
+
+});

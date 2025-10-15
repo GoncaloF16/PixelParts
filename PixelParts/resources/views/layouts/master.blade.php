@@ -4,6 +4,7 @@
  <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="csrf-token" content="{{ csrf_token() }}">
      <title>PixelParts - Componentes Gaming de Elite</title>
      <meta name="description"
          content="Descobre componentes gaming de alta performance. Placas gráficas, processadores, memórias e mais para elevar o teu setup gaming.">
@@ -28,7 +29,6 @@
             {{ count(session('cart', [])) }}
         </span>
     </a>
-
 
      <!-- Toast template (invisível, usado pelo JS) -->
     <div id="toast-template" class="hidden">
@@ -237,6 +237,7 @@
 
      <script src="{{ asset('js/scripts.js') }}"></script>
      <script src="{{ asset('js/products.js') }}"></script>
+     <script src="{{ asset('js/cart.js') }}"></script>
      <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/lucide.min.js"></script>
      <script>
          lucide.replace();
