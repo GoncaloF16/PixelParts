@@ -245,65 +245,37 @@
 
 
      @if (session('success'))
-         <div id="toast"
-             class="fixed bottom-6 left-6 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 opacity-0 translate-y-4 transition-all duration-300 ease-in-out z-50"
-             style="animation: fadeInUp 0.3s ease-out forwards;">
-             <!-- Ícone check (fallback para texto se Lucide falhar) -->
-             <div class="flex items-center justify-center w-6 h-6 bg-white rounded-full">
-                 <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
-                 <!-- Fallback: Texto '✓' se ícone não carregar -->
-                 <span class="text-green-600 font-bold" style="display: none;">✓</span>
-             </div>
+    <div id="session-toast"
+        class="fixed bottom-6 left-6 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 opacity-0 translate-y-4 transition-all duration-300 ease-in-out z-50"
+        style="animation: fadeInUp 0.3s ease-out forwards;">
+        <div class="flex items-center justify-center w-6 h-6 bg-white rounded-full">
+            <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+            <span class="text-green-600 font-bold" style="display: none;">✓</span>
+        </div>
+        <span class="flex-1">{{ session('success') }}</span>
+        <button onclick="closeSessionToast()" class="text-white hover:text-gray-200 ml-2">
+            <i data-lucide="x" class="w-5 h-5"></i>
+            <span class="text-white font-bold" style="display: none;">&times;</span>
+        </button>
+    </div>
 
-             <!-- Mensagem -->
-             <span class="flex-1">{{ session('success') }}</span>
+    <script>
+        function closeSessionToast() {
+            const sessionToast = document.getElementById('session-toast');
+            if (sessionToast) {
+                sessionToast.style.opacity = '0';
+                sessionToast.style.transform = 'translateY(16px)';
+                setTimeout(() => sessionToast.remove(), 300);
+            }
 
-             <!-- Botão fechar -->
-             <button onclick="closeToast()" class="text-white hover:text-gray-200 ml-2">
-                 <i data-lucide="x" class="w-5 h-5"></i>
-                 <!-- Fallback: &times; -->
-                 <span class="text-white font-bold" style="display: none;">&times;</span>
-             </button>
-         </div>
-
-         <style>
-             @keyframes fadeInUp {
-                 to {
-                     opacity: 1;
-                     transform: translateY(0);
-                 }
-             }
-         </style>
-
-         <script>
-             function closeToast() {
-                 const toast = document.getElementById('toast');
-                 if (toast) {
-                     toast.style.opacity = '0';
-                     toast.style.transform = 'translateY(16px)'; // bottom-4 equivalent
-                     setTimeout(() => toast.remove(), 300);
-                 }
-             }
-
-             document.addEventListener('DOMContentLoaded', () => {
-                 // Inicializar ícones Lucide (com fallback)
-                 if (typeof lucide !== 'undefined') {
-                     lucide.createIcons(); // Use createIcons para elementos existentes
-                 } else {
-                     // Fallback: Mostrar texto em vez de ícones
-                     document.querySelector('[data-lucide="check"]').style.display = 'none';
-                     document.querySelector('[data-lucide="check"] + span').style.display = 'block';
-                     document.querySelector('[data-lucide="x"]').style.display = 'none';
-                     document.querySelector('[data-lucide="x"] + span').style.display = 'block';
-                 }
-
-                 // Auto fechar após 3 segundos
-                 setTimeout(() => {
-                     closeToast();
-                 }, 3000);
-             });
-         </script>
-     @endif
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    closeSessionToast();
+                }, 3000);
+            });
+        }
+    </script>
+@endif
 
  </body>
 

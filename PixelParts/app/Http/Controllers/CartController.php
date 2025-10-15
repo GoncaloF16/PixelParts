@@ -8,15 +8,50 @@ use App\Models\Product;
 class CartController extends Controller
 {
     // Mostrar carrinho
-    public function index()
-    {
-        $cartItems = session()->get('cart', []);
-        $cartTotal = collect($cartItems)->sum(function($item) {
-            return $item['price'] * $item['quantity'];
-        });
+public function index()
+{
+    $cart = session()->get('cart', []);
 
-        return view('products.cart', compact('cartItems', 'cartTotal'));
+    $ivaRate = 0.23;  
+    $cartItems = [];
+    $total = [
+        'totalSemIva' => 0,
+        'totalIva' => 0,
+        'totalComIva' => 0
+    ];
+
+    foreach ($cart as $pid => $item) {
+        $unitPriceComIva = $item['price'];
+        $unitPriceSemIva = $unitPriceComIva / (1 + $ivaRate);
+        $unitIva = $unitPriceComIva - $unitPriceSemIva;
+
+        $subtotalComIva = $unitPriceComIva * $item['quantity'];
+        $subtotalSemIva = $unitPriceSemIva * $item['quantity'];
+        $subtotalIva = $unitIva * $item['quantity'];
+
+        $total['totalSemIva'] += $subtotalSemIva;
+        $total['totalIva'] += $subtotalIva;
+        $total['totalComIva'] += $subtotalComIva;
+
+        $cartItems[$pid] = [
+            'product_id' => $pid,
+            'name' => $item['name'],
+            'quantity' => $item['quantity'],
+            'price' => $item['price'],
+            'subtotalComIva' => $subtotalComIva,
+            'subtotalSemIva' => $subtotalSemIva,
+            'subtotalIva' => $subtotalIva,
+        ];
     }
+
+    return view('products.cart', [
+        'cartItems' => $cartItems,
+        'totalSemIva' => $total['totalSemIva'],
+        'totalIva' => $total['totalIva'],
+        'totalComIva' => $total['totalComIva'],
+        'ivaRate' => $ivaRate
+    ]);
+}
 
     // Adicionar item
    public function add(Request $request)
@@ -52,8 +87,7 @@ class CartController extends Controller
     ]);
 }
 
-    // Remover item
- public function remove($id)
+public function remove($id)
 {
     $cart = session()->get('cart', []);
 
@@ -62,37 +96,50 @@ class CartController extends Controller
 
         if($cart[$id]['quantity'] <= 0) {
             unset($cart[$id]);
-            $quantity = 0;
-        } else {
-            $quantity = $cart[$id]['quantity'];
         }
 
         session()->put('cart', $cart);
-
-        // Recalcular totais
-        $totalComIva = $totalSemIva = $totalIva = 0;
-        $ivaRate = 0.23;
-        foreach($cart as $item){
-            $unitPriceComIva = $item['price'];
-            $unitPriceSemIva = $unitPriceComIva / (1 + $ivaRate);
-            $unitIva = $unitPriceComIva - $unitPriceSemIva;
-
-            $totalSemIva += $unitPriceSemIva * $item['quantity'];
-            $totalIva += $unitIva * $item['quantity'];
-            $totalComIva += $unitPriceComIva * $item['quantity'];
-        }
-
-        return response()->json([
-            'success' => true,
-            'quantity' => $quantity,
-            'cart_count' => count($cart),
-            'total_com_iva_formatted' => number_format($totalComIva, 2, ',', '.'),
-            'total_sem_iva_formatted' => number_format($totalSemIva, 2, ',', '.'),
-            'total_iva_formatted' => number_format($totalIva, 2, ',', '.')
-        ]);
     }
 
-    return response()->json(['success' => false, 'message' => 'Item não encontrado']);
+    // Definir IVA antes do loop
+    $ivaRate = 0.23;
+
+    // Calcula totais
+    $total = [
+        'totalSemIva' => 0,
+        'totalIva' => 0,
+        'totalComIva' => 0
+    ];
+
+    $cartItemsData = [];
+
+    foreach($cart as $pid => $item) {
+        $unitPriceComIva = $item['price'];
+        $unitPriceSemIva = $unitPriceComIva / (1 + $ivaRate);
+        $unitIva = $unitPriceComIva - $unitPriceSemIva;
+
+        $subtotalComIva = $unitPriceComIva * $item['quantity'];
+        $subtotalSemIva = $unitPriceSemIva * $item['quantity'];
+        $subtotalIva = $unitIva * $item['quantity'];
+
+        $total['totalSemIva'] += $subtotalSemIva;
+        $total['totalIva'] += $subtotalIva;
+        $total['totalComIva'] += $subtotalComIva;
+
+        $cartItemsData[$pid] = [
+            'subtotalComIva' => $subtotalComIva,
+            'subtotalSemIva' => $subtotalSemIva,
+            'subtotalIva' => $subtotalIva,
+            'quantity' => $item['quantity']
+        ];
+    }
+
+    return response()->json([
+        'success' => true,
+        'cartItems' => $cartItemsData,
+        'total' => $total
+    ]);
 }
+
 
 }
