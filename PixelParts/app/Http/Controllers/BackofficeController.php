@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,4 +49,46 @@ class BackofficeController extends Controller
         DB::table('users')->where('id', $id)->delete();
         return response()->json(['message' => 'Usuário excluído com sucesso', 'id' => $id]);
     }
+
+    public function stock(Request $request) {
+
+        $search = $request->input('search');
+        $category = $request->input('category');
+
+        $query = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.*', 'categories.name as category_name');
+
+        if ($search) {
+            $query->where('products.name', 'like', '%' . $search . '%');
+        }
+
+        if ($category) {
+            $query->where('categories.name', $category);
+        }
+
+        $products = $query->get();
+
+        return view('backoffice.stock', compact('products'));
+    }
+
+    public function exportStockPdf(Request $request)
+{
+    $query = DB::table('products')
+        ->join('categories', 'products.category_id', '=', 'categories.id')
+        ->select('products.*', 'categories.name as category_name');
+
+    if ($request->filled('search')) {
+        $query->where('products.name', 'like', '%' . $request->search . '%');
+    }
+
+    if ($request->filled('category')) {
+        $query->where('categories.name', $request->category);
+    }
+
+    $products = $query->get();
+
+    $pdf = Pdf::loadView('backoffice.stock-pdf', compact('products'));
+    return $pdf->download('stock.pdf');
+}
 }

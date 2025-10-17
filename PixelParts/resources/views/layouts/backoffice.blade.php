@@ -27,7 +27,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/backoffice/stock" class="nav-link {{ request()->is('backoffice/stock') ? 'active' : '' }}">
+                        <a href="{{ route ('backoffice.stock') }}" class="nav-link {{ request()->is('backoffice/stock') ? 'active' : '' }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                             </svg>
