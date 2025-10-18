@@ -13,4 +13,26 @@ class HomeController extends Controller
         return view ('index', compact('products'));
 
     }
+
+    public function about() {
+
+        return view('about');
+
+    }
+
+    public function searchbar(Request $request)
+{
+    $query = $request->input('q');
+
+    $produtos = Produto::query()
+        ->when($query, function ($queryBuilder) use ($query) {
+            $queryBuilder->where('nome', 'like', "%{$query}%")
+                         ->orWhere('descricao', 'like', "%{$query}%")
+                         ->orWhere('marca', 'like', "%{$query}%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(12);
+
+    return view('products.products', compact('produtos', 'query'));
+}
 }

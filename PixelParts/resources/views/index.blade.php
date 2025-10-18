@@ -4,12 +4,7 @@
 
     <main>
         <!-- Hero Section -->
-        <section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-            <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style="background-image: url('assets/hero-bg.jpg');">
-                <div class="absolute inset-0 bg-gradient-to-r from-surface-dark/90 via-surface-dark/60 to-surface-dark/90"></div>
-            </div>
+        <section id="inicio" class="lg:pt-20 relative min-h-screen flex items-center justify-center overflow-hidden">
 
             <!-- Particles -->
             <div class="particles-container absolute inset-0">
@@ -43,15 +38,17 @@
                             Explorar Produtos
                         </button>
                     </a>
-                    <button
-                        class="border-2 border-brand-green text-brand-green px-8 py-4 rounded-lg font-bold text-lg hover:bg-brand-green hover:text-surface-dark transition-all duration-300">
-                        Saber Mais
-                    </button>
+                    <a href="{{ route('about') }}">
+                        <button
+                            class="border-2 border-brand-green text-brand-green px-8 py-4 rounded-lg font-bold text-lg hover:bg-brand-green hover:text-surface-dark transition-all duration-300">
+                            Saber Mais
+                        </button>
+                    </a>
                 </div>
             </div>
 
             <!-- Scroll Indicator -->
-            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 animate-bounce">
                 <i data-lucide="chevron-down" class="w-6 h-6 text-text-secondary"></i>
             </div>
         </section>

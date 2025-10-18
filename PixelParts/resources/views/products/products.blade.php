@@ -8,13 +8,6 @@
                 <h1 class="text-4xl md:text-5xl font-bold text-text-primary mb-6">
                     Todos os <span class="text-gradient-brand">Produtos</span>
                 </h1>
-
-                <!-- Search Bar -->
-                <div class="relative max-w-2xl p-[2px] rounded-lg bg-gradient-to-r from-brand-green to-brand-blue">
-                    <input type="text" id="searchInput" placeholder="Pesquisar produtos..."
-                        class="w-full px-6 py-4 bg-surface rounded-lg text-text-primary placeholder-text-secondary focus:outline-none">
-                    <i class="fas fa-search absolute right-6 top-1/2 -translate-y-1/2 text-text-secondary"></i>
-                </div>
             </div>
 
             <div class="flex flex-col lg:flex-row gap-8">
@@ -151,7 +144,7 @@
 
     <!-- Filtering Script -->
     <script>
-        
+
         window.routes = {
             cartAdd: "{{ route('cart.add') }}"
         };

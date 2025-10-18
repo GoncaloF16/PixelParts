@@ -20,105 +20,112 @@
  </head>
 
  <body class="min-h-screen bg-background pt-[150px] md:pt-0">
-        <!-- Floating Cart Button -->
-    <a href="{{ route('cart.index') }}"
-        class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-brand-green to-brand-blue rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 z-50">
-        <i data-lucide="shopping-cart" class="w-7 h-7 text-white"></i>
-        <span id="cart-count"
-            class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-            {{ count(session('cart', [])) }}
-        </span>
-    </a>
+     <!-- Floating Cart Button -->
+     <a href="{{ route('cart.index') }}"
+         class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-brand-green to-brand-blue rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 z-50">
+         <i data-lucide="shopping-cart" class="w-7 h-7 text-white"></i>
+         <span id="cart-count"
+             class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+             {{ count(session('cart', [])) }}
+         </span>
+     </a>
 
      <!-- Toast template (invisível, usado pelo JS) -->
-    <div id="toast-template" class="hidden">
-        <div id="toast"
-            class="fixed bottom-6 left-6 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 opacity-0 translate-y-4 transition-all duration-300 ease-in-out z-50"
-            style="animation: fadeInUp 0.3s ease-out forwards;">
-            <div class="flex items-center justify-center w-6 h-6 bg-white rounded-full">
-                <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
-                <span class="text-green-600 font-bold" style="display: none;">✓</span>
+     <div id="toast-template" class="hidden">
+         <div id="toast"
+             class="fixed bottom-6 left-6 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 opacity-0 translate-y-4 transition-all duration-300 ease-in-out z-50"
+             style="animation: fadeInUp 0.3s ease-out forwards;">
+             <div class="flex items-center justify-center w-6 h-6 bg-white rounded-full">
+                 <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+                 <span class="text-green-600 font-bold" style="display: none;">✓</span>
+             </div>
+             <span class="flex-1 toast-message"></span>
+             <button class="text-white hover:text-gray-200 ml-2" onclick="closeToast(this)">
+                 <i data-lucide="x" class="w-5 h-5"></i>
+                 <span class="text-white font-bold" style="display: none;">&times;</span>
+             </button>
+         </div>
+     </div>
+     <!-- Header -->
+   <header id="header"
+    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-surface/90 backdrop-blur-md">
+    <div class="container mx-auto px-6 py-3">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-6">
+
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 logo-hover flex-shrink-0">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo"
+                        class="h-[80px] w-[100px] object-contain">
+                </a>
             </div>
-            <span class="flex-1 toast-message"></span>
-            <button class="text-white hover:text-gray-200 ml-2" onclick="closeToast(this)">
-                <i data-lucide="x" class="w-5 h-5"></i>
-                <span class="text-white font-bold" style="display: none;">&times;</span>
+
+            <!-- Search Bar (Desktop + Mobile) -->
+            <form action="{{ route('products.index') }}" method="GET"
+                class="flex-grow w-full md:max-w-xl md:ml-2 mx-0 md:mx-4">
+                <div class="relative p-[1px] rounded-lg bg-gradient-to-r from-brand-green to-brand-blue">
+                    <input type="text" name="q" id="searchInput" placeholder="Pesquisar produtos..."
+                        class="w-full px-4 py-2 bg-surface rounded-lg text-text-primary placeholder-text-secondary focus:outline-none text-sm"
+                        value="{{ request('q') }}">
+                    <button type="submit"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-brand-green text-sm">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-4 md:space-x-8 mt-2 md:mt-0 pr-2">
+                @guest
+                    <a href="{{ route('login') }}"
+                        class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-4 py-2 rounded-md font-semibold text-sm hover:scale-105 transition-transform duration-300 glow-brand">
+                        Entrar
+                    </a>
+                @endguest
+
+                @auth
+                    <form method="POST" action="{{ route('logout') }}" class="flex items-center m-0 p-0 ml-2">
+                        @csrf
+                        <button type="submit"
+                            class="inline-flex items-center bg-red-600 text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-red-700 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5m0 6v1" />
+                            </svg>
+                            Logout
+                        </button>
+                    </form>
+                @endauth
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-text-primary mt-2">
+                <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </div>
+
+        <!-- Mobile Navigation -->
+        <nav id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-border">
+            <div class="flex flex-col space-y-4 pt-4">
+                <a href="#inicio"
+                    class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Início</a>
+                <a href="#produtos"
+                    class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Produtos</a>
+                <a href="#servicos"
+                    class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Serviços</a>
+                <a href="#sobre"
+                    class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Sobre</a>
+                <a href="#contacto"
+                    class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Contacto</a>
+                <a href="{{ route('login') }}"
+                    class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-4 py-2 rounded-md font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">Entrar</a>
+            </div>
+        </nav>
     </div>
-     <!-- Header -->
-     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-         <div class="container mx-auto px-6 py-4">
-             <div class="flex items-center justify-between">
-                 <!-- Logo -->
-                 <div class="flex items-center space-x-3 logo-hover">
-                     <a href="{{ route('home') }}"> <img src="{{ asset('images/PixelParts.png') }}"
-                             alt="PixelParts Logo" class="h-[80px] w-[100px]"> </a>
-                 </div>
-
-                 <!-- Desktop Navigation -->
-                 <nav class="hidden md:flex items-center space-x-8">
-                     <a href="#inicio"
-                         class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Início</a>
-                     <a href="#produtos"
-                         class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Produtos</a>
-                     <a href="#servicos"
-                         class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Serviços</a>
-                     <a href="#sobre"
-                         class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Sobre</a>
-                     <a href="#contacto"
-                         class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Contacto</a>
-
-                     @guest
-                         <a href="{{ route('login') }}"
-                             class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-4 py-2 rounded-md font-semibold text-sm hover:scale-105 transition-transform duration-300 glow-brand">
-                             Entrar
-                         </a>
-                     @endguest
-
-                     @auth
-                         <form method="POST" action="{{ route('logout') }}" class="flex items-center m-0 p-0">
-                             @csrf
-                             <button type="submit"
-                                 class="inline-flex items-center bg-red-600 text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-red-700 transition-colors duration-300">
-                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none"
-                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5m0 6v1" />
-                                 </svg>
-                                 Logout
-                             </button>
-                         </form>
-                     @endauth
-                 </nav>
+</header>
 
 
-
-                 <!-- Mobile Menu Button -->
-                 <button id="mobile-menu-btn" class="md:hidden text-text-primary">
-                     <i data-lucide="menu" class="w-6 h-6"></i>
-                 </button>
-             </div>
-
-             <!-- Mobile Navigation -->
-             <nav id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-border">
-                 <div class="flex flex-col space-y-4 pt-4">
-                     <a href="#inicio"
-                         class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Início</a>
-                     <a href="#produtos"
-                         class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Produtos</a>
-                     <a href="#servicos"
-                         class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Serviços</a>
-                     <a href="#sobre"
-                         class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Sobre</a>
-                     <a href="#contacto"
-                         class="text-text-primary hover:text-brand-green transition-colors duration-300 font-medium">Contacto</a>
-                     <a href="{{ route('login') }}"
-                         class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-4 py-2 rounded-md font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">Entrar</a>
-                 </div>
-             </nav>
-         </div>
-     </header>
      @yield('content')
      <!-- Footer -->
      <footer class="bg-surface-card border-t border-border py-16">
@@ -155,16 +162,16 @@
                  <div>
                      <h4 class="text-lg font-bold text-text-primary mb-4">Links Rápidos</h4>
                      <ul class="space-y-3">
-                         <li><a href="#"
+                         <li><a href="{{ route('home') }}"
                                  class="text-text-secondary hover:text-brand-green transition-colors duration-300">Início</a>
                          </li>
-                         <li><a href="#"
+                         <li><a href="{{ route('products.index') }}"
                                  class="text-text-secondary hover:text-brand-green transition-colors duration-300">Produtos</a>
                          </li>
                          <li><a href="#"
                                  class="text-text-secondary hover:text-brand-green transition-colors duration-300">Serviços</a>
                          </li>
-                         <li><a href="#"
+                         <li><a href="{{ route('about') }}"
                                  class="text-text-secondary hover:text-brand-green transition-colors duration-300">Sobre
                                  Nós</a></li>
                          <li><a href="#"
@@ -245,37 +252,37 @@
 
 
      @if (session('success'))
-    <div id="session-toast"
-        class="fixed bottom-6 left-6 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 opacity-0 translate-y-4 transition-all duration-300 ease-in-out z-50"
-        style="animation: fadeInUp 0.3s ease-out forwards;">
-        <div class="flex items-center justify-center w-6 h-6 bg-white rounded-full">
-            <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
-            <span class="text-green-600 font-bold" style="display: none;">✓</span>
-        </div>
-        <span class="flex-1">{{ session('success') }}</span>
-        <button onclick="closeSessionToast()" class="text-white hover:text-gray-200 ml-2">
-            <i data-lucide="x" class="w-5 h-5"></i>
-            <span class="text-white font-bold" style="display: none;">&times;</span>
-        </button>
-    </div>
+         <div id="session-toast"
+             class="fixed bottom-6 left-6 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 opacity-0 translate-y-4 transition-all duration-300 ease-in-out z-50"
+             style="animation: fadeInUp 0.3s ease-out forwards;">
+             <div class="flex items-center justify-center w-6 h-6 bg-white rounded-full">
+                 <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+                 <span class="text-green-600 font-bold" style="display: none;">✓</span>
+             </div>
+             <span class="flex-1">{{ session('success') }}</span>
+             <button onclick="closeSessionToast()" class="text-white hover:text-gray-200 ml-2">
+                 <i data-lucide="x" class="w-5 h-5"></i>
+                 <span class="text-white font-bold" style="display: none;">&times;</span>
+             </button>
+         </div>
 
-    <script>
-        function closeSessionToast() {
-            const sessionToast = document.getElementById('session-toast');
-            if (sessionToast) {
-                sessionToast.style.opacity = '0';
-                sessionToast.style.transform = 'translateY(16px)';
-                setTimeout(() => sessionToast.remove(), 300);
-            }
+         <script>
+             function closeSessionToast() {
+                 const sessionToast = document.getElementById('session-toast');
+                 if (sessionToast) {
+                     sessionToast.style.opacity = '0';
+                     sessionToast.style.transform = 'translateY(16px)';
+                     setTimeout(() => sessionToast.remove(), 300);
+                 }
 
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(() => {
-                    closeSessionToast();
-                }, 3000);
-            });
-        }
-    </script>
-@endif
+                 document.addEventListener('DOMContentLoaded', () => {
+                     setTimeout(() => {
+                         closeSessionToast();
+                     }, 3000);
+                 });
+             }
+         </script>
+     @endif
 
  </body>
 
