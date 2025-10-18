@@ -14,7 +14,14 @@ class BackofficeController extends Controller
         $totalUsers = DB::table('users')->count();
         $totalProducts = DB::table('products')->count();
 
-        return view('backoffice.dashboard', compact('totalUsers', 'totalProducts'));
+        $products = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.name', 'products.stock', 'categories.name as category_name')
+            ->where('products.stock', '<', 10)
+            ->orderBy('products.stock', 'asc')
+            ->get();
+            
+        return view('backoffice.dashboard', compact('totalUsers', 'totalProducts', 'products'));
 
     }
 

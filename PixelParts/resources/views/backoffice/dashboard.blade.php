@@ -97,35 +97,29 @@
     </div>
 
     <!-- Low Stock Alert -->
-    <div class="bg-white rounded-lg shadow">
-        <div class="p-6 border-b border-gray-200">
-            <h3 class="text-lg font-semibold text-gray-800">Produtos com Stock Baixo</h3>
-        </div>
-        <div class="p-6">
-            <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="font-medium text-gray-800">RTX 4070 Ti</p>
-                        <p class="text-sm text-gray-500">GPU</p>
-                    </div>
-                    <span class="text-red-600 font-semibold">3 unidades</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="font-medium text-gray-800">AMD Ryzen 9 7950X</p>
-                        <p class="text-sm text-gray-500">CPU</p>
-                    </div>
-                    <span class="text-red-600 font-semibold">5 unidades</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="font-medium text-gray-800">Kingston Fury 32GB</p>
-                        <p class="text-sm text-gray-500">RAM</p>
-                    </div>
-                    <span class="text-orange-600 font-semibold">8 unidades</span>
+   <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">Produtos com Stock Baixo</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    @foreach ($products as $product)
+                        @if ($product->stock < 10)
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-800">{{ $product->name }}</p>
+                                    <p class="text-sm text-gray-500">{{ $product->category_name }}</p>
+                                </div>
+                                @if ($product->stock < 5)
+                                    <span class="text-red-600 font-semibold">{{ $product->stock }} unidades</span>
+                                @else
+                                    <span class="text-orange-600 font-semibold">{{ $product->stock }} unidades</span>
+                                @endif
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>
-    </div>
 </div>
 @endsection
