@@ -9,15 +9,25 @@ use App\Models\ProductReview;
 
 class ProdsController extends Controller
 {
-    public function index()
-    {
-        $products = Product::with('category')->paginate(9);
-        $brands = Product::select('brand')->distinct()->pluck('brand');
-        $categories = Category::orderBy('name')->get();
+   public function index(Request $request)
+{
+    $query = Product::with('category');
 
-        return view('products.products', compact('products', 'categories', 'brands'));
-
+    // Filtrar por categoria
+    if ($request->has('categoria') && $request->categoria) {
+        $query->whereHas('category', function($q) use ($request) {
+            $q->where('slug', $request->categoria);
+        });
     }
+
+    // Paginando
+    $products = $query->paginate(9)->withQueryString();
+
+    $brands = Product::select('brand')->distinct()->pluck('brand');
+    $categories = Category::orderBy('name')->get();
+
+    return view('products.products', compact('products', 'categories', 'brands'));
+}
 
 
     public function show($slug)

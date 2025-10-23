@@ -1,32 +1,23 @@
 @extends('layouts.master')
 
 @section('content')
-
     <main>
         <!-- Hero Section -->
-        <section id="inicio" class="lg:pt-20 relative min-h-screen flex items-center justify-center overflow-hidden">
-
-            <!-- Particles -->
+        <section id="inicio" class="relative min-h-screen flex items-start justify-center overflow-hidden">
+            <!-- Partículas -->
             <div class="particles-container absolute inset-0">
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
+                @for ($i = 0; $i < 10; $i++)
+                    <div class="particle"></div>
+                @endfor
             </div>
 
             <!-- Hero Content -->
             <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
-                <h1 class="text-5xl md:text-7xl font-bold text-text-primary mb-6 animate-fade-up">
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-200 mb-6 animate-fade-up">
                     Componentes Gaming <br>
                     de <span class="text-gradient-brand">Elite</span>
                 </h1>
-                <p class="text-xl md:text-2xl text-text-secondary mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-up"
+                <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-up"
                     style="animation-delay: 0.2s;">
                     Eleva o teu setup gaming com os melhores componentes do mercado.
                     Performance extrema, qualidade premium, resultados extraordinários.
@@ -48,60 +39,65 @@
             </div>
 
             <!-- Scroll Indicator -->
-            <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 animate-bounce">
-                <i data-lucide="chevron-down" class="w-6 h-6 text-text-secondary"></i>
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400"></i>
             </div>
         </section>
 
         <!-- Products Section -->
         <section id="produtos" class="py-20 bg-surface">
             <div class="container mx-auto px-6">
-                <!-- Section Header -->
                 <div class="text-center mb-16 animate-fade-up">
-                    <h2 class="text-4xl md:text-5xl font-bold text-text-primary mb-4">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-200 mb-4">
                         Produtos em <span class="text-gradient-brand">Destaque</span>
                     </h2>
-                    <p class="text-text-secondary text-lg max-w-2xl mx-auto">
-                        Descobre a nossa seleção cuidadosa de componentes de alta performance
-                        para elevar o teu setup gaming ao próximo nível.
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                        Descobre a nossa seleção de componentes de alta performance para elevar o teu setup gaming ao
+                        próximo nível.
                     </p>
                 </div>
 
-                <!-- Products Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-stretch">
                     @foreach ($products as $product)
-                        <div class="product-card bg-white shadow-lg rounded-lg overflow-hidden animate-scale-in flex flex-col h-full">
-                            <div class="relative flex-shrink-0">
-                                <a href="{{ route('products.details', ['slug' => $product->slug]) }}">
-                                    <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-48 object-cover" loading="lazy">
-                                </a>
+                        <div
+                            class="bg-gray-900 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 h-[440px] relative group flex flex-col">
 
-                                @if ($product->created_at->gt(now()->subDays(7)))
-                                    <div class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                                        NOVO
-                                    </div>
-                                @endif
+                            <!-- Eye Icon -->
+                            <div
+                                class="absolute top-3 right-3 bg-gray-800/70 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                                <i data-lucide="eye" class="w-5 h-5 text-brand-green"></i>
                             </div>
 
-                            <div class="bg-gray-900 text-white pt-4 pb-5 px-4 flex flex-col flex-1 min-h-0">
-                                <div class="flex flex-col flex-grow min-h-0 mb-4">
-                                    <h3 class="font-bold text-lg">{{ $product->name }}</h3>
-                                    <p class="text-sm text-gray-300 mt-1 leading-relaxed">
+                            <!-- Image -->
+                            <a href="{{ route('products.details', ['slug' => $product->slug]) }}">
+                                <img src="{{ $product->image }}" alt="{{ $product->name }}"
+                                    class="w-full h-[210px] object-cover cursor-pointer">
+                            </a>
+
+                            @if ($product->created_at->gt(now()->subDays(7)))
+                                <div
+                                    class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">
+                                    NOVO
+                                </div>
+                            @endif
+
+                            <div class="p-4 flex flex-col flex-grow">
+                                <div class="flex-grow">
+                                    <h3 class="text-lg font-bold text-gray-200 mb-2">{{ $product->name }}</h3>
+                                    <p class="text-sm text-gray-400 leading-relaxed line-clamp-3">
                                         {{ $product->description }}
                                     </p>
                                 </div>
-
-                                <div class="flex items-center justify-between">
-                                    <span class="font-bold text-lg">
+                                <div class="mt-4 flex items-center justify-between">
+                                    <span class="text-xl font-bold text-gray-100">
                                         €{{ number_format($product->price, 2, ',', '.') }}
                                     </span>
                                     <form class="add-to-cart-form" data-product-id="{{ $product->id }}">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <button type="submit"
-                                            class="bg-gradient-to-r from-brand-green to-brand-blue text-white px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-transform flex items-center gap-2">
-                                            <i data-lucide="shopping-cart"></i>
-                                            Adicionar
+                                            class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-3 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition">
+                                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Adicionar
                                         </button>
                                     </form>
                                 </div>
@@ -110,11 +106,10 @@
                     @endforeach
                 </div>
 
-                <!-- View All Button -->
-                <div class="text-center mt-16">
+                <div class="text-center mt-12">
                     <a href="{{ route('products.index') }}">
                         <button
-                            class="bg-gradient-to-r from-brand-green to-brand-blue text-white px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
+                            class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
                             Ver Todos os Produtos
                         </button>
                     </a>
@@ -122,68 +117,73 @@
             </div>
         </section>
 
-         <!-- Newsletter Section -->
-         <section class="relative py-20 overflow-hidden">
-             <!-- Background -->
-             <div class="absolute inset-0 bg-gradient-to-r from-brand-green to-brand-blue"></div>
+        <!-- Newsletter -->
+        <section class="relative py-20 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-green to-brand-blue"></div>
+            <div class="container mx-auto px-6 relative z-10 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Mantém-te Atualizado</h2>
+                <p class="text-lg text-gray-900 mb-8 max-w-2xl mx-auto">
+                    Recebe as últimas novidades, lançamentos e promoções exclusivas diretamente no teu email.
+                </p>
+                <div id="newsletter-form" class="max-w-md mx-auto space-y-4">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" id="email-input" placeholder="O teu email"
+                            class="flex-1 px-4 py-3 bg-gray-100 border border-border rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300">
+                        <button id="subscribe-btn"
+                            class="bg-gray-900 text-gray-100 px-6 py-3 rounded-lg font-bold hover:scale-105 transition-transform duration-300 whitespace-nowrap">
+                            Subscrever
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-center gap-6 text-sm text-gray-900 mt-4">
+                        <div class="flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4"></i><span>Sem
+                                spam</span></div>
+                        <div class="flex items-center gap-2"><i data-lucide="star" class="w-4 h-4"></i><span>Apenas conteúdo
+                                relevante</span></div>
+                    </div>
+                </div>
+                <div id="success-message" class="hidden max-w-md mx-auto text-center">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="check" class="w-8 h-8 text-brand-green"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Obrigado!</h3>
+                        <p class="text-gray-900">A tua subscrição foi confirmada. Vais receber as nossas novidades em breve!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.replace();
 
-             <div class="container mx-auto px-6 relative z-10">
-                 <div class="max-w-4xl mx-auto text-center">
-                     <div class="animate-fade-up">
-                         <h2 class="text-4xl md:text-5xl font-bold text-text-primary mb-6">
-                             Mantém-te Atualizado
-                         </h2>
-                         <p class="text-4xl text-lg mb-8 max-w-2xl mx-auto">
-                             Recebe as últimas novidades sobre lançamentos, ofertas exclusivas e dicas de gaming
-                             diretamente no teu email.
-                         </p>
+            const toggle = document.getElementById('menu-toggle');
+            const dropdown = document.getElementById('menu-dropdown');
 
-                         <!-- Newsletter Form -->
-                         <div id="newsletter-form" class="max-w-md mx-auto space-y-4">
-                             <div class="flex flex-col sm:flex-row gap-3">
-                                 <input type="email" id="email-input" placeholder="O teu email"
-                                     class="flex-1 px-4 py-3 bg-surface-card border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300">
-                                 <button id="subscribe-btn"
-                                     class="bg-white text-black px-6 py-3 rounded-lg font-bold hover:scale-105 transition-transform duration-300 whitespace-nowrap">
-                                     Subscrever
-                                 </button>
-                             </div>
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('hidden');
+            });
 
-                             <div class="flex items-center justify-center gap-6 text-sm text-text-secondary">
-                                 <div class="flex items-center gap-2">
-                                     <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
-                                     <span class="text-white">Sem spam</span>
-                                 </div>
-                                 <div class="flex items-center gap-2">
-                                     <i data-lucide="star" class="w-4 h-4 text-white"></i>
-                                     <span class="text-white">Apenas conteúdo relevante</span>
-                                 </div>
-                             </div>
-                         </div>
+            // Fecha ao clicar fora
+            document.addEventListener('click', () => {
+                if (!dropdown.classList.contains('hidden')) dropdown.classList.add('hidden');
+            });
 
-                         <!-- Success Message -->
-                         <div id="success-message" class="hidden max-w-md mx-auto text-center">
-                             <div class="mb-6">
-                                 <div
-                                     class="w-16 h-16 bg-gradient-to-r from-brand-green to-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                                     <i data-lucide="check" class="w-8 h-8 text-surface-dark"></i>
-                                 </div>
-                                 <h3 class="text-2xl font-bold text-text-primary mb-2">Obrigado!</h3>
-                                 <p class="text-white text-text-secondary">A tua subscrição foi confirmada. Vais receber as
-                                     nossas
-                                     novidades em breve!</p>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </section>
-     </main>
+            dropdown.addEventListener('click', e => e.stopPropagation());
 
-     <script>
+            // Fechar com ESC
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && !dropdown.classList.contains('hidden')) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+        });
+
         window.routes = {
             cartAdd: "{{ route('cart.add') }}"
         };
     </script>
- @endsection
+@endsection
