@@ -1,18 +1,29 @@
 @extends('layouts.master')
 
 @section('content')
-    <main class="pt-24 pb-16 mt-10">
+    <main>
         <div class="container mx-auto px-6">
 
             <!-- Breadcrumb -->
-            <a href="{{ route('products.index') }}"
-                class="flex items-center gap-2 text-text-muted hover:text-brand-green transition-colors mb-8 inline-flex">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-                <span>Voltar aos Produtos</span>
-            </a>
-
+            <nav class="text-sm text-text-secondary mb-2" aria-label="Breadcrumb">
+                <ol class="list-reset flex">
+                    <li>
+                        <a href="{{ route('home') }}" class="hover:underline text-base">Home</a>
+                    </li>
+                    <li><span class="mx-2 text-base">></span></li>
+                    <li> <a href="{{ route('products.index') }}" class="text-text-primary font-semibold text-base">Produtos </a>
+                    </li>
+                    @if (isset($product))
+                        <li><span class="mx-2 text-base">></span></li>
+                        <li>
+                            <span class="text-text-primary font-semibold text-base">
+                                {{ $product->name }}
+                            </span>
+                        </li>
+                    @endif
+                </ol>
+            </nav>
+            <br>
             <div class="grid lg:grid-cols-2 gap-12 mb-16">
                 <!-- Imagem principal -->
                 <div class="space-y-4">

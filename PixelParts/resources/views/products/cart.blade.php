@@ -1,8 +1,8 @@
 @extends('layouts.master')
 
 @section('content')
-    <main class="pt-10">
-        <section class="py-20 bg-surface min-h-screen">
+    <main>
+        <section class="bg-surface min-h-screen">
             <div class="container mx-auto px-6">
 
                 <!-- Header -->

@@ -39,14 +39,14 @@
             </div>
 
             <!-- Scroll Indicator -->
-            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="absolute bottom-32 left-1/2 transform -translate-x-1/2 animate-bounce">
                 <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400"></i>
             </div>
         </section>
 
         <!-- Products Section -->
-        <section id="produtos" class="py-20 bg-surface">
-            <div class="container mx-auto px-6">
+        <section id="produtos" class="pb-10 bg-surface">
+            <div class="container mx-auto px-6 lg:px-12">
                 <div class="text-center mb-16 animate-fade-up">
                     <h2 class="text-4xl md:text-5xl font-bold text-gray-200 mb-4">
                         Produtos em <span class="text-gradient-brand">Destaque</span>
@@ -57,11 +57,10 @@
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-stretch">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[850px] mx-auto">
                     @foreach ($products as $product)
                         <div
                             class="bg-gray-900 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 h-[440px] relative group flex flex-col">
-
                             <!-- Eye Icon -->
                             <div
                                 class="absolute top-3 right-3 bg-gray-800/70 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
@@ -121,8 +120,8 @@
         <section class="relative py-20 overflow-hidden">
             <div class="absolute inset-0 bg-gradient-to-r from-brand-green to-brand-blue"></div>
             <div class="container mx-auto px-6 relative z-10 text-center">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Mantém-te Atualizado</h2>
-                <p class="text-lg text-gray-900 mb-8 max-w-2xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-200 mb-6">Mantém-te Atualizado</h2>
+                <p class="text-lg text-gray-200 mb-8 max-w-2xl mx-auto">
                     Recebe as últimas novidades, lançamentos e promoções exclusivas diretamente no teu email.
                 </p>
                 <div id="newsletter-form" class="max-w-md mx-auto space-y-4">
@@ -130,11 +129,11 @@
                         <input type="email" id="email-input" placeholder="O teu email"
                             class="flex-1 px-4 py-3 bg-gray-100 border border-border rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300">
                         <button id="subscribe-btn"
-                            class="bg-gray-900 text-gray-100 px-6 py-3 rounded-lg font-bold hover:scale-105 transition-transform duration-300 whitespace-nowrap">
+                            class="bg-gray-900 text-gray-200 px-6 py-3 rounded-lg font-bold hover:scale-105 transition-transform duration-300 whitespace-nowrap">
                             Subscrever
                         </button>
                     </div>
-                    <div class="flex items-center justify-center gap-6 text-sm text-gray-900 mt-4">
+                    <div class="flex items-center justify-center gap-6 text-sm text-gray-200 mt-4">
                         <div class="flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4"></i><span>Sem
                                 spam</span></div>
                         <div class="flex items-center gap-2"><i data-lucide="star" class="w-4 h-4"></i><span>Apenas conteúdo
@@ -143,17 +142,18 @@
                 </div>
                 <div id="success-message" class="hidden max-w-md mx-auto text-center">
                     <div class="mb-6">
-                        <div class="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i data-lucide="check" class="w-8 h-8 text-brand-green"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Obrigado!</h3>
-                        <p class="text-gray-900">A tua subscrição foi confirmada. Vais receber as nossas novidades em breve!
+                        <h3 class="text-2xl font-bold text-gray-200 mb-2">Obrigado!</h3>
+                        <p class="text-gray-200">A tua subscrição foi confirmada. Vais receber as nossas novidades em breve!
                         </p>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

@@ -253,14 +253,13 @@ body {
 }
 
 .product-card {
-  position: relative;
-  background-color: hsl(var(--surface-card));
+  display: flex;
+  flex-direction: column;
   border-radius: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   transition: all 0.3s ease;
-  height: 350px;
-  group: true;
+  height: auto;
 }
 
 .product-card:hover {
@@ -283,9 +282,9 @@ body {
 }
 
 .product-image {
-  position: relative;
-  height: 320px;
+  height: 240px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .product-image img {
@@ -340,15 +339,11 @@ body {
 }
 
 .product-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 24px;
-  text-align: center;
+ flex-grow: 1;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
 }
 
 .product-title {

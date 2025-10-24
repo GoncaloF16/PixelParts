@@ -1,8 +1,20 @@
 @extends('layouts.master')
 
 @section('content')
-    <main class="lg:pt-24 min-h-screen">
+    <main class="lg:min-h-screen">
         <div class="container mx-auto px-6 py-8">
+            <!-- Breadcrumb -->
+            <nav class="text-sm text-text-secondary mb-2" aria-label="Breadcrumb">
+                <ol class="list-reset flex">
+                    <li>
+                        <a href="{{ route('home') }}" class="hover:underline text-base">Home</a>
+                    </li>
+                    <li><span class="mx-2 text-base">></span></li>
+                    <li> <a href="{{ route('products.index') }}" class="text-text-primary font-semibold text-base">Produtos </a>
+                    </li>
+                </ol>
+            </nav>
+            <br>
             <!-- Page Header -->
             <div class="mb-8">
                 <h1 class="text-4xl md:text-5xl font-bold text-text-primary mb-6">
@@ -64,15 +76,15 @@
 
                         <div class="relative">
                             <select id="sortSelect"
-                                class="appearance-none bg-surface rounded-lg px-6 py-3 pr-10 text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-blue cursor-pointer">
-                                <option value="default">Ordenar por</option>
-                                <option value="name-asc">Nome (A-Z)</option>
-                                <option value="name-desc">Nome (Z-A)</option>
-                                <option value="price-asc">Preço (Menor)</option>
-                                <option value="price-desc">Preço (Maior)</option>
+                                class="appearance-none w-full bg-surface rounded-lg px-6 py-3 pr-10 text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-blue cursor-pointer">
+                                <option value="default" class="text-gray-200">Ordenar por</option>
+                                <option value="name-asc" class="text-gray-200">Nome (A-Z)</option>
+                                <option value="name-desc" class="text-gray-200">Nome (Z-A)</option>
+                                <option value="price-asc" class="text-gray-200">Preço (Menor)</option>
+                                <option value="price-desc" class="text-gray-200">Preço (Maior)</option>
                             </select>
-                            <i
-                                class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none"></i>
+                            <i data-lucide="chevron-down"
+                                class="text-gray-200 absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none"></i>
                         </div>
                     </div>
 
@@ -82,54 +94,63 @@
                             <div class="product-card" data-name="{{ strtolower($product->name) }}"
                                 data-price="{{ $product->price }}" data-brand="{{ strtolower($product->brand) }}"
                                 data-category="{{ $product->category ? $product->category->slug : 'uncategorized' }}">
-                                <div
-                                    class="bg-surface rounded-lg overflow-hidden group transition-transform duration-300 hover:scale-[1.02] flex flex-col h-full">
 
-                                    <!-- Product Image -->
-                                    <div class="relative aspect-square overflow-hidden">
-                                        <a href="{{ route('products.details', ['slug' => $product->slug]) }}">
-                                            <img src="{{ $product->image }}" alt="{{ $product->name }}"
-                                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                                        </a>
+                                <div
+                                    class="bg-gray-900 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 group flex flex-col h-[400px] relative">
+                                    <!-- Eye Icon -->
+                                    <div
+                                        class="absolute top-3 right-3 bg-gray-800/70 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                                        <i data-lucide="eye" class="w-5 h-5 text-brand-green"></i>
                                     </div>
 
+                                    <!-- Product Image -->
+                                    <a href="{{ route('products.details', ['slug' => $product->slug]) }}" class="relative">
+                                        <img src="{{ $product->image }}" alt="{{ $product->name }}"
+                                            class="w-full h-[200px] object-cover transition-transform duration-500 group-hover:scale-110">
+                                    </a>
+
+                                    <!-- NOVO Badge -->
+                                    @if ($product->created_at->gt(now()->subDays(7)))
+                                        <div
+                                            class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">
+                                            NOVO
+                                        </div>
+                                    @endif
+
                                     <!-- Product Info -->
-                                    <div class="p-5 flex flex-col justify-between h-full">
-                                        <div class="mb-4">
-                                            <h3
-                                                class="text-lg font-bold text-text-primary group-hover:text-brand-blue transition-colors">
-                                                {{ $product->name }}
-                                            </h3>
-                                            <p class="text-text-secondary text-sm line-clamp-2 mt-1">
-                                                {{ $product->description }}
+                                    <div class="flex flex-col justify-between flex-grow p-4 min-h-0">
+                                        <div class="flex-shrink-0">
+                                            <h3 class="text-lg font-bold text-gray-200 mb-2 line-clamp-2">
+                                                {{ $product->name }}</h3>
+                                            <p class="text-sm text-gray-400 leading-relaxed line-clamp-4">
+                                                {{ $product->description ?? 'Descrição não disponível' }}
                                             </p>
                                         </div>
 
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-xl font-bold text-gradient-brand">
-                                                €{{ number_format($product->price, 2, ',', '.') }}
+                                        <div class="mt-3 flex items-center justify-between flex-shrink-0">
+                                            <span class="text-xl font-bold text-gray-200">
+                                                €{{ $product->price ? number_format($product->price, 2, ',', '.') : 'Preço indisponível' }}
                                             </span>
-                                            <form class="add-to-cart-form" method="POST">
+                                            <form class="add-to-cart-form" data-product-id="{{ $product->id }}">
                                                 @csrf
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <button
-                                                    class="bg-gradient-to-r from-brand-green to-brand-blue text-white px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-transform flex items-center gap-2">
-                                                    <i data-lucide="shopping-cart"></i>
-                                                    Adicionar
+                                                <button type="submit"
+                                                    class="bg-gradient-to-r bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold px-4 py-2 rounded-lg text-sm  transition-transform flex items-center gap-2">
+                                                    <i data-lucide="shopping-cart" class="w-4 h-4"></i> Adicionar
                                                 </button>
                                             </form>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
+
                     </div>
 
                     <!-- No Results -->
                     <div id="noResults" class="hidden text-center py-16">
                         <i class="fas fa-search text-6xl text-text-secondary mb-4"></i>
-                        <h3 class="text-2xl font-bold text-text-primary mb-2">Nenhum produto encontrado</h3>
+                        <h3 class="text-2xl font-bold text-text-primary mb-2 text-gray-200">Nenhum produto encontrado</h3>
                         <p class="text-text-secondary">Tenta ajustar os filtros ou pesquisar por outro termo.</p>
                     </div>
 
@@ -142,12 +163,12 @@
         </div>
     </main>
 
-    <!-- Filtering Script -->
     <script>
-
         window.routes = {
             cartAdd: "{{ route('cart.add') }}"
         };
+
+        lucide.replace();
 
         const searchInput = document.getElementById('searchInput');
         const categoryFilters = document.querySelectorAll('.filter-category');
@@ -157,7 +178,7 @@
         const noResults = document.getElementById('noResults');
 
         function filterProducts() {
-            const searchValue = searchInput.value.toLowerCase();
+            const searchValue = searchInput ? searchInput.value.toLowerCase() : '';
             const selectedCategories = Array.from(categoryFilters)
                 .filter(cb => cb.checked)
                 .map(cb => cb.value);
@@ -188,16 +209,16 @@
             document.getElementById('productCount').textContent = `Mostrando ${visibleCount} produtos`;
         }
 
-        // Eventos
-        searchInput.addEventListener('input', filterProducts);
         categoryFilters.forEach(cb => cb.addEventListener('change', filterProducts));
         brandFilters.forEach(cb => cb.addEventListener('change', filterProducts));
-        clearFiltersBtn.addEventListener('click', () => {
-            categoryFilters.forEach(cb => cb.checked = true);
-            brandFilters.forEach(cb => cb.checked = true);
-            searchInput.value = '';
-            filterProducts();
-        });
+        if (clearFiltersBtn) {
+            clearFiltersBtn.addEventListener('click', () => {
+                categoryFilters.forEach(cb => cb.checked = true);
+                brandFilters.forEach(cb => cb.checked = true);
+                if (searchInput) searchInput.value = '';
+                filterProducts();
+            });
+        }
 
         filterProducts();
     </script>

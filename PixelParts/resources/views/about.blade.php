@@ -3,7 +3,7 @@
 @section('content')
 <main class="bg-surface text-text-primary">
     <!-- Sobre a PixelParts -->
-    <section class="pt-1 lg:pt-[115px] py-20 relative overflow-hidden">
+    <section class="pt-1 py-20 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-br from-surface-dark via-surface to-surface-dark opacity-90"></div>
         <div class="container mx-auto px-6 relative z-10">
             <div class="max-w-5xl mx-auto">
