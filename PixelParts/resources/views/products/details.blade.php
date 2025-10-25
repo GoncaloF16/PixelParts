@@ -11,7 +11,8 @@
                         <a href="{{ route('home') }}" class="hover:underline text-base">Home</a>
                     </li>
                     <li><span class="mx-2 text-base">></span></li>
-                    <li> <a href="{{ route('products.index') }}" class="text-text-primary font-semibold text-base">Produtos </a>
+                    <li> <a href="{{ route('products.index') }}" class="text-text-primary font-semibold text-base">Produtos
+                        </a>
                     </li>
                     @if (isset($product))
                         <li><span class="mx-2 text-base">></span></li>
@@ -32,9 +33,14 @@
                             class="absolute top-4 left-4 z-10 bg-brand-green text-surface-dark px-3 py-1 rounded-full text-xs font-semibold">
                             Novo
                         </span>
-                        <img src="{{ $product->image ? asset($product->image) : 'https://via.placeholder.com/400' }}"
+                        <img src="{{ $product->image
+                            ? (Str::startsWith($product->image, ['http://', 'https://'])
+                                ? $product->image
+                                : asset('storage/' . $product->image))
+                            : 'https://via.placeholder.com/400' }}"
                             alt="{{ $product->name }}"
                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+
                     </div>
                 </div>
 

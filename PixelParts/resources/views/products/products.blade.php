@@ -10,7 +10,8 @@
                         <a href="{{ route('home') }}" class="hover:underline text-base">Home</a>
                     </li>
                     <li><span class="mx-2 text-base">></span></li>
-                    <li> <a href="{{ route('products.index') }}" class="text-text-primary font-semibold text-base">Produtos </a>
+                    <li> <a href="{{ route('products.index') }}" class="text-text-primary font-semibold text-base">Produtos
+                        </a>
                     </li>
                 </ol>
             </nav>
@@ -104,9 +105,10 @@
                                     </div>
 
                                     <!-- Product Image -->
-                                    <a href="{{ route('products.details', ['slug' => $product->slug]) }}" class="relative">
-                                        <img src="{{ $product->image }}" alt="{{ $product->name }}"
-                                            class="w-full h-[200px] object-cover transition-transform duration-500 group-hover:scale-110">
+                                    <a href="{{ route('products.details', ['slug' => $product->slug]) }}">
+                                        <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset('storage/' . $product->image) }}"
+                                            alt="{{ $product->name }}"
+                                            class="w-full h-[210px] object-cover cursor-pointer">
                                     </a>
 
                                     <!-- NOVO Badge -->

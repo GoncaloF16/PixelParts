@@ -42,6 +42,9 @@ Route::middleware(['admin']) -> group(function() {
     Route::delete('/backoffice/users/{id}', [BackofficeController::class, 'deleteUser'])->name('backoffice.users.delete');
 
     Route::get('/backoffice/stock', [BackofficeController::class, 'stock'])->name('backoffice.stock');
+    Route::post('/backoffice/stock', [BackofficeController::class, 'storeProduct'])->name('backoffice.stock.store');
+    Route::put('/backoffice/stock/{produto}', [BackofficeController::class, 'updateProduct'])->name('backoffice.stock.update');
+    Route::delete('/backoffice/stock/{produto}', [BackofficeController::class, 'destroyProduct'])->name('backoffice.stock.delete');
 
     Route::get('/backoffice/stock/pdf', [BackofficeController::class, 'exportStockPdf'])->name('backoffice.stock.pdf');
 

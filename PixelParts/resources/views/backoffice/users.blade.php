@@ -66,16 +66,43 @@
                         </td>
 
 
-                        <!-- Ações -->
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="edit-btn text-blue-600 hover:text-blue-900 mr-2" data-id="{{ $user->id }}"
-                                data-name="{{ $user->name }}" data-email="{{ $user->email }}">
-                                Editar
-                            </button>
-                            <button class="delete-btn text-red-600 hover:text-red-900" data-id="{{ $user->id }}">
-                                Excluir
-                            </button>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium relative overflow-visible">
+                            <div class="relative inline-block text-left">
+                                <button type="button"
+                                    class="inline-flex items-center gap-2 rounded-md bg-gray-600 text-white px-4 py-2 text-sm font-medium hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                    data-dropdown-trigger>
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51h.09a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.09a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                                    </svg>
+
+                                    Ações
+                                </button>
+
+                                <div class="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 hidden"
+                                    data-dropdown-menu>
+                                    <div class="py-1">
+                                        <button
+                                            class="edit-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                            data-id="{{ $user->id }}" data-name="{{ $user->name }}"
+                                            data-email="{{ $user->email }}">
+                                            <i data-lucide="edit" class="w-4 h-4 text-gray-500"></i>
+                                            Editar
+                                        </button>
+                                        <button
+                                            class="delete-btn w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
+                                            data-id="{{ $user->id }}">
+                                            <i data-lucide="trash-2" class="w-4 h-4 text-red-500"></i>
+                                            Excluir
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
+
                     </tr>
                 @endforeach
             </tbody>
@@ -107,7 +134,7 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">Selecionar...</option>
                         <option value="admin">Administrador</option>
-                        <option value="customer">Cliente</option>
+                        <option value="customer">Utilizador</option>
                     </select>
                 </div>
                 <div>
@@ -125,10 +152,5 @@
             </form>
         </div>
     </div>
-
-@endsection
-
-@section('scripts')
-    <script src="{{ asset('js/backofficeUsers.js') }}"></script>
 
 @endsection

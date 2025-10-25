@@ -20,7 +20,13 @@ class ProdsController extends Controller
         });
     }
 
-    // Paginando
+    // Filtrar por pesquisa de texto (nome do produto)
+    if ($request->has('q') && $request->q) {
+        $search = $request->q;
+        $query->where('name', 'like', "%{$search}%");
+    }
+
+    // Paginação
     $products = $query->paginate(9)->withQueryString();
 
     $brands = Product::select('brand')->distinct()->pluck('brand');
@@ -28,7 +34,7 @@ class ProdsController extends Controller
 
     return view('products.products', compact('products', 'categories', 'brands'));
 }
-
+    
 
     public function show($slug)
     {
