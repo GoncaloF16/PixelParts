@@ -122,9 +122,12 @@
                                     <!-- Product Info -->
                                     <div class="flex flex-col justify-between flex-grow p-4 min-h-0">
                                         <div class="flex-shrink-0">
+
                                             <h3 class="text-lg font-bold text-gray-200 mb-2 line-clamp-2">
-                                                {{ $product->name }}</h3>
-                                            <p class="text-sm text-gray-400 leading-relaxed line-clamp-4">
+                                                {{ $product->name }}
+                                            </h3>
+
+                                            <p class="text-sm text-gray-400 leading-relaxed line-clamp-2">
                                                 {{ $product->description ?? 'Descrição não disponível' }}
                                             </p>
                                         </div>

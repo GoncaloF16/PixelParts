@@ -62,7 +62,11 @@
             <tbody id="products-table" class="bg-white divide-y divide-gray-200">
                 @foreach ($products as $product)
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $product->name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 max-w-xs truncate"
+                            title="{{ $product->name }}">
+                            {{ $product->name }}
+                        </td>
+
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $product->stock }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -77,12 +81,42 @@
                                     Stock</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 text-right text-sm font-medium">
-                            <div class="flex justify-end gap-2 min-w-[120px]">
-                                <button class="edit-btn text-blue-600 hover:text-blue-900 mr-2">Editar</button>
-                                <button class="delete-btn text-red-600 hover:text-red-900">Excluir</button>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium relative overflow-visible">
+                            <div class="relative inline-block text-left">
+                                <button type="button"
+                                    class="inline-flex items-center gap-2 rounded-md bg-gray-600 text-white px-4 py-2 text-sm font-medium hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                    data-dropdown-trigger>
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51h.09a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.09a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                                    </svg>
+                                    Ações
+                                </button>
+
+                                <div class="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 hidden z-50"
+                                    data-dropdown-menu>
+                                    <div class="py-1">
+                                        <button
+                                            class="edit-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                            data-id="{{ $product->id }}" data-name="{{ $product->name }}"
+                                            data-stock="{{ $product->stock }}">
+                                            <i data-lucide="edit" class="w-4 h-4 text-gray-500"></i>
+                                            Editar
+                                        </button>
+                                        <button
+                                            class="delete-btn w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
+                                            data-id="{{ $product->id }}">
+                                            <i data-lucide="trash-2" class="w-4 h-4 text-red-500"></i>
+                                            Excluir
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </td>
+
                     </tr>
                 @endforeach
             </tbody>
