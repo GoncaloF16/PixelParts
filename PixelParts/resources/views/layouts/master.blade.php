@@ -14,7 +14,7 @@
 
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('css/n8n-chat-widget.css') }}">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
@@ -43,16 +43,6 @@
 </head>
 
 <body class="min-h-screen bg-background pt-[150px] md:pt-0 text-gray-200">
-
-    <!-- Floating Cart Button -->
-    <a href="{{ route('cart.index') }}"
-        class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-brand-green to-brand-blue rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 z-50">
-        <i data-lucide="shopping-cart" class="w-7 h-7 text-white"></i>
-        <span id="cart-count"
-            class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-            {{ count(session('cart', [])) }}
-        </span>
-    </a>
 
     <!-- Header -->
     <header id="header"
@@ -121,6 +111,18 @@
 
             <!-- Desktop User / Auth -->
             <nav class="hidden md:flex items-center space-x-4 md:space-x-8 mt-2 md:mt-0 pr-2">
+                <!-- Ícone do Carrinho (ao lado do utilizador) -->
+                <a href="{{ route('cart.index') }}"
+                    class="relative flex items-center justify-center hover:text-brand-green transition">
+                    <i data-lucide="shopping-cart" class="w-6 h-6 text-gray-200"></i>
+                    @if (count(session('cart', [])) > 0)
+                        <span id="cart-count"
+                            class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px]">
+                            {{ count(session('cart', [])) }}
+                        </span>
+                    @endif
+                </a>
+
                 @guest
                     <a href="{{ route('login') }}"
                         class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded-md font-semibold text-sm flex items-center gap-2 transition-transform duration-300">
@@ -312,6 +314,12 @@
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/products.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
+    <script src="{{ asset('js/n8n-chat-widget.js') }}"></script>
+    <!-- Chatbot do n8n -->
+    <div id="n8n-chat" data-endpoint="http://localhost:5678/webhook/29b79101-e2b3-4556-9ebe-2c922853687f" data-title="Assistente PixelParts"
+        data-welcome="Olá 👋 Sou o assistente PixelParts! Em que posso ajudar?" data-color="#10B981">
+    </div>
+
 
 </body>
 
