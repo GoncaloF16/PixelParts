@@ -135,50 +135,68 @@ document.addEventListener('DOMContentLoaded', function () {
     // Adicionar ao carrinho (AJAX)
     const forms = document.querySelectorAll('.add-to-cart-form');
     forms.forEach(form => {
-        form.addEventListener('submit', e => {
+        form.addEventListener('submit', async e => {
             e.preventDefault();
             const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn ? submitBtn.innerHTML : '';
+            const originalWidth = submitBtn ? submitBtn.offsetWidth : null;
 
-            fetch(window.routes.cartAdd, {
-                method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                body: formData
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        const cartCount = document.querySelector('#cart-count');
-                        if (cartCount) cartCount.textContent = data.cart_count;
+            if (submitBtn) {
+                // Preserva a largura original
+                if (originalWidth) {
+                    submitBtn.style.width = `${originalWidth}px`;
+                }
+                submitBtn.innerHTML = '<i data-lucide="loader-2" class="animate-spin w-5 h-5"></i>';
+                submitBtn.disabled = true;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
 
-                        const template = document.querySelector('#toast-template > div');
-                        if (!template) return;
-                        const toast = template.cloneNode(true);
-                        toast.querySelector('.toast-message').textContent = 'Produto adicionado ao carrinho!';
-                        document.body.appendChild(toast);
-                        if (typeof lucide !== 'undefined') lucide.createIcons();
-                        setTimeout(() => {
-                            toast.style.opacity = '1';
-                            toast.style.transform = 'translateY(0)';
-                        }, 10);
-                        setTimeout(() => closeToast(toast), 3000);
-                    } else {
-                        console.error('Erro ao adicionar o produto');
+            try {
+                const response = await fetch(window.routes.cartAdd, {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Atualiza contador do carrinho
+                    if (typeof window.updateCartCount === 'function') {
+                        window.updateCartCount(data.cart_count);
                     }
-                })
-                .catch(err => console.error('Erro AJAX:', err));
+
+                    // Mostra toast de sucesso
+                    if (typeof window.showToast === 'function') {
+                        window.showToast(data.message || 'Produto adicionado ao carrinho!');
+                    }
+                } else {
+                    if (typeof window.showToast === 'function') {
+                        window.showToast(data.message || 'Erro ao adicionar o produto', true);
+                    }
+                }
+            } catch (err) {
+                console.error('Erro AJAX:', err);
+                if (typeof window.showToast === 'function') {
+                    window.showToast('Erro de ligação ao servidor', true);
+                }
+            } finally {
+                if (submitBtn) {
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        // Remove a largura fixa
+                        submitBtn.style.width = '';
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                    }, 1000);
+                }
+            }
         });
     });
 
-    function closeToast(buttonOrToast) {
-        const toast = buttonOrToast.tagName === 'DIV' ? buttonOrToast : buttonOrToast.parentElement;
-        if (!toast) return;
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(16px)';
-        setTimeout(() => toast.remove(), 300);
-    }
-
-// Contador de quantidade
-const quantityDisplay = document.getElementById('quantity-display');
+    // Contador de quantidade
+    const quantityDisplay = document.getElementById('quantity-display');
 const quantityInput = document.getElementById('quantity-input');
 let quantity = 1;
 const maxStock = parseInt(quantityDisplay.dataset.stock || 99);

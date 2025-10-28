@@ -7,12 +7,12 @@ use App\Models\Product;
 
 class CartController extends Controller
 {
-    // Mostrar carrinho
+
 public function index()
 {
     $cart = session()->get('cart', []);
 
-    $ivaRate = 0.23;  
+    $ivaRate = 0.23;
     $cartItems = [];
     $total = [
         'totalSemIva' => 0,
@@ -58,22 +58,22 @@ public function index()
 {
     $request->validate([
         'product_id' => 'required|exists:products,id',
-        'quantity' => 'sometimes|integer|min:1|max:999',  // 'sometimes' significa que é opcional
+        'quantity' => 'sometimes|integer|min:1|max:999',
     ]);
 
     $product = Product::findOrFail($request->product_id);
-    $quantityFromRequest = (int) $request->input('quantity', 1);  // Usa o valor do request, ou 1 como padrão
+    $quantityFromRequest = (int) $request->input('quantity', 1);
 
     $cart = session()->get('cart', []);
 
     if (isset($cart[$product->id])) {
-        $cart[$product->id]['quantity'] += $quantityFromRequest;  // Adiciona à quantidade existente
+        $cart[$product->id]['quantity'] += $quantityFromRequest;
     } else {
         $cart[$product->id] = [
             'product_id' => $product->id,
             'name' => $product->name,
             'price' => $product->price,
-            'quantity' => $quantityFromRequest,  // Usa o valor do request ou o padrão (1)
+            'quantity' => $quantityFromRequest,
             'image' => $product->image
         ];
     }
@@ -137,7 +137,8 @@ public function remove($id)
     return response()->json([
         'success' => true,
         'cartItems' => $cartItemsData,
-        'total' => $total
+        'total' => $total,
+        'cart_count' => array_sum(array_column($cart, 'quantity'))
     ]);
 }
 

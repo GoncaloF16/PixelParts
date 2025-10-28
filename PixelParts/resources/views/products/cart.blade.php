@@ -39,7 +39,8 @@
                             <div class="lg:col-span-2 space-y-4 overflow-y-auto max-h-[700px]">
                                 @foreach ($cartItems as $item)
                                     <div id="cart-item-{{ $item['product_id'] }}"
-                                        class="bg-gray-900 rounded-lg shadow p-4 flex justify-between items-center text-white cart-item break-words">
+                                        class="bg-gray-900 rounded-lg shadow p-4 flex justify-between items-center text-white cart-item break-words transition-all duration-300"
+                                        style="opacity: 1; transform: translateX(0);">
                                         <div>
                                             <span class="font-semibold text-lg block">{{ $item['name'] }}</span>
                                             <span class="text-sm opacity-80">Quantidade:
@@ -61,12 +62,14 @@
                                 class="lg:col-span-1 bg-gray-900 rounded-lg shadow-lg p-6 text-white flex flex-col justify-between sticky top-20">
                                 <div>
                                     <h3 class="text-xl font-bold mb-4">Resumo Detalhado</h3>
-                                    <div class="space-y-3 mb-6">
+                                    <div class="space-y-3 mb-6" id="cart-summary-items">
                                         @foreach ($cartItems as $item)
-                                            <div class="border-b border-gray-700 pb-2">
+                                            <div class="border-b border-gray-700 pb-2 cart-summary-item transition-all duration-300"
+                                                data-id="{{ $item['product_id'] }}"
+                                                style="opacity: 1; transform: translateX(0);">
                                                 <div class="flex justify-between text-sm">
-                                                    <span class="font-semibold break-words">{{ $item['name'] }} ×
-                                                        {{ $item['quantity'] }}</span>
+                                                    <span class="font-semibold break-words item-name">{{ $item['name'] }} ×
+                                                        <span class="item-summary-quantity">{{ $item['quantity'] }}</span></span>
                                                     <span
                                                         class="font-semibold subtotal-com-iva">€{{ number_format($item['subtotalComIva'], 2, ',', '.') }}</span>
                                                 </div>

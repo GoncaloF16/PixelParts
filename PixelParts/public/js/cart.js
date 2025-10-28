@@ -2,48 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
     const csrfToken = csrfTokenElement ? csrfTokenElement.content : "";
 
-    function showToast(message, success = true) {
-        console.log("Attempting to show toast with message:", message);
-        const toastTemplate = document.getElementById("toast-template");
-        if (!toastTemplate) {
-            console.error("Toast template not found!");
-            return;
-        }
-
-        let toast = toastTemplate.querySelector("#toast");
-        if (!toast) {
-            console.error("Toast element not found inside template!");
-            return;
-        }
-
-        toast = toast.cloneNode(true);
-        document.body.appendChild(toast);
-        toast.id = "dynamic-toast";
-        const toastMessage = toast.querySelector(".toast-message");
-        toastMessage.textContent = message;
-        toast.classList.remove("hidden", "bg-red-500", "bg-green-500");
-        toast.classList.add(success ? "bg-green-500" : "bg-red-500");
-        toast.style.opacity = "1";
-        toast.style.transform = "translateY(0)";
-        toast.style.zIndex = "9999";
-        toast.classList.add("animate-fade-in-up");
-
-        setTimeout(() => {
-            toast.style.opacity = "0";
-            toast.style.transform = "translateY(1rem)";
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-
-    function closeToast(element) {
-        const toast = element.closest("#toast");
-        if (toast) {
-            toast.style.opacity = "0";
-            toast.style.transform = "translateY(1rem)";
-            setTimeout(() => toast.classList.add("hidden"), 300);
-        }
-    }
-
     function updateTotals(cartData) {
         document.getElementById("total-sem-iva").textContent =
             "€" + cartData.totalSemIva.toFixed(2).replace(".", ",");
@@ -59,11 +17,30 @@ document.addEventListener("DOMContentLoaded", function () {
         const cartContent = document.querySelector(".cart-content");
 
         if (cartItems.length === 0) {
-            if (cartEmpty) cartEmpty.style.display = "block";
-            if (cartContent) cartContent.style.display = "none";
+            // Mostra mensagem de carrinho vazio
+            if (cartEmpty) {
+                cartEmpty.style.display = "block";
+                cartEmpty.style.opacity = "0";
+                setTimeout(() => {
+                    cartEmpty.style.transition = "opacity 0.5s";
+                    cartEmpty.style.opacity = "1";
+                }, 10);
+            }
+
+            // Esconde todo o conteúdo do carrinho (incluindo resumo)
+            if (cartContent) {
+                cartContent.style.transition = "opacity 0.3s";
+                cartContent.style.opacity = "0";
+                setTimeout(() => {
+                    cartContent.style.display = "none";
+                }, 300);
+            }
         } else {
             if (cartEmpty) cartEmpty.style.display = "none";
-            if (cartContent) cartContent.style.display = "block";
+            if (cartContent) {
+                cartContent.style.display = "block";
+                cartContent.style.opacity = "1";
+            }
         }
     }
 
@@ -84,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (data.success) {
                 if (data.cartItems && data.cartItems[productId]) {
+                    // Atualiza a quantidade no item principal
                     const quantityElement = document.querySelector(
                         `#cart-item-${productId} .item-quantity`
                     );
@@ -91,10 +69,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         quantityElement.textContent =
                             data.cartItems[productId].quantity;
 
+                    // Atualiza o item no resumo detalhado
                     const summaryItem = document.querySelector(
                         `.cart-summary-item[data-id="${productId}"]`
                     );
                     if (summaryItem) {
+                        // Atualiza quantidade no resumo
+                        const summaryQuantity = summaryItem.querySelector(".item-summary-quantity");
+                        if (summaryQuantity) {
+                            summaryQuantity.textContent = data.cartItems[productId].quantity;
+                        }
+
+                        // Atualiza subtotal com IVA
                         summaryItem.querySelector(
                             ".subtotal-com-iva"
                         ).textContent =
@@ -102,6 +88,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             data.cartItems[productId].subtotalComIva
                                 .toFixed(2)
                                 .replace(".", ",");
+
+                        // Atualiza subtotal sem IVA
                         summaryItem.querySelector(
                             ".subtotal-sem-iva"
                         ).textContent =
@@ -109,6 +97,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             data.cartItems[productId].subtotalSemIva
                                 .toFixed(2)
                                 .replace(".", ",");
+
+                        // Atualiza valor do IVA
                         summaryItem.querySelector(".subtotal-iva").textContent =
                             "€" +
                             data.cartItems[productId].subtotalIva
@@ -116,26 +106,57 @@ document.addEventListener("DOMContentLoaded", function () {
                                 .replace(".", ",");
                     }
                 } else {
+                    // Remove o item da lista principal
                     const itemEl = document.getElementById(
                         `cart-item-${productId}`
                     );
-                    if (itemEl) itemEl.remove();
+                    if (itemEl) {
+                        itemEl.style.opacity = "0";
+                        itemEl.style.transform = "translateX(-20px)";
+                        setTimeout(() => {
+                            itemEl.remove();
+                            // Verifica se o carrinho ficou vazio após remover o elemento
+                            checkEmptyCart();
+                        }, 300);
+                    }
 
+                    // Remove o item do resumo detalhado
                     const summaryItem = document.querySelector(
                         `.cart-summary-item[data-id="${productId}"]`
                     );
-                    if (summaryItem) summaryItem.remove();
+                    if (summaryItem) {
+                        summaryItem.style.opacity = "0";
+                        summaryItem.style.transform = "translateX(20px)";
+                        setTimeout(() => summaryItem.remove(), 300);
+                    }
                 }
 
                 if (data.total) updateTotals(data.total);
-                showToast("Item removido com sucesso!", true);
-                checkEmptyCart();
+
+                // Atualiza contador do carrinho
+                if (data.cart_count !== undefined && typeof window.updateCartCount === 'function') {
+                    window.updateCartCount(data.cart_count);
+                }
+
+                // Mostra toast de sucesso
+                if (typeof window.showToast === 'function') {
+                    window.showToast("Item removido com sucesso!");
+                }
+
+                // Se ainda houver itens, verifica o estado do carrinho
+                if (data.cartItems && data.cartItems[productId]) {
+                    checkEmptyCart();
+                }
             } else {
-                showToast(data.message || "Erro ao remover o item", false);
+                if (typeof window.showToast === 'function') {
+                    window.showToast(data.message || "Erro ao remover o item", true);
+                }
             }
         } catch (error) {
             console.error("Erro AJAX:", error);
-            showToast("Ocorreu um erro ao remover o item", false);
+            if (typeof window.showToast === 'function') {
+                window.showToast("Ocorreu um erro ao remover o item", true);
+            }
         }
     }
 

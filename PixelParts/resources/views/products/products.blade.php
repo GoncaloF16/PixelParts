@@ -140,7 +140,7 @@
                                                 @csrf
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                 <button type="submit"
-                                                    class="bg-gradient-to-r bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold px-4 py-2 rounded-lg text-sm  transition-transform flex items-center gap-2">
+                                                    class="bg-gradient-to-r bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold px-4 py-2 rounded-lg text-sm transition-transform flex items-center gap-2 w-[130px] justify-center">
                                                     <i data-lucide="shopping-cart" class="w-4 h-4"></i> Adicionar
                                                 </button>
                                             </form>

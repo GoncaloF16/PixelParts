@@ -111,17 +111,20 @@
 
             <!-- Desktop User / Auth -->
             <nav class="hidden md:flex items-center space-x-4 md:space-x-8 mt-2 md:mt-0 pr-2">
-                <!-- Ícone do Carrinho (ao lado do utilizador) -->
+                <!-- Ícone do Carrinho -->
                 <a href="{{ route('cart.index') }}"
                     class="relative flex items-center justify-center hover:text-brand-green transition">
-                    <i data-lucide="shopping-cart" class="w-6 h-6 text-gray-200"></i>
-                    @if (count(session('cart', [])) > 0)
-                        <span id="cart-count"
-                            class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px]">
-                            {{ count(session('cart', [])) }}
-                        </span>
-                    @endif
+                    <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-200"></i>
+
+                    <span id="cart-count"
+                        class="absolute -top-1.5 -right-1.5 bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] {{ count(session('cart', [])) === 0 ? 'hidden' : '' }}">
+                        {{ count(session('cart', [])) }}
+                    </span>
                 </a>
+
+                <!-- Container global do Toast -->
+                <div id="toast-container" class="fixed bottom-5 left-5 z-[9999] space-y-2"></div>
+
 
                 @guest
                     <a href="{{ route('login') }}"
@@ -316,8 +319,10 @@
     <script src="{{ asset('js/cart.js') }}"></script>
     <script src="{{ asset('js/n8n-chat-widget.js') }}"></script>
     <!-- Chatbot do n8n -->
-    <div id="n8n-chat" data-endpoint="http://localhost:5678/webhook/29b79101-e2b3-4556-9ebe-2c922853687f" data-title="Assistente PixelParts"
-        data-welcome="Olá 👋 Sou o assistente PixelParts! Em que posso ajudar?" data-color="#10B981">
+    <div id="n8n-chat" data-endpoint="http://localhost:5678/webhook/29b79101-e2b3-4556-9ebe-2c922853687f"
+        data-title="Assistente PixelParts"
+        data-welcome="Olá 👋 Sou a Pixel, assistente virtual da loja PixelParts! Em que posso ajudar?"
+        data-color="#10B981">
     </div>
 
 

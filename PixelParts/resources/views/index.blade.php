@@ -82,7 +82,7 @@
 
                             <div class="p-4 flex flex-col flex-grow">
                                 <div class="flex-grow">
-                                    <h3 class="text-lg font-bold text-gray-200 mb-2">{{ $product->name }}</h3>
+                                    <h3 class="text-lg font-bold text-gray-200 mb-2 line-clamp-2">{{ $product->name }}</h3>
                                     <p class="text-sm text-gray-400 leading-relaxed line-clamp-3">
                                         {{ $product->description }}
                                     </p>
@@ -95,7 +95,7 @@
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <button type="submit"
-                                            class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-3 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition">
+                                            class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-3 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition w-[120px] justify-center" data-id="{{ $product->id }}">
                                             <i data-lucide="shopping-cart" class="w-4 h-4"></i> Adicionar
                                         </button>
                                     </form>
