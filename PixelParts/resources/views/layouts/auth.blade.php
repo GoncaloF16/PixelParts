@@ -118,16 +118,16 @@
         </div>
 
         <!-- Right Side - Auth Form -->
-        <div class="w-full lg:w-1/2 flex items-center justify-center p-6">
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6">
             <div class="w-full max-w-md">
                 <!-- Mobile Logo -->
-                <div class="lg:hidden flex items-center justify-center space-x-3 mb-8 transition-all duration-300 hover:scale-105">
-                    <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo" class="h-[50px] w-[70px]">
-                    <span class="text-3xl font-bold bg-gradient-to-r from-brand-green to-brand-blue bg-clip-text text-transparent">PixelParts</span>
+                <div class="lg:hidden flex items-center justify-center space-x-3 mb-6 sm:mb-8 transition-all duration-300 hover:scale-105">
+                    <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo" class="h-[40px] w-[60px] sm:h-[50px] sm:w-[70px]">
+                    <span class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-brand-green to-brand-blue bg-clip-text text-transparent">PixelParts</span>
                 </div>
 
                 <!-- Auth Form Container -->
-                <div class="bg-card p-8 rounded-xl border border-border shadow-2xl hover:shadow-3xl hover:bg-muted/50 transition-all duration-300">
+                <div class="bg-card p-4 sm:p-6 md:p-8 rounded-xl border border-border shadow-2xl hover:shadow-3xl hover:bg-muted/50 transition-all duration-300">
                     @yield('content')
                 </div>
 

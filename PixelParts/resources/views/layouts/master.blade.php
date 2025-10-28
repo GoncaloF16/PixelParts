@@ -180,17 +180,70 @@
         </div>
 
         <!-- Mobile Navigation -->
-        <nav id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-border">
+        <nav id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-border px-6">
             <div class="flex flex-col space-y-4 pt-4">
                 <h4 class="text-gray-200 font-medium mb-2">Categorias</h4>
                 @foreach ($categorias as $categoria)
                     <a href="{{ route('products.index', ['categoria' => Str::slug($categoria)]) }}"
                         class="block text-gray-400 hover:text-brand-green transition-colors duration-300 py-1">{{ $categoria }}</a>
                 @endforeach
-                <a href="{{ route('login') }}"
-                    class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded-md font-bold text-lg flex items-center gap-2 transition-transform duration-300">
-                    <i data-lucide="user" class="w-4 h-4"></i> Entrar
+
+                <!-- Divider -->
+                <div class="border-t border-gray-700 my-2"></div>
+
+                <!-- Carrinho -->
+                <a href="{{ route('cart.index') }}"
+                    class="flex items-center gap-3 text-gray-400 hover:text-brand-green transition-colors duration-300 py-1">
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                    <span>Carrinho</span>
+                    @if(count(session('cart', [])) > 0)
+                        <span class="bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs ml-auto">
+                            {{ count(session('cart', [])) }}
+                        </span>
+                    @endif
                 </a>
+
+                <!-- Auth Section -->
+                @guest
+                    <a href="{{ route('login') }}"
+                        class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded-md font-semibold text-sm flex items-center gap-2 transition-transform duration-300 mt-2">
+                        <i data-lucide="user" class="w-4 h-4"></i> Entrar
+                    </a>
+                @endguest
+
+                @auth
+                    <div class="mt-2">
+                        <div class="flex items-center gap-2 text-gray-200 mb-3 pb-2 border-b border-gray-700">
+                            <i data-lucide="user" class="w-4 h-4"></i>
+                            <span class="font-semibold">Olá, {{ Auth::user()->name }}</span>
+                        </div>
+
+                        <!-- User Links -->
+                        @if (Auth::user()->role === 'user')
+                            <a href="#"
+                                class="flex items-center gap-3 text-gray-400 hover:text-brand-green transition-colors duration-300 py-2">
+                                <i data-lucide="user" class="w-4 h-4"></i> Perfil
+                            </a>
+                        @endif
+
+                        <!-- Admin Link -->
+                        @if (Auth::user()->role === 'admin')
+                            <a href="{{ route('backoffice.index') }}"
+                                class="flex items-center gap-3 text-gray-400 hover:text-brand-green transition-colors duration-300 py-2">
+                                <i data-lucide="settings" class="w-4 h-4"></i> Backoffice
+                            </a>
+                        @endif
+
+                        <!-- Logout -->
+                        <form method="POST" action="{{ route('logout') }}" class="mt-2">
+                            @csrf
+                            <button type="submit"
+                                class="w-full flex items-center gap-3 text-gray-400 hover:text-red-500 transition-colors duration-300 py-2">
+                                <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                @endauth
             </div>
         </nav>
     </header>
