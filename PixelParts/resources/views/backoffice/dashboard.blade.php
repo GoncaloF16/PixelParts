@@ -103,23 +103,33 @@
             </div>
             <div class="p-6">
                 <div class="space-y-4">
-                    @foreach ($products as $product)
-                        @if ($product->stock < 10)
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="font-medium text-gray-800">{{ $product->name }}</p>
-                                    <p class="text-sm text-gray-500">{{ $product->category_name }}</p>
-                                </div>
-                                @if ($product->stock < 5)
-                                    <span class="text-red-600 font-semibold">{{ $product->stock }} unidades</span>
-                                @else
-                                    <span class="text-orange-600 font-semibold">{{ $product->stock }} unidades</span>
-                                @endif
+                    @forelse ($products as $product)
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium text-gray-800">{{ $product->name }}</p>
+                                <p class="text-sm text-gray-500">{{ $product->category_name }}</p>
                             </div>
-                        @endif
-                    @endforeach
+                            @if ($product->stock < 5)
+                                <span class="text-red-600 font-semibold">{{ $product->stock }} unidades</span>
+                            @else
+                                <span class="text-orange-600 font-semibold">{{ $product->stock }} unidades</span>
+                            @endif
+                        </div>
+                    @empty
+                        <div class="text-center py-8">
+                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <p class="text-gray-500">Nenhum produto com stock baixo</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
+            @if($products->hasPages())
+                <div class="px-6 pb-6">
+                    {{ $products->links() }}
+                </div>
+            @endif
         </div>
 </div>
 @endsection

@@ -189,4 +189,46 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     `;
     document.head.appendChild(style);
+
+    // Budget Form Handler
+    const budgetForm = document.getElementById('budget-form');
+    const budgetSubmitBtn = document.getElementById('budget-submit-btn');
+    const budgetSuccessMessage = document.getElementById('budget-success-message');
+    const budgetNewRequest = document.getElementById('budget-new-request');
+
+    if (budgetForm) {
+        budgetForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Simular loading
+            budgetSubmitBtn.disabled = true;
+            budgetSubmitBtn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Enviando...';
+            lucide.createIcons();
+
+            // Simular envio após 1.5 segundos
+            setTimeout(() => {
+                budgetForm.classList.add('hidden');
+                budgetSuccessMessage.classList.remove('hidden');
+                lucide.createIcons();
+
+                // Scroll suave para a mensagem
+                budgetSuccessMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1500);
+        });
+
+        // Botão de novo pedido
+        if (budgetNewRequest) {
+            budgetNewRequest.addEventListener('click', () => {
+                budgetForm.reset();
+                budgetForm.classList.remove('hidden');
+                budgetSuccessMessage.classList.add('hidden');
+                budgetSubmitBtn.disabled = false;
+                budgetSubmitBtn.innerHTML = '<i data-lucide="send" class="w-5 h-5"></i> Enviar Pedido de Orçamento';
+                lucide.createIcons();
+
+                // Scroll para o formulário
+                budgetForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
+    }
 });

@@ -100,9 +100,14 @@
                                     data-dropdown-menu>
                                     <div class="py-1">
                                         <button
+                                            class="view-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                            data-id="{{ $product->id }}">
+                                            <i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>
+                                            Visualizar
+                                        </button>
+                                        <button
                                             class="edit-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                                            data-id="{{ $product->id }}" data-name="{{ $product->name }}"
-                                            data-stock="{{ $product->stock }}">
+                                            data-id="{{ $product->id }}">
                                             <i data-lucide="edit" class="w-4 h-4 text-gray-500"></i>
                                             Editar
                                         </button>
@@ -123,77 +128,161 @@
         </table>
     </div>
 
-    <!-- Add/Edit Product Modal -->
-    <div id="product-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl mx-4">
-            <form id="product-form" class="p-6 space-y-4" enctype="multipart/form-data" method="POST">
-                @csrf
-                <input type="hidden" id="product-id" name="product_id">
-
-                <div class="p-6 border-b border-gray-200">
-                    <h3 id="product-modal-title" class="text-xl font-semibold text-gray-800">Adicionar Produto</h3>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="product-category" class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
-                        <select id="product-category" name="category_id" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Selecionar...</option>
-                            @foreach ($allCategories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="product-name" class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-                        <input type="text" id="product-name" name="name" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-
-                    <div>
-                        <label for="product-brand" class="block text-sm font-medium text-gray-700 mb-1">Marca</label>
-                        <input type="text" id="product-brand" name="brand"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-
-                    <div>
-                        <label for="product-description"
-                            class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
-                        <textarea id="product-description" name="description" rows="3"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                    </div>
-
-                    <div>
-                        <label for="product-price" class="block text-sm font-medium text-gray-700 mb-1">Preço</label>
-                        <input type="number" step="0.01" id="product-price" name="price" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-
-                    <div>
-                        <label for="product-stock" class="block text-sm font-medium text-gray-700 mb-1">Stock</label>
-                        <input type="number" id="product-stock" name="stock" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-
-                    <div>
-                        <label for="product-image" class="block text-sm font-medium text-gray-700 mb-1">Imagem</label>
-                        <input type="file" id="product-image" name="image" accept="image/*"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-
-                <div class="flex justify-end gap-2 pt-6 border-t border-gray-200">
-                    <button type="button" id="cancel-product-btn"
-                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">Cancelar</button>
-                    <button type="submit"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Guardar</button>
-                </div>
-            </form>
+    <!-- Paginação -->
+    @if($products->hasPages())
+        <div class="mt-6">
+            {{ $products->appends(request()->query())->links() }}
         </div>
-    </div>
+    @endif
 
+    <!-- Add/Edit/View Product Modal -->
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden overflow-y-auto" style="display: none;">
+        <div class="flex items-center justify-center min-h-screen p-4 py-8">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl mx-auto my-8">
+                <form id="product-form" class="p-6 space-y-4" enctype="multipart/form-data" method="POST">
+                    @csrf
+                    <input type="hidden" id="product-id" name="product_id">
+                    <input type="hidden" id="modal-mode" value="add">
+
+                    <!-- Header -->
+                    <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+                        <h3 id="product-modal-title" class="text-xl font-semibold text-gray-800">Adicionar Produto</h3>
+                        <div class="flex gap-2">
+                            <span id="page-indicator" class="text-sm text-gray-500">Página 1 de 2</span>
+                        </div>
+                    </div>
+
+                    <!-- Página 1: Dados Básicos -->
+                    <div id="page-1" class="page-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="product-category" class="block text-sm font-medium text-gray-700 mb-1">Categoria <span class="text-red-500">*</span></label>
+                                <select id="product-category" name="category_id" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Selecionar...</option>
+                                    @foreach ($allCategories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="product-name" class="block text-sm font-medium text-gray-700 mb-1">Nome <span class="text-red-500">*</span></label>
+                                <input type="text" id="product-name" name="name" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+
+                            <div>
+                                <label for="product-brand" class="block text-sm font-medium text-gray-700 mb-1">Marca</label>
+                                <input type="text" id="product-brand" name="brand"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+
+                            <div>
+                                <label for="product-price" class="block text-sm font-medium text-gray-700 mb-1">Preço <span class="text-red-500">*</span></label>
+                                <input type="number" step="0.01" id="product-price" name="price" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+
+                            <div>
+                                <label for="product-stock" class="block text-sm font-medium text-gray-700 mb-1">Stock <span class="text-red-500">*</span></label>
+                                <input type="number" id="product-stock" name="stock" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+
+                            <div>
+                                <label for="product-image" class="block text-sm font-medium text-gray-700 mb-1">Imagem</label>
+                                <input type="file" id="product-image" name="image" accept="image/*"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <div id="current-image-preview" class="mt-2 hidden">
+                                    <img id="current-image" src="" alt="Imagem atual" class="h-20 w-20 object-cover rounded">
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label for="product-description" class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                                <textarea id="product-description" name="description" rows="3"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Página 2: Especificações, Características e Compatibilidade -->
+                    <div id="page-2" class="page-content hidden">
+                        <div class="space-y-6">
+                            <!-- Especificações -->
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <label class="block text-sm font-medium text-gray-700">Especificações</label>
+                                    <button type="button" id="add-specification-btn"
+                                        class="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                                        <i data-lucide="plus" class="w-4 h-4"></i>
+                                        Adicionar
+                                    </button>
+                                </div>
+                                <div id="specifications-container" class="space-y-2">
+                                    <!-- Dinâmico via JS -->
+                                </div>
+                            </div>
+
+                            <!-- Características -->
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <label class="block text-sm font-medium text-gray-700">Características</label>
+                                    <button type="button" id="add-feature-btn"
+                                        class="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                                        <i data-lucide="plus" class="w-4 h-4"></i>
+                                        Adicionar
+                                    </button>
+                                </div>
+                                <div id="features-container" class="space-y-2">
+                                    <!-- Dinâmico via JS -->
+                                </div>
+                            </div>
+
+                            <!-- Compatibilidade -->
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <label class="block text-sm font-medium text-gray-700">Compatibilidade</label>
+                                    <button type="button" id="add-compatibility-btn"
+                                        class="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                                        <i data-lucide="plus" class="w-4 h-4"></i>
+                                        Adicionar
+                                    </button>
+                                </div>
+                                <div id="compatibility-container" class="space-y-2">
+                                    <!-- Dinâmico via JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer com navegação -->
+                    <div class="flex justify-between items-center gap-2 pt-6 border-t border-gray-200">
+                        <div>
+                            <button type="button" id="prev-page-btn"
+                                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition hidden">
+                                ← Anterior
+                            </button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="button" id="cancel-product-btn"
+                                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                                Cancelar
+                            </button>
+                            <button type="button" id="next-page-btn"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                Próximo →
+                            </button>
+                            <button type="submit" id="submit-product-btn"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition hidden">
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
 @endsection

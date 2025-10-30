@@ -61,20 +61,10 @@
                     </button>
                     <div id="menu-dropdown"
                         class="hidden absolute top-full left-0 mt-2 bg-gray-900 rounded-xl shadow-xl w-56 p-2">
-                        @php
-                            $categorias = [
-                                'Processadores',
-                                'Placas Gráficas',
-                                'Motherboards',
-                                'Memória RAM',
-                                'Armazenamento',
-                                'Portáteis',
-                            ];
-                        @endphp
                         @foreach ($categorias as $categoria)
-                            <a href="{{ route('products.index', ['categoria' => Str::slug($categoria)]) }}"
+                            <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
                                 class="block px-4 py-2 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-brand-green transition">
-                                {{ $categoria }}
+                                {{ $categoria->name }}
                             </a>
                         @endforeach
                     </div>
@@ -111,16 +101,6 @@
 
             <!-- Desktop User / Auth -->
             <nav class="hidden md:flex items-center space-x-4 md:space-x-8 mt-2 md:mt-0 pr-2">
-                <!-- Ícone do Carrinho -->
-                <a href="{{ route('cart.index') }}"
-                    class="relative flex items-center justify-center hover:text-brand-green transition">
-                    <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-200"></i>
-
-                    <span id="cart-count"
-                        class="absolute -top-1.5 -right-1.5 bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] {{ count(session('cart', [])) === 0 ? 'hidden' : '' }}">
-                        {{ count(session('cart', [])) }}
-                    </span>
-                </a>
 
                 <!-- Container global do Toast -->
                 <div id="toast-container" class="fixed bottom-5 left-5 z-[9999] space-y-2"></div>
@@ -176,6 +156,17 @@
                     </div>
                 @endauth
 
+                <!-- Ícone do Carrinho -->
+                <a href="{{ route('cart.index') }}"
+                    class="relative flex items-center justify-center hover:text-brand-green transition">
+                    <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-200"></i>
+
+                    <span id="cart-count"
+                        class="absolute -top-1.5 -right-1.5 bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] {{ count(session('cart', [])) === 0 ? 'hidden' : '' }}">
+                        {{ count(session('cart', [])) }}
+                    </span>
+                </a>
+
             </nav>
         </div>
 
@@ -184,8 +175,8 @@
             <div class="flex flex-col space-y-4 pt-4">
                 <h4 class="text-gray-200 font-medium mb-2">Categorias</h4>
                 @foreach ($categorias as $categoria)
-                    <a href="{{ route('products.index', ['categoria' => Str::slug($categoria)]) }}"
-                        class="block text-gray-400 hover:text-brand-green transition-colors duration-300 py-1">{{ $categoria }}</a>
+                    <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
+                        class="block text-gray-400 hover:text-brand-green transition-colors duration-300 py-1">{{ $categoria->name }}</a>
                 @endforeach
 
                 <!-- Divider -->
@@ -196,8 +187,9 @@
                     class="flex items-center gap-3 text-gray-400 hover:text-brand-green transition-colors duration-300 py-1">
                     <i data-lucide="shopping-cart" class="w-5 h-5"></i>
                     <span>Carrinho</span>
-                    @if(count(session('cart', [])) > 0)
-                        <span class="bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs ml-auto">
+                    @if (count(session('cart', [])) > 0)
+                        <span
+                            class="bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs ml-auto">
                             {{ count(session('cart', [])) }}
                         </span>
                     @endif
@@ -309,21 +301,14 @@
                 <div>
                     <h4 class="text-lg font-bold text-text-primary mb-4">Categorias</h4>
                     <ul class="space-y-3">
-                        <li><a href="#"
-                                class="text-text-secondary hover:text-brand-green transition-colors duration-300">Placas
-                                Gráficas</a></li>
-                        <li><a href="#"
-                                class="text-text-secondary hover:text-brand-green transition-colors duration-300">Processadores</a>
-                        </li>
-                        <li><a href="#"
-                                class="text-text-secondary hover:text-brand-green transition-colors duration-300">Memórias</a>
-                        </li>
-                        <li><a href="#"
-                                class="text-text-secondary hover:text-brand-green transition-colors duration-300">Armazenamento</a>
-                        </li>
-                        <li><a href="#"
-                                class="text-text-secondary hover:text-brand-green transition-colors duration-300">Motherboards</a>
-                        </li>
+                        @foreach ($categorias->take(5) as $categoria)
+                            <li>
+                                <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
+                                    class="text-text-secondary hover:text-brand-green transition-colors duration-300">
+                                    {{ $categoria->name }}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 

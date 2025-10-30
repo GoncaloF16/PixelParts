@@ -10,6 +10,73 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputPassword = document.getElementById("user-password");
     const cancelBtn = document.getElementById("cancel-user-btn");
     const tbody = document.getElementById("users-table");
+    const inputMode = document.getElementById("user-mode");
+    const submitBtn = userForm.querySelector('button[type="submit"]');
+    const searchInput = document.getElementById("search-users");
+    const roleFilter = document.getElementById("role-filter");
+
+    /* ------------------ FILTROS ------------------ */
+    function applyFilters() {
+        const search = searchInput.value;
+        const role = roleFilter.value;
+
+        const url = new URL(window.location.href);
+        url.searchParams.set('search', search);
+        url.searchParams.set('role', role);
+
+        if (!search) url.searchParams.delete('search');
+        if (!role) url.searchParams.delete('role');
+
+        window.location.href = url.toString();
+    }
+
+    // Pesquisa ao digitar (debounce)
+    let searchTimeout;
+    searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(applyFilters, 500);
+    });
+
+    // Filtro de role
+    roleFilter.addEventListener('change', applyFilters);
+
+    // Carregar valores dos filtros da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('search')) {
+        searchInput.value = urlParams.get('search');
+    }
+    if (urlParams.has('role')) {
+        roleFilter.value = urlParams.get('role');
+    }
+
+    /* ------------------ HELPERS ------------------ */
+    function setFormMode(mode) {
+        inputMode.value = mode;
+
+        const isView = mode === 'view';
+
+        // Disable/enable inputs
+        inputName.readOnly = isView;
+        inputEmail.readOnly = isView;
+        inputRole.disabled = isView;
+        inputPassword.readOnly = isView;
+
+        // Add/remove visual feedback
+        [inputName, inputEmail, inputRole, inputPassword].forEach(input => {
+            if (isView) {
+                input.classList.add('bg-gray-100', 'cursor-not-allowed');
+            } else {
+                input.classList.remove('bg-gray-100', 'cursor-not-allowed');
+            }
+        });
+
+        // Show/hide submit button
+        if (isView) {
+            submitBtn.classList.add('hidden');
+        } else {
+            submitBtn.classList.remove('hidden');
+        }
+    }
 
     /* ------------------ HELPERS ------------------ */
     function measureHiddenElement(el) {
@@ -43,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ------------------ MODAL (ADD / EDIT) ------------------ */
     document.getElementById("add-user-btn").addEventListener("click", () => {
+        setFormMode('add');
         modalTitle.textContent = "Adicionar Utilizador";
         inputId.value = "";
         inputName.value = "";
@@ -53,13 +121,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     tbody.addEventListener("click", (e) => {
+        const viewBtn = e.target.closest(".view-btn");
+        if (viewBtn) {
+            setFormMode('view');
+            modalTitle.textContent = "Visualizar Utilizador";
+            inputId.value = viewBtn.dataset.id || "";
+            inputName.value = viewBtn.dataset.name || "";
+            inputEmail.value = viewBtn.dataset.email || "";
+            inputRole.value = viewBtn.dataset.role || "user";
+            inputPassword.value = "********"; // Placeholder for view mode
+            modal.classList.remove("hidden");
+            return;
+        }
+
         const editBtn = e.target.closest(".edit-btn");
         if (editBtn) {
+            setFormMode('edit');
             modalTitle.textContent = "Editar Utilizador";
             inputId.value = editBtn.dataset.id || "";
             inputName.value = editBtn.dataset.name || "";
             inputEmail.value = editBtn.dataset.email || "";
-            inputRole.value = editBtn.dataset.role || "customer";
+            inputRole.value = editBtn.dataset.role || "user";
             inputPassword.value = "";
             modal.classList.remove("hidden");
         }

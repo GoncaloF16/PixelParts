@@ -8,12 +8,19 @@
         <div class="flex flex-col sm:flex-row gap-4">
             <input type="text" id="search-users" placeholder="Pesquisar utilizadores..."
                 class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64">
-            <select id="role-filter"
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todos os Tipos</option>
-                <option value="admin">Administrador</option>
-                <option value="customer">Utilizador</option>
-            </select>
+            <div class="relative">
+                <select id="role-filter"
+                    class="appearance-none px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white cursor-pointer hover:border-gray-400 transition min-w-[180px]">
+                    <option value="">Todos os Tipos</option>
+                    <option value="admin">Administrador</option>
+                    <option value="user">Utilizador</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
         </div>
         <button id="add-user-btn"
             class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
@@ -38,7 +45,7 @@
                 </tr>
             </thead>
             <tbody id="users-table" class="bg-white divide-y divide-gray-200">
-                @foreach ($users as $user)
+                @forelse ($users as $user)
                     <tr class="hover:bg-gray-50">
                         <!-- Nome -->
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -86,9 +93,16 @@
                                     data-dropdown-menu>
                                     <div class="py-1">
                                         <button
+                                            class="view-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                            data-id="{{ $user->id }}" data-name="{{ $user->name }}"
+                                            data-email="{{ $user->email }}" data-role="{{ $user->role }}">
+                                            <i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>
+                                            Visualizar
+                                        </button>
+                                        <button
                                             class="edit-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
                                             data-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                            data-email="{{ $user->email }}">
+                                            data-email="{{ $user->email }}" data-role="{{ $user->role }}">
                                             <i data-lucide="edit" class="w-4 h-4 text-gray-500"></i>
                                             Editar
                                         </button>
@@ -104,9 +118,26 @@
                         </td>
 
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                            <div class="flex flex-col items-center gap-2">
+                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                                </svg>
+                                <p class="text-lg font-medium">Nenhum utilizador encontrado</p>
+                                <p class="text-sm">Tente ajustar os filtros de pesquisa</p>
+                            </div>
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
+    </div>
+
+    <!-- Paginação -->
+    <div class="mt-4">
+        {{ $users->links() }}
     </div>
 
     <!-- Add/Edit User Modal -->
@@ -115,6 +146,7 @@
             <form id="user-form" class="p-6 space-y-4">
                 @csrf
                 <input type="hidden" id="user-id">
+                <input type="hidden" id="user-mode" value="add">
                 <div class="p-6 border-b border-gray-200">
                     <h3 id="user-modal-title" class="text-xl font-semibold text-gray-800">Adicionar Utilizador</h3>
                 </div>
@@ -134,7 +166,7 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">Selecionar...</option>
                         <option value="admin">Administrador</option>
-                        <option value="customer">Utilizador</option>
+                        <option value="user">Utilizador</option>
                     </select>
                 </div>
                 <div>

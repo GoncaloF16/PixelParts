@@ -123,7 +123,7 @@
             </div>
 
             <!-- Tabs -->
-            <div class="w-full">
+            <div class="w-full pb-5">
                 <div class="bg-surface-elevated border border-white/10 p-1 rounded-lg grid grid-cols-4 mb-8">
                     <button class="tab-btn active px-6 py-3 rounded-lg font-semibold transition-all"
                         data-tab="specs">Especificações</button>

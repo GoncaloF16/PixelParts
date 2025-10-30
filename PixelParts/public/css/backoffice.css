@@ -126,3 +126,25 @@
     background-color: #FEE2E2;
     color: #991B1B;
 }
+
+/* Modal Styles */
+#product-modal {
+    transition: opacity 0.3s ease-in-out;
+}
+
+#product-modal:not(.hidden) {
+    display: flex !important;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#product-modal > div {
+    max-height: calc(100vh - 4rem);
+    overflow-y: visible;
+}
+
+.page-content {
+    min-height: 300px;
+    max-height: calc(100vh - 20rem);
+    overflow-y: auto;
+}

@@ -25,14 +25,15 @@
                 <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up" style="animation-delay: 0.4s;">
                     <a href="#produtos">
                         <button
-                            class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
+                            class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand"
+                            style="padding: calc(1rem + 2px) calc(2rem + 2px);">
                             Explorar Produtos
                         </button>
                     </a>
-                    <a href="{{ route('about') }}">
+                    <a href="#orcamento">
                         <button
-                            class="border-2 border-brand-green text-brand-green px-8 py-4 rounded-lg font-bold text-lg hover:bg-brand-green hover:text-surface-dark transition-all duration-300">
-                            Saber Mais
+                            class="border-2 border-brand-green text-brand-green px-8 py-4 rounded-lg font-bold text-lg hover:bg-brand-green hover:text-surface-dark transition-all duration-300 whitespace-nowrap">
+                            Pedir Orçamento
                         </button>
                     </a>
                 </div>
@@ -152,6 +153,168 @@
                 </div>
             </div>
         </section>
+
+        <!-- Contact / Budget Request Section -->
+        <section id="orcamento" class="py-20 bg-surface">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Header -->
+                    <div class="text-center mb-12">
+                        <div class="inline-block mb-4">
+                            <span class="bg-gradient-to-r from-brand-green to-brand-blue text-transparent bg-clip-text text-sm font-bold uppercase tracking-wider">
+                                Especializados em Performance
+                            </span>
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-bold text-gray-200 mb-6">
+                            Construímos o Setup dos Teus Sonhos
+                        </h2>
+                        <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                            Tens uma ideia em mente? Somos especialistas em criar setups gaming personalizados com os melhores componentes do mercado.
+                            Envia-nos a tua ideia e recebe um orçamento personalizado sem compromisso!
+                        </p>
+                    </div>
+
+                    <!-- Form -->
+                    <div class="bg-surface-card rounded-2xl shadow-xl p-8 md:p-10 border border-border">
+                        <form id="budget-form" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Nome -->
+                                <div>
+                                    <label for="contact-name" class="block text-sm font-semibold text-gray-300 mb-2">
+                                        <i data-lucide="user" class="w-4 h-4 inline mr-2 text-brand-green"></i>Nome
+                                    </label>
+                                    <input type="text" id="contact-name" required
+                                        class="w-full px-4 py-3 bg-surface border border-border rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
+                                        placeholder="O teu nome">
+                                </div>
+
+                                <!-- Email -->
+                                <div>
+                                    <label for="contact-email" class="block text-sm font-semibold text-gray-300 mb-2">
+                                        <i data-lucide="mail" class="w-4 h-4 inline mr-2 text-brand-green"></i>Email
+                                    </label>
+                                    <input type="email" id="contact-email" required
+                                        class="w-full px-4 py-3 bg-surface border border-border rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
+                                        placeholder="seuemail@exemplo.com">
+                                </div>
+                            </div>
+
+                            <!-- Orçamento -->
+                            <div>
+                                <label for="contact-budget" class="block text-sm font-semibold text-gray-300 mb-2">
+                                    <i data-lucide="euro" class="w-4 h-4 inline mr-2 text-brand-green"></i>Orçamento Estimado
+                                </label>
+                                <select id="contact-budget" required
+                                    class="w-full px-4 py-3 bg-surface border border-border rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300">
+                                    <option value="">Seleciona um valor aproximado</option>
+                                    <option value="500-1000">€500 - €1.000</option>
+                                    <option value="1000-2000">€1.000 - €2.000</option>
+                                    <option value="2000-3000">€2.000 - €3.000</option>
+                                    <option value="3000+">€3.000+</option>
+                                </select>
+                            </div>
+
+                            <!-- Tipo de Setup -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-3">
+                                    <i data-lucide="cpu" class="w-4 h-4 inline mr-2 text-brand-green"></i>Tipo de Setup
+                                </label>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    <label class="relative flex items-center justify-center p-4 bg-surface border border-border rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
+                                        <input type="radio" name="setup-type" value="gaming" class="sr-only peer" required>
+                                        <div class="text-center text-gray-400 peer-checked:text-brand-green transition-colors">
+                                            <i data-lucide="gamepad-2" class="w-6 h-6 mx-auto mb-2"></i>
+                                            <span class="text-sm font-medium">Gaming</span>
+                                        </div>
+                                        <div class="absolute inset-0 border-2 border-brand-green rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                                    </label>
+                                    <label class="relative flex items-center justify-center p-4 bg-surface border border-border rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
+                                        <input type="radio" name="setup-type" value="work" class="sr-only peer">
+                                        <div class="text-center text-gray-400 peer-checked:text-brand-green transition-colors">
+                                            <i data-lucide="briefcase" class="w-6 h-6 mx-auto mb-2"></i>
+                                            <span class="text-sm font-medium">Trabalho</span>
+                                        </div>
+                                        <div class="absolute inset-0 border-2 border-brand-green rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                                    </label>
+                                    <label class="relative flex items-center justify-center p-4 bg-surface border border-border rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
+                                        <input type="radio" name="setup-type" value="streaming" class="sr-only peer">
+                                        <div class="text-center text-gray-400 peer-checked:text-brand-green transition-colors">
+                                            <i data-lucide="video" class="w-6 h-6 mx-auto mb-2"></i>
+                                            <span class="text-sm font-medium">Streaming</span>
+                                        </div>
+                                        <div class="absolute inset-0 border-2 border-brand-green rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                                    </label>
+                                    <label class="relative flex items-center justify-center p-4 bg-surface border border-border rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
+                                        <input type="radio" name="setup-type" value="all" class="sr-only peer">
+                                        <div class="text-center text-gray-400 peer-checked:text-brand-green transition-colors">
+                                            <i data-lucide="sparkles" class="w-6 h-6 mx-auto mb-2"></i>
+                                            <span class="text-sm font-medium">Tudo</span>
+                                        </div>
+                                        <div class="absolute inset-0 border-2 border-brand-green rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Mensagem -->
+                            <div>
+                                <label for="contact-message" class="block text-sm font-semibold text-gray-300 mb-2">
+                                    <i data-lucide="message-square" class="w-4 h-4 inline mr-2 text-brand-green"></i>Descreve a Tua Ideia
+                                </label>
+                                <textarea id="contact-message" rows="5" required
+                                    class="w-full px-4 py-3 bg-surface border border-border rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300 resize-none"
+                                    placeholder="Conta-nos o que tens em mente... Quais jogos vais jogar? Que tipo de trabalho vais fazer? Alguma preferência de marca ou componente?"></textarea>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="pt-2">
+                                <button type="submit" id="budget-submit-btn"
+                                    class="w-full bg-gradient-to-r from-brand-green to-brand-blue text-white px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 flex items-center justify-center gap-2 shadow-lg">
+                                    <i data-lucide="send" class="w-5 h-5"></i>
+                                    Enviar Pedido de Orçamento
+                                </button>
+                            </div>
+
+                            <!-- Features -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-border">
+                                <div class="flex items-center gap-3 text-sm text-gray-400">
+                                    <div class="w-10 h-10 bg-brand-green/10 rounded-lg flex items-center justify-center">
+                                        <i data-lucide="zap" class="w-5 h-5 text-brand-green"></i>
+                                    </div>
+                                    <span>Resposta em 24h</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-sm text-gray-400">
+                                    <div class="w-10 h-10 bg-brand-green/10 rounded-lg flex items-center justify-center">
+                                        <i data-lucide="shield-check" class="w-5 h-5 text-brand-green"></i>
+                                    </div>
+                                    <span>Sem compromisso</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-sm text-gray-400">
+                                    <div class="w-10 h-10 bg-brand-green/10 rounded-lg flex items-center justify-center">
+                                        <i data-lucide="award" class="w-5 h-5 text-brand-green"></i>
+                                    </div>
+                                    <span>Garantia incluída</span>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Success Message -->
+                        <div id="budget-success-message" class="hidden text-center py-8">
+                            <div class="w-20 h-20 bg-gradient-to-r from-brand-green to-brand-blue rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i data-lucide="check" class="w-10 h-10 text-white"></i>
+                            </div>
+                            <h3 class="text-3xl font-bold text-gray-200 mb-3">Pedido Enviado com Sucesso!</h3>
+                            <p class="text-lg text-gray-400 mb-6">
+                                Recebemos o teu pedido de orçamento. A nossa equipa irá analisar e entrar em contacto contigo em breve com uma proposta personalizada!
+                            </p>
+                            <button id="budget-new-request"
+                                class="bg-surface-card border border-border text-gray-300 px-6 py-3 rounded-lg font-semibold hover:bg-surface transition-all duration-300">
+                                Fazer Novo Pedido
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
 
@@ -180,6 +343,7 @@
                     dropdown.classList.add('hidden');
                 }
             });
+
         });
 
         window.routes = {
