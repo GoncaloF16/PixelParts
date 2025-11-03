@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Exports\StockExport;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -99,25 +100,24 @@ class BackofficeController extends Controller
         return view('backoffice.stock', compact('products', 'allCategories'));
     }
 
-    public function exportStockPdf(Request $request)
-{
-    $query = DB::table('products')
-        ->join('categories', 'products.category_id', '=', 'categories.id')
-        ->select('products.*', 'categories.name as category_name');
+    public function exportStockExcel(Request $request)
+    {
+        $query = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.*', 'categories.name as category_name');
 
-    if ($request->filled('search')) {
-        $query->where('products.name', 'like', '%' . $request->search . '%');
+        if ($request->filled('search')) {
+            $query->where('products.name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('category')) {
+            $query->where('categories.name', $request->category);
+        }
+
+        $products = $query->get();
+
+        return Excel::download(new StockExport($products), 'stock.xlsx');
     }
-
-    if ($request->filled('category')) {
-        $query->where('categories.name', $request->category);
-    }
-
-    $products = $query->get();
-
-    $pdf = Pdf::loadView('backoffice.stock-pdf', compact('products'));
-    return $pdf->download('stock.pdf');
-}
 
 
     public function storeProduct(Request $request)
@@ -283,6 +283,47 @@ class BackofficeController extends Controller
         }
 
         return redirect()->back()->with('success', 'Produto apagado com sucesso!');
+    }
+
+    // Compatibilidade com rota atual: proxy para deleteProduct
+    public function destroyProduct(Request $request, Product $produto)
+    {
+        // Reutilizar a lógica existente de deleteProduct
+        return $this->deleteProduct($request, $produto);
+    }
+
+    // Remoção em massa de produtos selecionados
+    public function bulkDelete(Request $request)
+    {
+        $data = $request->validate([
+            'selected' => 'required|array',
+            'selected.*' => 'integer|exists:products,id',
+            'search' => 'nullable|string',
+            'category' => 'nullable|string',
+        ], [
+            'selected.required' => 'Selecione pelo menos um produto para apagar.',
+        ]);
+
+        $ids = $data['selected'];
+
+        // Apagar imagens associadas quando existirem
+        $products = Product::whereIn('id', $ids)->get();
+        foreach ($products as $product) {
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+        }
+
+        // Usar destroy para disparar eventos de modelo (se existirem)
+        Product::destroy($ids);
+
+        // Redirecionar mantendo filtros (sem a página para evitar ficar numa página vazia)
+        $redirectParams = [];
+        if ($request->filled('search')) $redirectParams['search'] = $request->input('search');
+        if ($request->filled('category')) $redirectParams['category'] = $request->input('category');
+
+        return redirect()->route('backoffice.stock', $redirectParams)
+            ->with('success', 'Produtos selecionados apagados com sucesso!');
     }
 
     // Obter dados completos do produto

@@ -158,7 +158,7 @@
 
                 <!-- Ícone do Carrinho -->
                 <a href="{{ route('cart.index') }}"
-                    class="relative flex items-center justify-center hover:text-brand-green transition">
+                    class="pr-6 relative flex items-center justify-center hover:text-brand-green transition">
                     <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-200"></i>
 
                     <span id="cart-count"

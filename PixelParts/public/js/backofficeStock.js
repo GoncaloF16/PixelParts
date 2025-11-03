@@ -14,6 +14,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitBtn = document.getElementById("submit-product-btn");
     const pageIndicator = document.getElementById("page-indicator");
 
+    // Modals de confirmação
+    const productSaveConfirmModal = document.getElementById("product-save-confirm-modal");
+    const productSaveConfirmTitle = document.getElementById("product-save-confirm-title");
+    const productSaveConfirmMessage = document.getElementById("product-save-confirm-message");
+    const confirmProductSaveBtn = document.getElementById("confirm-product-save");
+    const cancelProductSaveConfirmBtn = document.getElementById("cancel-product-save-confirm");
+
+    const productDeleteConfirmModal = document.getElementById("product-delete-confirm-modal");
+    const productDeleteConfirmMessage = document.getElementById("product-delete-confirm-message");
+    const confirmProductDeleteBtn = document.getElementById("confirm-product-delete");
+    const cancelProductDeleteConfirmBtn = document.getElementById("cancel-product-delete-confirm");
+
+    let pendingDeleteProductId = null;
     let currentPage = 1;
     let modalMode = 'add'; // 'add', 'edit', 'view'
 
@@ -174,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
         clearDynamicFields();
         setFormMode('add');
         showPage(1);
-        productModal.style.display = "block";
+        productModal.style.display = "flex";
         productModal.classList.remove("hidden");
     }
 
@@ -263,8 +276,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             showPage(1);
-            productModal.style.display = "block";
+            productModal.style.display = "flex";
             productModal.classList.remove("hidden");
+
+            // Forçar um pequeno delay para garantir que o modal permaneça aberto
+            setTimeout(() => {
+                productModal.style.display = "flex";
+                productModal.classList.remove("hidden");
+            }, 10);
 
         } catch (error) {
             console.error('Erro:', error);
@@ -285,13 +304,46 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === productModal) closeProductModal();
     });
 
-    // --- SUBMISSÃO FORMULÁRIO VIA AJAX ---
-    productForm.addEventListener("submit", function (e) {
+    // Prevenir que o modal feche imediatamente após abrir
+    productModal.addEventListener("click", (e) => {
+        e.stopPropagation();
+    });
+
+    // --- CONFIRMAÇÃO DE SALVAMENTO ---
+    submitBtn.addEventListener("click", function(e) {
         e.preventDefault();
 
         if (modalMode === 'view') {
             return; // Não permitir submissão em modo visualização
         }
+
+        const productId = document.getElementById("product-id").value;
+
+        if (productId) {
+            productSaveConfirmTitle.textContent = "Confirmar edição";
+            productSaveConfirmMessage.textContent = "Pretende guardar as alterações ao produto?";
+        } else {
+            productSaveConfirmTitle.textContent = "Confirmar adição";
+            productSaveConfirmMessage.textContent = "Pretende adicionar este novo produto?";
+        }
+
+        productSaveConfirmModal.classList.remove('hidden');
+        productSaveConfirmModal.classList.add('flex');
+    });
+
+    confirmProductSaveBtn.addEventListener("click", () => {
+        productSaveConfirmModal.classList.add('hidden');
+        productSaveConfirmModal.classList.remove('flex');
+        submitProductForm();
+    });
+
+    cancelProductSaveConfirmBtn.addEventListener("click", () => {
+        productSaveConfirmModal.classList.add('hidden');
+        productSaveConfirmModal.classList.remove('flex');
+    });
+
+    // --- SUBMISSÃO FORMULÁRIO VIA AJAX ---
+    function submitProductForm() {
 
         const productId = document.getElementById("product-id").value;
         const url = productId ? `/backoffice/stock/${productId}` : "/backoffice/stock";
@@ -320,42 +372,86 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Erro Laravel:", text);
             alert("Erro ao salvar produto. Veja console para detalhes.");
         });
+    }
+
+    // --- CONFIRMAÇÃO DE REMOÇÃO ---
+    productsTable.querySelectorAll(".delete-btn").forEach((btn) => {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault(); // Prevenir navegação
+            e.stopPropagation(); // Prevenir propagação
+
+            const productId = btn.dataset.id;
+            pendingDeleteProductId = productId;
+
+            // Fechar o dropdown manualmente
+            const dropdown = btn.closest('[data-dropdown-menu]');
+            if (dropdown) {
+                dropdown.classList.add('hidden');
+            }
+
+            const productName = btn.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
+            productDeleteConfirmMessage.textContent = `Tem a certeza que pretende apagar o produto "${productName}"?`;
+            productDeleteConfirmModal.classList.remove('hidden');
+            productDeleteConfirmModal.classList.add('flex');
+        });
     });
 
-    // --- DELETAR PRODUTO ---
-    productsTable.querySelectorAll(".delete-btn").forEach((btn) => {
-        btn.addEventListener("click", function () {
-            const productId = btn.dataset.id;
+    confirmProductDeleteBtn.addEventListener("click", () => {
+        if (!pendingDeleteProductId) return;
 
-            if (confirm("Deseja realmente apagar este produto?")) {
-                fetch(`/backoffice/stock/${productId}`, {
-                    method: "DELETE",
-                    headers: {
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                        Accept: "application/json",
-                    },
-                })
-                .then(res => res.json())
-                .then(data => {
-                    alert(data.message);
-                    location.reload();
-                });
-            }
+        fetch(`/backoffice/stock/${pendingDeleteProductId}`, {
+            method: "DELETE",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                Accept: "application/json",
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            productDeleteConfirmModal.classList.add('hidden');
+            productDeleteConfirmModal.classList.remove('flex');
+            pendingDeleteProductId = null;
+            location.reload();
         });
+    });
+
+    cancelProductDeleteConfirmBtn.addEventListener("click", () => {
+        productDeleteConfirmModal.classList.add('hidden');
+        productDeleteConfirmModal.classList.remove('flex');
+        pendingDeleteProductId = null;
     });
 
     // --- VISUALIZAR PRODUTO ---
     productsTable.querySelectorAll(".view-btn").forEach((btn) => {
-        btn.addEventListener("click", function () {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault(); // Prevenir navegação
+            e.stopPropagation(); // Prevenir que o clique feche o modal
             const productId = btn.dataset.id;
+
+            // Fechar o dropdown manualmente
+            const dropdown = btn.closest('[data-dropdown-menu]');
+            if (dropdown) {
+                dropdown.classList.add('hidden');
+            }
+
             loadProductData(productId, 'view');
         });
     });
 
     // --- EDITAR PRODUTO ---
     productsTable.querySelectorAll(".edit-btn").forEach((btn) => {
-        btn.addEventListener("click", function () {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault(); // Prevenir navegação
+            e.stopPropagation(); // Prevenir que o clique feche o modal
             const productId = btn.dataset.id;
+
+            // Fechar o dropdown manualmente
+            const dropdown = btn.closest('[data-dropdown-menu]');
+            if (dropdown) {
+                dropdown.classList.add('hidden');
+            }
+
             loadProductData(productId, 'edit');
         });
     });
@@ -367,6 +463,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         trigger.addEventListener("click", e => {
             e.stopPropagation();
+
+            // Fechar outros dropdowns primeiro
+            document.querySelectorAll("[data-dropdown-menu]").forEach(m => {
+                if (m !== menu) {
+                    m.classList.add("hidden");
+                }
+            });
 
             // Verificar se o dropdown está perto do final da página
             const rect = trigger.getBoundingClientRect();
@@ -388,8 +491,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    document.addEventListener("click", () => {
-        document.querySelectorAll("[data-dropdown-menu]").forEach(menu => menu.classList.add("hidden"));
+    document.addEventListener("click", (e) => {
+        // Não fechar dropdowns se o clique for dentro de um modal
+        if (e.target.closest('#product-modal') ||
+            e.target.closest('#product-save-confirm-modal') ||
+            e.target.closest('#product-delete-confirm-modal') ||
+            e.target.closest('#bulk-delete-modal')) {
+            return;
+        }
+
+        // Fechar todos os dropdowns se clicar fora
+        if (!e.target.closest('[data-dropdown-trigger]') && !e.target.closest('[data-dropdown-menu]')) {
+            document.querySelectorAll("[data-dropdown-menu]").forEach(menu => menu.classList.add("hidden"));
+        }
     });
 
     document.addEventListener("keydown", e => {

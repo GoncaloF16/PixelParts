@@ -11,9 +11,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const cancelBtn = document.getElementById("cancel-user-btn");
     const tbody = document.getElementById("users-table");
     const inputMode = document.getElementById("user-mode");
-    const submitBtn = userForm.querySelector('button[type="submit"]');
+    const saveBtn = document.getElementById("save-user-btn");
     const searchInput = document.getElementById("search-users");
     const roleFilter = document.getElementById("role-filter");
+
+    // Modals de confirmação
+    const saveConfirmModal = document.getElementById("save-confirm-modal");
+    const saveConfirmTitle = document.getElementById("save-confirm-title");
+    const saveConfirmMessage = document.getElementById("save-confirm-message");
+    const confirmSaveBtn = document.getElementById("confirm-save");
+    const cancelSaveConfirmBtn = document.getElementById("cancel-save-confirm");
+
+    const deleteConfirmModal = document.getElementById("delete-confirm-modal");
+    const deleteConfirmMessage = document.getElementById("delete-confirm-message");
+    const confirmDeleteBtn = document.getElementById("confirm-delete");
+    const cancelDeleteConfirmBtn = document.getElementById("cancel-delete-confirm");
+
+    let pendingDeleteId = null;
 
     /* ------------------ FILTROS ------------------ */
     function applyFilters() {
@@ -72,9 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Show/hide submit button
         if (isView) {
-            submitBtn.classList.add('hidden');
+            saveBtn.classList.add('hidden');
         } else {
-            submitBtn.classList.remove('hidden');
+            saveBtn.classList.remove('hidden');
         }
     }
 
@@ -123,6 +137,18 @@ document.addEventListener("DOMContentLoaded", () => {
     tbody.addEventListener("click", (e) => {
         const viewBtn = e.target.closest(".view-btn");
         if (viewBtn) {
+            e.stopPropagation(); // Prevenir que o clique feche o modal
+
+            // Fechar o dropdown manualmente
+            const dropdown = viewBtn.closest('[data-dropdown-menu]');
+            if (dropdown) {
+                dropdown.classList.add('hidden');
+                if (openDropdown) {
+                    openDropdown.menu.removeAttribute("style");
+                    openDropdown = null;
+                }
+            }
+
             setFormMode('view');
             modalTitle.textContent = "Visualizar Utilizador";
             inputId.value = viewBtn.dataset.id || "";
@@ -136,6 +162,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const editBtn = e.target.closest(".edit-btn");
         if (editBtn) {
+            e.stopPropagation(); // Prevenir que o clique feche o modal
+
+            // Fechar o dropdown manualmente
+            const dropdown = editBtn.closest('[data-dropdown-menu]');
+            if (dropdown) {
+                dropdown.classList.add('hidden');
+                if (openDropdown) {
+                    openDropdown.menu.removeAttribute("style");
+                    openDropdown = null;
+                }
+            }
+
             setFormMode('edit');
             modalTitle.textContent = "Editar Utilizador";
             inputId.value = editBtn.dataset.id || "";
@@ -149,9 +187,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cancelBtn.addEventListener("click", () => modal.classList.add("hidden"));
 
-    /* ------------------ SUBMIT (CREATE / UPDATE) ------------------ */
-    userForm.addEventListener("submit", (e) => {
+    /* ------------------ SAVE CONFIRMATION ------------------ */
+    saveBtn.addEventListener("click", (e) => {
         e.preventDefault();
+        const id = inputId.value;
+
+        if (id) {
+            saveConfirmTitle.textContent = "Confirmar edição";
+            saveConfirmMessage.textContent = "Pretende guardar as alterações ao utilizador?";
+        } else {
+            saveConfirmTitle.textContent = "Confirmar adição";
+            saveConfirmMessage.textContent = "Pretende adicionar este novo utilizador?";
+        }
+
+        saveConfirmModal.classList.remove('hidden');
+        saveConfirmModal.classList.add('flex');
+    });
+
+    confirmSaveBtn.addEventListener("click", () => {
+        saveConfirmModal.classList.add('hidden');
+        saveConfirmModal.classList.remove('flex');
+        submitForm();
+    });
+
+    cancelSaveConfirmBtn.addEventListener("click", () => {
+        saveConfirmModal.classList.add('hidden');
+        saveConfirmModal.classList.remove('flex');
+    });
+
+    /* ------------------ SUBMIT (CREATE / UPDATE) ------------------ */
+    function submitForm() {
 
         const id = inputId.value;
         const url = id ? `/backoffice/users/${id}` : "/backoffice/users";
@@ -257,19 +322,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 modal.classList.add("hidden");
             })
             .catch((err) => console.error(err));
-    });
+    }
 
-    /* ------------------ DELETE ------------------ */
+    /* ------------------ DELETE CONFIRMATION ------------------ */
     tbody.addEventListener("click", (e) => {
         const del = e.target.closest(".delete-btn");
         if (!del) return;
         const id = del.dataset.id;
         if (!id) return;
 
-        if (!confirm("Tem a certeza que deseja excluir este utilizador?"))
-            return;
+        pendingDeleteId = id;
+        const userName = del.closest('tr').querySelector('td:first-child').textContent.trim();
+        deleteConfirmMessage.textContent = `Tem a certeza que pretende apagar o utilizador "${userName}"?`;
+        deleteConfirmModal.classList.remove('hidden');
+        deleteConfirmModal.classList.add('flex');
+    });
 
-        fetch(`/backoffice/users/${id}`, {
+    confirmDeleteBtn.addEventListener("click", () => {
+        if (!pendingDeleteId) return;
+
+        fetch(`/backoffice/users/${pendingDeleteId}`, {
             method: "DELETE",
             headers: {
                 "X-CSRF-TOKEN": document.querySelector(
@@ -279,26 +351,44 @@ document.addEventListener("DOMContentLoaded", () => {
         })
             .then((res) => res.json())
             .then(() => {
-                const row = tbody.querySelector(`tr[data-id='${id}']`);
+                const row = tbody.querySelector(`tr[data-id='${pendingDeleteId}']`);
                 if (row) row.remove();
+                deleteConfirmModal.classList.add('hidden');
+                deleteConfirmModal.classList.remove('flex');
+                pendingDeleteId = null;
             })
             .catch((err) => console.error(err));
     });
 
-    /* ------------------ DROPDOWN HANDLING ------------------ */
+    cancelDeleteConfirmBtn.addEventListener("click", () => {
+        deleteConfirmModal.classList.add('hidden');
+        deleteConfirmModal.classList.remove('flex');
+        pendingDeleteId = null;
+    });
+
     let openDropdown = null;
 
     document.addEventListener("click", (e) => {
         const trigger = e.target.closest("[data-dropdown-trigger]");
-        document
-            .querySelectorAll("[data-dropdown-menu]")
-            .forEach((m) => m.classList.add("hidden"));
-        if (openDropdown) {
-            openDropdown.menu.removeAttribute("style");
-            openDropdown = null;
+
+        if (!trigger) {
+            document
+                .querySelectorAll("[data-dropdown-menu]")
+                .forEach((m) => m.classList.add("hidden"));
+            if (openDropdown) {
+                openDropdown.menu.removeAttribute("style");
+                openDropdown = null;
+            }
+            return;
         }
 
-        if (!trigger) return;
+        document
+            .querySelectorAll("[data-dropdown-menu]")
+            .forEach((m) => {
+                if (m !== trigger.parentElement.querySelector("[data-dropdown-menu]")) {
+                    m.classList.add("hidden");
+                }
+            });
 
         e.stopPropagation();
         const menu = trigger.parentElement.querySelector(
@@ -340,7 +430,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    window.addEventListener("click", () => {
+    window.addEventListener("click", (e) => {
+        // Não fechar dropdowns se o clique for dentro de um modal
+        if (e.target.closest('#user-modal') ||
+            e.target.closest('#save-confirm-modal') ||
+            e.target.closest('#delete-confirm-modal')) {
+            return;
+        }
+
         if (openDropdown) {
             openDropdown.menu.classList.add("hidden");
             openDropdown.menu.removeAttribute("style");

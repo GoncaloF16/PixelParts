@@ -38,21 +38,34 @@
                 Adicionar Produto
             </button>
 
-            <a href="{{ route('backoffice.stock.pdf', request()->all()) }}"
+            <a href="{{ route('backoffice.stock.excel', request()->all()) }}"
                 class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Exportar PDF
+                Exportar Excel
             </a>
         </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow overflow-hidden overflow-x-auto">
+    <form method="POST" action="{{ route('backoffice.stock.bulk-delete') }}">
+        @csrf
+        <!-- Preservar filtros atuais após apagar -->
+        @if(request('search'))
+            <input type="hidden" name="search" value="{{ request('search') }}">
+        @endif
+        @if(request('category'))
+            <input type="hidden" name="category" value="{{ request('category') }}">
+        @endif
+
+        <div class="bg-white rounded-lg shadow overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
+                        <input id="select-all" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
+                    </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produto</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
                     <th class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
@@ -62,6 +75,9 @@
             <tbody id="products-table" class="bg-white divide-y divide-gray-200">
                 @foreach ($products as $product)
                     <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <input type="checkbox" name="selected[]" value="{{ $product->id }}" class="row-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 max-w-xs truncate"
                             title="{{ $product->name }}">
                             {{ $product->name }}
@@ -128,12 +144,54 @@
         </table>
     </div>
 
-    <!-- Paginação -->
-    @if($products->hasPages())
-        <div class="mt-6">
-            {{ $products->appends(request()->query())->links() }}
+        <!-- Ações em massa + Paginação alinhadas -->
+        <div class="mt-6 flex items-center justify-between gap-3 flex-col sm:flex-row">
+            <button id="bulk-delete-btn" type="button"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0V5a2 2 0 012-2h2a2 2 0 012 2v2" />
+                </svg>
+                Apagar Seleção
+            </button>
+
+            @if($products->hasPages())
+                <div class="self-stretch sm:self-auto">
+                    {{ $products->appends(request()->query())->links('vendor.pagination.backoffice') }}
+                </div>
+            @endif
         </div>
-    @endif
+    </form>
+
+    <!-- Modal de confirmação de remoção em massa -->
+    <div id="bulk-delete-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Apagar produtos selecionados?</h3>
+                        <p class="text-sm text-gray-500 mt-1">Esta ação não pode ser desfeita.</p>
+                    </div>
+                </div>
+                <p id="bulk-delete-count" class="text-sm text-gray-600 mb-6"></p>
+                <div class="flex gap-3 justify-end">
+                    <button type="button" id="cancel-bulk-delete"
+                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                        Cancelar
+                    </button>
+                    <button type="button" id="confirm-bulk-delete"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                        Sim, apagar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Add/Edit/View Product Modal -->
     <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden overflow-y-auto" style="display: none;">
@@ -274,7 +332,7 @@
                                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                                 Próximo →
                             </button>
-                            <button type="submit" id="submit-product-btn"
+                            <button type="button" id="submit-product-btn"
                                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition hidden">
                                 Guardar
                             </button>
@@ -285,4 +343,143 @@
         </div>
     </div>
 
+    <!-- Modal de confirmação de salvamento de produto -->
+    <div id="product-save-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900" id="product-save-confirm-title">Confirmar ação</h3>
+                        <p class="text-sm text-gray-500 mt-1" id="product-save-confirm-message">Pretende guardar as alterações?</p>
+                    </div>
+                </div>
+                <div class="flex gap-3 justify-end">
+                    <button type="button" id="cancel-product-save-confirm"
+                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                        Cancelar
+                    </button>
+                    <button type="button" id="confirm-product-save"
+                        class="px-4 py-2 bg-blue-400 text-white rounded-lg hover:bg-yellow-500 transition">
+                        Sim, guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação de remoção individual de produto -->
+    <div id="product-delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Apagar produto?</h3>
+                        <p class="text-sm text-gray-500 mt-1">Esta ação não pode ser desfeita.</p>
+                    </div>
+                </div>
+                <p id="product-delete-confirm-message" class="text-sm text-gray-600 mb-6"></p>
+                <div class="flex gap-3 justify-end">
+                    <button type="button" id="cancel-product-delete-confirm"
+                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                        Cancelar
+                    </button>
+                    <button type="button" id="confirm-product-delete"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                        Sim, apagar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const selectAll = document.getElementById('select-all');
+        const rowCheckboxes = () => Array.from(document.querySelectorAll('.row-checkbox'));
+        const bulkBtn = document.getElementById('bulk-delete-btn');
+        const bulkModal = document.getElementById('bulk-delete-modal');
+        const bulkForm = bulkBtn.closest('form');
+        const confirmBtn = document.getElementById('confirm-bulk-delete');
+        const cancelBtn = document.getElementById('cancel-bulk-delete');
+        const countText = document.getElementById('bulk-delete-count');
+
+        function updateBulkState() {
+            const anyChecked = rowCheckboxes().some(cb => cb.checked);
+            bulkBtn.disabled = !anyChecked;
+
+            // Atualizar estado do select-all (indeterminate)
+            const total = rowCheckboxes().length;
+            const checked = rowCheckboxes().filter(cb => cb.checked).length;
+            if (checked === 0) {
+                selectAll.checked = false;
+                selectAll.indeterminate = false;
+            } else if (checked === total) {
+                selectAll.checked = true;
+                selectAll.indeterminate = false;
+            } else {
+                selectAll.checked = false;
+                selectAll.indeterminate = true;
+            }
+        }
+
+        if (selectAll) {
+            selectAll.addEventListener('change', function() {
+                rowCheckboxes().forEach(cb => cb.checked = selectAll.checked);
+                updateBulkState();
+            });
+        }
+
+        rowCheckboxes().forEach(cb => cb.addEventListener('change', updateBulkState));
+
+        // Abrir modal ao clicar em apagar seleção
+        if (bulkBtn) {
+            bulkBtn.addEventListener('click', function() {
+                const checked = rowCheckboxes().filter(cb => cb.checked).length;
+                if (checked > 0) {
+                    countText.textContent = `Tem a certeza que pretende apagar ${checked} produto${checked > 1 ? 's' : ''}?`;
+                    bulkModal.classList.remove('hidden');
+                    bulkModal.classList.add('flex');
+                }
+            });
+        }
+
+        // Confirmar remoção
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', function() {
+                bulkForm.submit();
+            });
+        }
+
+        // Cancelar modal
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', function() {
+                bulkModal.classList.add('hidden');
+                bulkModal.classList.remove('flex');
+            });
+        }
+
+        // Fechar modal ao clicar fora
+        if (bulkModal) {
+            bulkModal.addEventListener('click', function(e) {
+                if (e.target === bulkModal) {
+                    bulkModal.classList.add('hidden');
+                    bulkModal.classList.remove('flex');
+                }
+            });
+        }
+
+        // Inicializar estado no load
+        updateBulkState();
+    })();
+    </script>
 @endsection
