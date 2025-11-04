@@ -46,16 +46,27 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::loginView(function () {
-        return view('auth.login');
+            return view('auth.login');
+        });
+
+        Fortify::registerView(function () {
+            return view('auth.register');
+        });
+
+        Fortify::requestPasswordResetLinkView(function () {
+            return view('auth.forgot-password');
+        });
+
+        Fortify::resetPasswordView(function ($request) {
+            return view('auth.reset-password', ['request' => $request]);
+        });
 
         Fortify::authenticateUsing(function (Request $request) {
-        $user = User::where('email', $request->email)->first();
+            $user = \App\Models\User::where('email', $request->email)->first();
 
-        if ($user &&
-            Hash::check($request->password, $user->password)) {
-            return $user;
-        }
-    });
-    });
+            if ($user && \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+                return $user;
+            }
+        });
     }
 }
