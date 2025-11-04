@@ -1,6 +1,6 @@
 # 🧩 PixelParts
 
-PixelParts is a web application built with **Laravel 10**, **TailwindCSS**, and **MySQL**, simulating an online store specialized in high-performance gaming components.  
+PixelParts is a web application built with **Laravel 12**, **TailwindCSS**, and **MySQL**, simulating an online store specialized in high-performance gaming components.  
 This project was developed for academic purposes, focusing on modern full-stack web development best practices.
 
 ---
