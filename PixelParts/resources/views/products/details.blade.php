@@ -124,14 +124,14 @@
 
             <!-- Tabs -->
             <div class="w-full pb-5">
-                <div class="bg-surface-elevated border border-white/10 p-1 rounded-lg grid grid-cols-4 mb-8">
-                    <button class="tab-btn active px-6 py-3 rounded-lg font-semibold transition-all"
+                <div class="bg-surface-elevated border border-white/10 p-1 rounded-lg grid grid-cols-2 md:grid-cols-4 gap-2 mb-8">
+                    <button class="tab-btn active px-3 md:px-6 py-3 rounded-lg font-semibold transition-all text-sm md:text-base"
                         data-tab="specs">Especificações</button>
-                    <button class="tab-btn px-6 py-3 rounded-lg font-semibold transition-all"
+                    <button class="tab-btn px-3 md:px-6 py-3 rounded-lg font-semibold transition-all text-sm md:text-base"
                         data-tab="features">Características</button>
-                    <button class="tab-btn px-6 py-3 rounded-lg font-semibold transition-all"
+                    <button class="tab-btn px-3 md:px-6 py-3 rounded-lg font-semibold transition-all text-sm md:text-base"
                         data-tab="compatibility">Compatibilidade</button>
-                    <button class="tab-btn px-6 py-3 rounded-lg font-semibold transition-all" data-tab="reviews">Avaliações
+                    <button class="tab-btn px-3 md:px-6 py-3 rounded-lg font-semibold transition-all text-sm md:text-base" data-tab="reviews">Avaliações
                         ({{ $product->reviews->count() }})</button>
                 </div>
 

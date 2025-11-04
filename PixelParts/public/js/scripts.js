@@ -57,8 +57,43 @@ document.addEventListener("DOMContentLoaded", function () {
     const mobileMenu = document.getElementById("mobile-menu");
 
     if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener("click", () => {
+        mobileMenuBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
             mobileMenu.classList.toggle("hidden");
+            lucide.createIcons();
+        });
+
+        // Fechar ao clicar fora
+        document.addEventListener("click", (e) => {
+            if (!mobileMenu.classList.contains("hidden")) {
+                if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    mobileMenu.classList.add("hidden");
+                }
+            }
+        });
+
+        // Fechar com ESC
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                mobileMenu.classList.add("hidden");
+            }
+        });
+    }
+
+    // Mobile categories dropdown
+    const mobileCategoriesToggle = document.getElementById("mobile-categories-toggle");
+    const mobileCategoriesList = document.getElementById("mobile-categories-list");
+    const mobileCategoriesIcon = document.getElementById("mobile-categories-icon");
+
+    if (mobileCategoriesToggle && mobileCategoriesList) {
+        mobileCategoriesToggle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            mobileCategoriesList.classList.toggle("hidden");
+            if (mobileCategoriesIcon) {
+                mobileCategoriesIcon.style.transform = mobileCategoriesList.classList.contains("hidden")
+                    ? "rotate(0deg)"
+                    : "rotate(180deg)";
+            }
         });
     }
 

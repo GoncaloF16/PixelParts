@@ -13,28 +13,58 @@ class ProdsController extends Controller
 {
     $query = Product::with('category');
 
-    // Filtrar por categoria
-    if ($request->has('categoria') && $request->categoria) {
+    // Filtrar por categoria via menu (parâmetro único)
+    if ($request->has('categoria') && $request->categoria && !is_array($request->categoria)) {
         $query->whereHas('category', function($q) use ($request) {
             $q->where('slug', $request->categoria);
         });
     }
 
-    // Filtrar por pesquisa de texto (nome do produto)
+    // Filtrar por múltiplas categorias (checkboxes)
+    if ($request->has('categoria') && is_array($request->categoria)) {
+        $query->whereHas('category', function($q) use ($request) {
+            $q->whereIn('slug', $request->categoria);
+        });
+    }
+
+    // Filtrar por múltiplas marcas (checkboxes)
+    if ($request->has('brand') && is_array($request->brand)) {
+        $brands = $request->brand;
+        $query->where(function($q) use ($brands) {
+            foreach ($brands as $brand) {
+                $q->orWhere('brand', 'LIKE', $brand);
+            }
+        });
+    }
+
+    // Filtrar por pesquisa de texto (nome do produto OU categoria)
     if ($request->has('q') && $request->q) {
         $search = $request->q;
-        $query->where('name', 'like', "%{$search}%");
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+              ->orWhere('brand', 'like', "%{$search}%")
+              ->orWhereHas('category', function($q) use ($search) {
+                  $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%");
+              });
+        });
     }
 
     // Paginação
     $products = $query->paginate(9)->withQueryString();
 
-    $brands = Product::select('brand')->distinct()->pluck('brand');
+    // Buscar TODAS as marcas e categorias
+    $brands = Product::select('brand')
+        ->distinct()
+        ->whereNotNull('brand')
+        ->orderBy('brand')
+        ->pluck('brand');
+
     $categories = Category::orderBy('name')->get();
 
     return view('products.products', compact('products', 'categories', 'brands'));
 }
-    
+
 
     public function show($slug)
     {

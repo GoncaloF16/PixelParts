@@ -3,7 +3,7 @@
 @section('content')
     <main>
         <!-- Hero Section -->
-        <section id="inicio" class="relative min-h-screen flex items-start justify-center overflow-hidden">
+    <section id="inicio" class="relative min-h-[80vh] lg:min-h-screen flex items-start justify-center overflow-hidden">
             <!-- Partículas -->
             <div class="particles-container absolute inset-0">
                 @for ($i = 0; $i < 10; $i++)
@@ -40,7 +40,7 @@
             </div>
 
             <!-- Scroll Indicator -->
-            <div class="absolute bottom-32 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="absolute bottom-16 lg:bottom-32 left-1/2 transform -translate-x-1/2 animate-bounce">
                 <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400"></i>
             </div>
         </section>
@@ -48,7 +48,7 @@
         <!-- Products Section -->
         <section id="produtos" class="pb-10 bg-surface">
             <div class="container mx-auto px-6 lg:px-12">
-                <div class="text-center mb-16 animate-fade-up">
+                <div class="text-center mb-10 md:mb-16 animate-fade-up">
                     <h2 class="text-4xl md:text-5xl font-bold text-gray-200 mb-4">
                         Produtos em <span class="text-gradient-brand">Destaque</span>
                     </h2>
