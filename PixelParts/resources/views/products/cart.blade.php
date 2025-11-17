@@ -105,11 +105,13 @@
                                         <span id="total-com-iva">€{{ number_format($totalComIva, 2, ',', '.') }}</span>
                                     </div>
                                 </div>
-
-                                <a href="#"
-                                    class="mt-6 inline-block text-center bg-gradient-to-r from-brand-green to-brand-blue text-white px-6 py-3 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
-                                    Proceder para Checkout
-                                </a>
+                                <form method="POST" action="{{ route('order.post') }}">
+                                    @csrf
+                                    <button
+                                        class="mt-6 inline-block text-center bg-gradient-to-r from-brand-green to-brand-blue text-white px-6 py-3 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
+                                        Proceder para Checkout
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     @endif
