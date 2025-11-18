@@ -150,16 +150,19 @@ public function order (Request $request)
     ]);
     $amount = 0;
     foreach (session('cart') as $key => $value) {
+        $linePriceCents = (int) round($value['price'] * 100);
         $order->products()->create([
             'product_id' => $key,
             'quantity' => $value['quantity'],
-            'price' => $value['price']
+            'price' => $linePriceCents
         ]);
 
         $amount = $amount + ($value['quantity'] * $value['price']);
     }
 
-    $order->amount = $amount;
+    // Guardar em cêntimos (com arredondamento correto)
+    $orderTotalCents = (int) round($amount * 100);
+    $order->amount = $orderTotalCents;
     $order->save();
 
     $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
@@ -175,7 +178,7 @@ public function order (Request $request)
             'product_data' => [
                 'name' => "Shopping"
             ],
-            'unit_amount' => $amount * 100,
+            'unit_amount' => $orderTotalCents,
             'currency' => 'eur',
         ],
         'quantity' => 1
@@ -193,19 +196,33 @@ public function orderSuccess(Request $request)
 
     $session = $stripe->checkout->sessions->retrieve($request->session_id);
 
-    if ($session->status == "complete") {
-        $order = Order::find($request->order_id);
-        $order->status = 1;
+    $order = Order::findOrFail($request->order_id);
+
+    if ($session->status == "complete" && $session->payment_status == "paid") {
+        // Pagamento bem-sucedido
+        $order->status = 1; // Processando
         $order->stripe_id = $session->id;
         $order->save();
+
+        // Decrementar stock dos produtos
+        foreach ($order->products as $orderProduct) {
+            $product = Product::find($orderProduct->product_id);
+            if ($product) {
+                $product->stock -= $orderProduct->quantity;
+                $product->save();
+            }
+        }
+
+        // Limpar carrinho
+        session()->forget('cart');
 
         return redirect()->route('home')->with('success', 'Pedido realizado com sucesso!');
     }
 
-    $order = Order::find($request->order_id);
-        $order->status = 2;
-        $order->save();
+    // Pagamento não foi completado
+    $order->status = 0; // Manter como Pendente (não apagar a encomenda)
+    $order->save();
 
-    dd('Failed.');
+    return redirect()->route('cart.index')->with('error', 'Pagamento não foi concluído. Por favor, tente novamente.');
 }
 }

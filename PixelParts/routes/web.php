@@ -51,6 +51,11 @@ Route::middleware(['admin']) -> group(function() {
     Route::post('/backoffice/stock/bulk-delete', [BackofficeController::class, 'bulkDelete'])->name('backoffice.stock.bulk-delete');
     Route::delete('/backoffice/stock/{produto}', [BackofficeController::class, 'destroyProduct'])->name('backoffice.stock.delete');
 
+    Route::get('/backoffice/orders', [BackofficeController::class, 'orders'])->name('backoffice.orders');
+    Route::get('/backoffice/orders/{id}', [BackofficeController::class, 'getOrder'])->name('backoffice.orders.get');
+    Route::put('/backoffice/orders/{id}', [BackofficeController::class, 'updateOrder'])->name('backoffice.orders.update');
+    Route::delete('/backoffice/orders/{id}', [BackofficeController::class, 'deleteOrder'])->name('backoffice.orders.delete');
+
 });
 
 

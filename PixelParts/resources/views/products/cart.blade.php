@@ -108,7 +108,8 @@
                                 <form method="POST" action="{{ route('order.post') }}">
                                     @csrf
                                     <button
-                                        class="mt-6 inline-block text-center bg-gradient-to-r from-brand-green to-brand-blue text-white px-6 py-3 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand">
+                                        class="mt-6 w-full flex items-center justify-center gap-3 bg-gradient-to-r from-brand-green to-brand-blue text-white px-8 py-4 rounded-lg font-bold text-xl hover:scale-105 transition-transform duration-300 glow-brand shadow-lg">
+                                        <i data-lucide="shopping-cart" class="w-6 h-6"></i>
                                         Proceder para Checkout
                                     </button>
                                 </form>

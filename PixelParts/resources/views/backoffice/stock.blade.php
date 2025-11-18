@@ -112,7 +112,7 @@
                                     Ações
                                 </button>
 
-                                <div class="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 hidden z-50"
+                                <div class="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 hidden z-[9999]"
                                     data-dropdown-menu>
                                     <div class="py-1">
                                         <button

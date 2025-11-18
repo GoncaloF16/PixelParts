@@ -162,7 +162,7 @@
                     <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-200"></i>
 
                     <span id="cart-count"
-                        class="absolute -top-1.5 -right-1.5 bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] {{ count(session('cart', [])) === 0 ? 'hidden' : '' }}">
+                        class="absolute -top-1 left-3 bg-red-600 text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[9px] {{ count(session('cart', [])) === 0 ? 'hidden' : '' }}">
                         {{ count(session('cart', [])) }}
                     </span>
                 </a>
@@ -261,6 +261,23 @@
     <main class="pt-10 md:pt-32">
         @yield('content')
     </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-24 right-6 z-[9999] hidden transition-all duration-300 transform translate-x-full">
+        <div class="bg-surface-card border-l-4 border-brand-green rounded-lg shadow-2xl p-4 flex items-center gap-3 min-w-[300px] max-w-[400px]">
+            <div class="flex-shrink-0">
+                <div class="w-10 h-10 bg-brand-green/20 rounded-full flex items-center justify-center">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-brand-green"></i>
+                </div>
+            </div>
+            <div class="flex-1">
+                <p id="toast-message" class="text-text-primary font-medium"></p>
+            </div>
+            <button onclick="closeToast()" class="flex-shrink-0 text-text-secondary hover:text-text-primary transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </div>
 
     <footer class="bg-surface-card border-t border-border py-16">
         <div class="container mx-auto px-6">
@@ -373,6 +390,50 @@
     <script src="{{ asset('js/products.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
     <script src="{{ asset('js/n8n-chat-widget.js') }}"></script>
+
+    <script>
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden');
+
+            // Animar entrada
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full');
+                toast.classList.add('translate-x-0');
+            }, 10);
+
+            // Re-inicializar ícones do Lucide
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // Fechar automaticamente após 5 segundos
+            setTimeout(() => {
+                closeToast();
+            }, 5000);
+        }
+
+        function closeToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-x-0');
+            toast.classList.add('translate-x-full');
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 300);
+        }
+
+        // Verificar se existe mensagem de sucesso da sessão
+        @if(session('success'))
+            document.addEventListener('DOMContentLoaded', function() {
+                showToast("{{ session('success') }}");
+            });
+        @endif
+    </script>
+
     <!-- Chatbot do n8n -->
     <div id="n8n-chat" data-endpoint="http://localhost:5678/webhook/29b79101-e2b3-4556-9ebe-2c922853687f"
         data-title="Assistente PixelParts"

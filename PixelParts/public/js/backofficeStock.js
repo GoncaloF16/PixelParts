@@ -468,30 +468,42 @@ document.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll("[data-dropdown-menu]").forEach(m => {
                 if (m !== menu) {
                     m.classList.add("hidden");
+                    m.style.position = '';
+                    m.style.top = '';
+                    m.style.left = '';
                 }
             });
 
-            // Verificar se o dropdown está perto do final da página
-            const rect = trigger.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
-            const spaceBelow = viewportHeight - rect.bottom;
-
-            // Se não há espaço suficiente abaixo (menos de 200px), abre para cima
-            if (spaceBelow < 200) {
-                menu.classList.remove('origin-top-right');
-                menu.classList.add('origin-bottom-right', 'bottom-full', 'mb-2');
-                menu.classList.remove('mt-2');
-            } else {
-                menu.classList.add('origin-top-right');
-                menu.classList.remove('origin-bottom-right', 'bottom-full', 'mb-2');
-                menu.classList.add('mt-2');
-            }
-
+            // Toggle the menu first
             menu.classList.toggle("hidden");
-        });
-    });
 
-    document.addEventListener("click", (e) => {
+            // Verificar se o dropdown ultrapassa o viewport após abrir
+            if (!menu.classList.contains('hidden')) {
+                const rect = trigger.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+
+                // Usar posicionamento fixed para evitar cortes
+                menu.style.position = 'fixed';
+                menu.style.left = `${rect.right - menu.offsetWidth}px`;
+
+                // Se o dropdown ultrapassar o viewport, posiciona para cima
+                if (rect.bottom + menu.offsetHeight > viewportHeight - 20) {
+                    menu.style.top = `${rect.top - menu.offsetHeight - 8}px`;
+                    menu.classList.remove('origin-top-right', 'mt-2');
+                    menu.classList.add('origin-bottom-right');
+                } else {
+                    menu.style.top = `${rect.bottom + 8}px`;
+                    menu.classList.remove('origin-bottom-right');
+                    menu.classList.add('origin-top-right');
+                }
+            } else {
+                // Reset positioning when closing
+                menu.style.position = '';
+                menu.style.top = '';
+                menu.style.left = '';
+            }
+        });
+    });    document.addEventListener("click", (e) => {
         // Não fechar dropdowns se o clique for dentro de um modal
         if (e.target.closest('#product-modal') ||
             e.target.closest('#product-save-confirm-modal') ||

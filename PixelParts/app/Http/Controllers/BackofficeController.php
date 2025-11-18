@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Order;
 use App\Exports\StockExport;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class BackofficeController extends Controller
 {
@@ -19,14 +21,54 @@ class BackofficeController extends Controller
         $totalUsers = DB::table('users')->count();
         $totalProducts = DB::table('products')->count();
 
+        // Encomendas do mês atual (apenas pagas)
+        $ordersThisMonth = Order::whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->where('status', '>=', 1)
+            ->whereNotNull('stripe_id')
+            ->count();
+
+        // Receita do mês atual (soma dos amounts apenas de encomendas pagas)
+        $revenueThisMonth = Order::whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->where('status', '>=', 1)
+            ->whereNotNull('stripe_id')
+            ->sum('amount');
+
+        // Encomendas recentes (últimas 5 com nome do utilizador)
+        $recentOrders = Order::join('users', 'orders.user_id', '=', 'users.id')
+            ->select('orders.id', 'orders.status', 'orders.created_at', 'users.name as user_name')
+            ->orderBy('orders.created_at', 'desc')
+            ->take(5)
+            ->get()
+            ->map(function($order) {
+                $order->order_number = '#ORD-' . str_pad($order->id, 6, '0', STR_PAD_LEFT);
+                $order->status_label = match($order->status) {
+                    0 => 'Pendente',
+                    1 => 'Processando',
+                    2 => 'Enviado',
+                    3 => 'Entregue',
+                    default => 'Desconhecido'
+                };
+                $order->status_color = match($order->status) {
+                    0 => 'yellow',
+                    1 => 'blue',
+                    2 => 'green',
+                    3 => 'green',
+                    default => 'gray'
+                };
+                return $order;
+            });
+
         $products = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->select('products.name', 'products.stock', 'categories.name as category_name')
-            ->where('products.stock', '<', 10)
+            ->where('products.stock', '<=', 10)
             ->orderBy('products.stock', 'asc')
-            ->paginate(5);
+            ->limit(5)
+            ->get();
 
-        return view('backoffice.dashboard', compact('totalUsers', 'totalProducts', 'products'));
+        return view('backoffice.dashboard', compact('totalUsers', 'totalProducts', 'ordersThisMonth', 'revenueThisMonth', 'recentOrders', 'products'));
 
     }
 
@@ -334,5 +376,87 @@ class BackofficeController extends Controller
         return response()->json([
             'product' => $product
         ]);
+    }
+
+    // Encomendas
+    public function orders(Request $request) {
+        $query = Order::with('user');
+
+        // Filtro de pesquisa
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            })->orWhere('id', 'like', "%{$search}%")
+              ->orWhere('stripe_id', 'like', "%{$search}%");
+        }
+
+        // Filtro de status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('backoffice.orders', compact('orders'));
+    }
+
+    public function getOrder($id) {
+        $order = Order::with(['user', 'products.product'])->findOrFail($id);
+
+        $amountCents = is_null($order->amount) ? 0 : (int) $order->amount;
+        if ($amountCents > 0 && $amountCents < 1000) {
+            $amountCents = (int) round($order->amount * 100);
+        }
+
+        $sumSubtotals = 0;
+        foreach ($order->products as $item) {
+            $price = (int) $item->price;
+            if ($price > 0 && $price < 1000) {
+                $price = (int) round($item->price * 100);
+            }
+            $item->price_display_cents = $price;
+            $item->subtotal_display_cents = $price * (int) $item->quantity;
+            $sumSubtotals += $item->subtotal_display_cents;
+        }
+
+        if ($order->products->count() === 1 && $sumSubtotals !== $amountCents) {
+            $only = $order->products->first();
+            $qty = max((int) $only->quantity, 1);
+            $only->price_display_cents = (int) round($amountCents / $qty);
+            $only->subtotal_display_cents = $only->price_display_cents * $qty;
+        }
+
+        return response()->json([
+            'order' => $order,
+            'order_number' => '#ORD-' . str_pad($order->id, 6, '0', STR_PAD_LEFT),
+            'amount_cents' => $amountCents,
+            'status_label' => match($order->status) {
+                0 => 'Pendente',
+                1 => 'Processando',
+                2 => 'Enviado',
+                3 => 'Entregue',
+                default => 'Desconhecido'
+            }
+        ]);
+    }
+
+    public function updateOrder(Request $request, $id) {
+        $order = Order::findOrFail($id);
+        $order->status = $request->status;
+        $order->save();
+
+        return response()->json([
+            'message' => 'Encomenda atualizada com sucesso',
+            'order' => $order
+        ]);
+    }
+
+    public function deleteOrder($id) {
+        $order = Order::findOrFail($id);
+        $order->delete();
+
+        return response()->json(['message' => 'Encomenda excluída com sucesso', 'id' => $id]);
     }
 }
