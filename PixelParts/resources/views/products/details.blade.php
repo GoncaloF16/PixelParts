@@ -6,7 +6,7 @@
 
             <!-- Breadcrumb -->
             <nav class="text-sm text-text-secondary mb-2" aria-label="Breadcrumb">
-                <ol class="list-reset flex">
+                <ol class="list-reset flex flex-wrap items-center">
                     <li>
                         <a href="{{ route('home') }}" class="hover:underline text-base">Home</a>
                     </li>
@@ -16,7 +16,7 @@
                     </li>
                     @if (isset($product))
                         <li><span class="mx-2 text-base">></span></li>
-                        <li>
+                        <li class="max-w-xs truncate">
                             <span class="text-text-primary font-semibold text-base">
                                 {{ $product->name }}
                             </span>
@@ -29,10 +29,12 @@
                 <!-- Imagem principal -->
                 <div class="space-y-4">
                     <div class="relative bg-surface-elevated rounded-2xl overflow-hidden aspect-square">
+                        @if ($product->created_at->gt(now()->subDays(7)))
                         <span
-                            class="absolute top-4 left-4 z-10 bg-brand-green text-surface-dark px-3 py-1 rounded-full text-xs font-semibold">
-                            Novo
+                            class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">
+                            NOVO
                         </span>
+                        @endif
                         <img src="{{ $product->image
                             ? (Str::startsWith($product->image, ['http://', 'https://'])
                                 ? $product->image
@@ -72,7 +74,7 @@
 
                     <!-- Preço -->
                     <div class="flex items-baseline gap-4 mb-6">
-                        <span class="text-5xl font-bold text-gradient-brand">
+                        <span class="text-5xl font-bold text-gray-100">
                             €{{ number_format($product->price, 2, ',', '.') }}
                         </span>
                     </div>
@@ -102,17 +104,18 @@
                                 <label class="!text-white text-text-inverse">Quantidade:</label>
                                 <div class="flex items-center border border-white/20 rounded-lg overflow-hidden">
                                     <button type="button" onclick="decreaseQuantity()"
-                                        class="bg-gradient-to-r from-brand-green to-brand-blue !text-white px-4 py-2">-</button>
+                                        class="bg-gray-700 hover:bg-gray-600 !text-white px-4 py-2 transition-colors">-</button>
                                     <span id="quantity-display" class="!text-white px-6 py-2 font-semibold"
                                         data-stock="{{ $product->stock }}">1</span>
                                     <button type="button" onclick="increaseQuantity({{ $product->stock }})"
-                                        class="bg-gradient-to-r from-brand-green to-brand-blue !text-white px-4 py-2">+</button>
+                                        class="bg-gray-700 hover:bg-gray-600 !text-white px-4 py-2 transition-colors">+</button>
                                 </div>
                             </div>
 
                             <div class="flex gap-4">
                                 <button type="submit"
-                                    class="flex-1 bg-gradient-to-r from-brand-green to-brand-blue text-white hover:bg-brand-green-glow h-14 text-lg font-bold rounded-lg flex items-center justify-center gap-2 glow-brand transition-all">
+                                    class="flex-1 bg-gray-700 hover:bg-gray-600 text-gray-200 h-14 text-lg font-semibold rounded-lg flex items-center justify-center gap-2 transition-all">
+                                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
                                     Adicionar ao Carrinho
                                 </button>
                             </div>
@@ -221,7 +224,7 @@
 
                         @auth
                             <button id="showReviewFormBtn"
-                                class="!border-white border-[1px] bg-brand-green hover:bg-brand-green-glow text-surface-dark px-6 py-3 rounded-lg font-bold transition-all">
+                                class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-6 py-3 rounded-lg font-semibold transition-all">
                                 Escrever Avaliação
                             </button>
                         @endauth
@@ -258,7 +261,7 @@
                                     placeholder="Escreva sua avaliação..."></textarea>
                             </div>
                             <button type="submit"
-                                class="bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 rounded-lg font-bold text-white hover:scale-105 transition-transform">
+                                class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-6 py-3 rounded-lg font-semibold transition-all">
                                 Enviar Avaliação
                             </button>
                         </form>

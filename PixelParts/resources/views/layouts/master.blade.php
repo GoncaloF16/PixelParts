@@ -129,7 +129,7 @@
                             <div class="py-1 flex flex-col">
                                 <!-- user -->
                                 @if (Auth::user()->role === 'user')
-                                    <a href="#"
+                                    <a href="{{ route('profile') }}"
                                         class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors">
                                         <i data-lucide="user" class="w-4 h-4 mr-2"></i> Perfil
                                     </a>
@@ -226,7 +226,7 @@
 
                         <!-- User Links -->
                         @if (Auth::user()->role === 'user')
-                            <a href="#"
+                            <a href="{{ route('profile') }}"
                                 class="flex items-center gap-3 text-gray-200 hover:text-brand-green transition-colors duration-300 py-2.5 px-2 hover:bg-gray-800/50 rounded-lg">
                                 <i data-lucide="user" class="w-5 h-5"></i>
                                 <span class="font-medium">Perfil</span>
@@ -327,6 +327,9 @@
                                 Nós</a></li>
                         <li><a href="#"
                                 class="text-text-secondary hover:text-brand-green transition-colors duration-300">Contacto</a>
+                        </li>
+                         <li><a href="https://www.livroreclamacoes.pt/inicio/"
+                                class="text-text-secondary hover:text-brand-green transition-colors duration-300">Livro de Reclamações</a>
                         </li>
                     </ul>
                 </div>

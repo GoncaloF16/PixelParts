@@ -28,6 +28,9 @@ Route::middleware('auth')->group(function() {
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/order', [CartController::class, 'order'])->name('order.post');
     Route::get('/order-success', [CartController::class, 'orderSuccess'])->name('order.success');
+
+    Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
+    Route::put('/profile/update', [HomeController::class, 'updateProfile'])->name('profile.update');
 });
 
 Route::middleware('web')->group(function () {
