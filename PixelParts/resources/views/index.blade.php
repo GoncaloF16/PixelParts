@@ -40,7 +40,7 @@
             </div>
 
             <!-- Scroll Indicator -->
-            <div class="absolute bottom-16 lg:bottom-32 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="absolute bottom-4 sm:bottom-8 md:bottom-12 lg:bottom-32 left-1/2 transform -translate-x-1/2 animate-bounce pointer-events-none">
                 <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400"></i>
             </div>
         </section>

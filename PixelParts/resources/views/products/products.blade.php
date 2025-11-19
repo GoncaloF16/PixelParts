@@ -297,11 +297,13 @@
                 isRedirecting = true;
                 showLoading();
 
-                const url = new URLSearchParams(window.location.search);
+                const url = new URLSearchParams();
 
-                // Remover filtros antigos
-                url.delete('brand[]');
-                url.delete('categoria[]');
+                // Manter apenas o parâmetro de pesquisa se existir
+                const searchQuery = new URLSearchParams(window.location.search).get('q');
+                if (searchQuery) {
+                    url.set('q', searchQuery);
+                }
 
                 // Adicionar categorias selecionadas
                 const selectedCategories = Array.from(categoryFilters)
@@ -315,7 +317,7 @@
                     .map(cb => cb.value);
                 selectedBrands.forEach(brand => url.append('brand[]', brand));
 
-                // Redirecionar com novos parâmetros
+                // Redirecionar com novos parâmetros (sempre página 1)
                 window.location.href = "{{ route('products.index') }}" + (url.toString() ? '?' + url.toString() : '');
             }
 

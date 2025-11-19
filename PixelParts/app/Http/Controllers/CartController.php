@@ -37,6 +37,7 @@ public function index()
         $cartItems[$pid] = [
             'product_id' => $pid,
             'name' => $item['name'],
+            'image' => $item['image'] ?? null,
             'quantity' => $item['quantity'],
             'price' => $item['price'],
             'subtotalComIva' => $subtotalComIva,
@@ -80,6 +81,15 @@ public function index()
     }
 
     session()->put('cart', $cart);
+
+    // Track abandoned cart
+    $user = auth()->user();
+    if ($user) {
+        \App\Models\AbandonedCart::updateOrCreate(
+            ['user_id' => $user->id, 'recovered_at' => null, 'email_sent_at' => null],
+            ['cart_data' => $cart]
+        );
+    }
 
     return response()->json([
         'success' => true,
@@ -165,6 +175,14 @@ public function order (Request $request)
     $order->amount = $orderTotalCents;
     $order->save();
 
+    // Mark any abandoned cart as recovered since user is placing order
+    $user = auth()->user();
+    if ($user) {
+        \App\Models\AbandonedCart::where('user_id', $user->id)
+            ->whereNull('recovered_at')
+            ->update(['recovered_at' => now()]);
+    }
+
     $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
 
     $successURL = route('order.success').'?session_id={CHECKOUT_SESSION_ID}&order_id='. $order->id;
@@ -224,5 +242,24 @@ public function orderSuccess(Request $request)
     $order->save();
 
     return redirect()->route('cart.index')->with('error', 'Pagamento não foi concluído. Por favor, tente novamente.');
+}
+
+public function recover($token)
+{
+    $abandonedCart = \App\Models\AbandonedCart::where('token', $token)
+        ->whereNull('recovered_at')
+        ->first();
+
+    if (!$abandonedCart) {
+        return redirect()->route('home')->with('error', 'Link de recuperação inválido ou expirado.');
+    }
+
+    // Restore cart data to session
+    session()->put('cart', $abandonedCart->cart_data);
+
+    // Mark as recovered
+    $abandonedCart->markAsRecovered();
+
+    return redirect()->route('cart.index')->with('success', 'O teu carrinho foi recuperado com sucesso!');
 }
 }

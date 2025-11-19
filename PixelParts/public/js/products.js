@@ -161,6 +161,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const data = await response.json();
 
+                // Verificar se é resposta de não autenticado e redirecionar
+                if (response.status === 401 && data.redirect) {
+                    window.location.href = data.redirect;
+                    return;
+                }
+
                 if (data.success) {
                     // Atualiza contador do carrinho
                     if (typeof window.updateCartCount === 'function') {

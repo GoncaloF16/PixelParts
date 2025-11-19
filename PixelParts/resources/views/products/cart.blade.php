@@ -2,7 +2,7 @@
 
 @section('content')
     <main>
-        <section class="bg-surface min-h-screen">
+        <section class="bg-surface min-h-screen pb-16">
             <div class="container mx-auto px-6">
 
                 <!-- Header -->
@@ -36,18 +36,29 @@
                             class="card-content grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-7xl mx-auto animate-fade-up">
 
                             <!-- Lista de produtos scrollable -->
-                            <div class="lg:col-span-2 space-y-4 overflow-y-auto max-h-[700px]">
+                            <div class="lg:col-span-2 space-y-4">
                                 @foreach ($cartItems as $item)
                                     <div id="cart-item-{{ $item['product_id'] }}"
-                                        class="bg-gray-900 rounded-lg shadow p-4 flex justify-between items-center text-white cart-item break-words transition-all duration-300"
+                                        class="bg-gray-900 rounded-lg shadow p-4 flex gap-4 items-center text-white cart-item break-words transition-all duration-300"
                                         style="opacity: 1; transform: translateX(0);">
-                                        <div>
+                                        <!-- Imagem do produto -->
+                                        @if(isset($item['image']))
+                                            <img src="{{ Str::startsWith($item['image'], ['http://', 'https://']) ? $item['image'] : asset('storage/' . $item['image']) }}"
+                                                 alt="{{ $item['name'] }}"
+                                                 class="w-20 h-20 object-cover rounded-lg flex-shrink-0">
+                                        @else
+                                            <div class="w-20 h-20 bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                <i data-lucide="image" class="w-8 h-8 text-gray-600"></i>
+                                            </div>
+                                        @endif
+
+                                        <div class="flex-1">
                                             <span class="font-semibold text-lg block">{{ $item['name'] }}</span>
                                             <span class="text-sm opacity-80">Quantidade:
                                                 <span class="item-quantity">{{ $item['quantity'] }}</span>
                                             </span>
                                         </div>
-                                        <div class="text-right">
+                                        <div class="text-right flex-shrink-0">
                                             <button data-id="{{ $item['product_id'] }}"
                                                 class="remove-from-cart text-red-500 hover:text-red-700 text-xs">
                                                 Remover
