@@ -25,7 +25,7 @@
                 </ol>
             </nav>
             <br>
-            <div class="grid lg:grid-cols-2 gap-12 mb-16">
+            <div class="grid lg:grid-cols-2 gap-12 mb-16 items-start">
                 <!-- Imagem principal -->
                 <div class="space-y-4">
                     <div class="relative bg-surface-elevated rounded-2xl overflow-hidden aspect-square">
@@ -44,10 +44,88 @@
                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
 
                     </div>
+
+                    <!-- Produtos Recomendados -->
+                    @if($recommendedProducts->count() > 0)
+                    <div id="recommended-section" class="mt-8 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 border border-white/10">
+                        <h3 class="text-white text-2xl font-bold mb-2">A Combinação Perfeita</h3>
+                        <p class="text-gray-400 text-sm mb-6">Produtos compatíveis frequentemente comprados juntos</p>
+
+                        <div class="flex items-center gap-3 mb-6 overflow-x-auto pb-4" style="scrollbar-width: none; -ms-overflow-style: none;">
+                            <style>
+                                .flex.items-center.gap-3::-webkit-scrollbar {
+                                    display: none;
+                                }
+                            </style>
+                            <!-- Produto principal (sempre selecionado) -->
+                            <div class="relative flex-shrink-0 pt-3 pr-3">
+                                <input type="checkbox"
+                                       checked
+                                       disabled
+                                       class="absolute top-1 right-1 w-5 h-5 rounded border-2 border-white bg-brand-green z-10 cursor-not-allowed">
+                                <div class="w-24 h-24 rounded-lg overflow-hidden bg-white">
+                                    <img src="{{ $product->image
+                                        ? (Str::startsWith($product->image, ['http://', 'https://'])
+                                            ? $product->image
+                                            : asset('storage/' . $product->image))
+                                        : 'https://via.placeholder.com/96' }}"
+                                        alt="{{ $product->name }}"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+
+                            @foreach($recommendedProducts->take(3) as $index => $rec)
+                            <div class="text-white text-2xl font-light flex-shrink-0">+</div>
+                            <div class="relative flex-shrink-0 pt-3 pr-3">
+                                <input type="checkbox"
+                                       class="bundle-checkbox absolute top-1 right-1 w-5 h-5 rounded border-2 border-white cursor-pointer z-10 checked:bg-brand-green checked:border-brand-green"
+                                       data-product-id="{{ $rec->id }}"
+                                       data-price="{{ $rec->price }}"
+                                       checked
+                                       onchange="updateBundleTotal()">
+                                <div class="w-24 h-24 rounded-lg overflow-hidden bg-white">
+                                    <img src="{{ $rec->image
+                                        ? (Str::startsWith($rec->image, ['http://', 'https://'])
+                                            ? $rec->image
+                                            : asset('storage/' . $rec->image))
+                                        : 'https://via.placeholder.com/96' }}"
+                                        alt="{{ $rec->name }}"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Lista de produtos com preços -->
+                        <div class="space-y-3 mb-6" id="bundle-products-list">
+                            @foreach($recommendedProducts->take(3) as $rec)
+                                <div class="flex items-start justify-between text-sm bundle-product-item" data-product-id="{{ $rec->id }}">
+                                    <a href="{{ route('products.details', $rec->slug) }}" class="text-white hover:text-brand-green transition-colors flex-1 line-clamp-2">
+                                        {{ $rec->name }}
+                                    </a>
+                                    <span class="text-gray-100 font-bold ml-4 flex-shrink-0">€{{ number_format($rec->price, 2, ',', '.') }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Total e botão -->
+                        <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                            <div>
+                                <div class="text-gray-100 text-3xl font-bold" id="bundle-total">€{{ number_format($product->price + $recommendedProducts->take(3)->sum('price'), 2, ',', '.') }}</div>
+                            </div>
+                            <button type="button"
+                                    id="add-bundle-btn"
+                                    onclick="addSelectedBundle()"
+                                    class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-8 py-4 rounded-lg font-bold text-lg transition-all">
+                                <span id="bundle-count">ADICIONAR {{ $recommendedProducts->take(3)->count() + 1 }} ARTIGOS</span>
+                            </button>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 <!-- Info -->
-                <div class="space-y-6">
+                <div class="lg:sticky lg:top-6 space-y-6" id="product-info-section" style="align-self: start;">
                     <p class="text-brand-green font-semibold mb-2">{{ $product->brand }}</p>
                     <h1 class="!text-white text-4xl font-bold text-text-inverse mb-4">{{ $product->name }}</h1>
 
@@ -379,5 +457,99 @@
         window.routes = {
             cartAdd: "{{ route('cart.add') }}"
         };
+
+        // Quick add to cart for recommended products
+        function addToCartQuick(productId) {
+            fetch(window.routes.cartAdd, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    quantity: 1
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.showToast(data.message);
+                    if (typeof window.updateCartCount === 'function') {
+                        window.updateCartCount(data.cart_count);
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Add bundle to cart (multiple products)
+        async function addBundleToCart(productIds) {
+            let successCount = 0;
+
+            for (const productId of productIds) {
+                try {
+                    const response = await fetch(window.routes.cartAdd, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            product_id: productId,
+                            quantity: 1
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        successCount++;
+                        if (typeof window.updateCartCount === 'function') {
+                            window.updateCartCount(data.cart_count);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error adding product:', error);
+                }
+            }
+
+            if (successCount > 0) {
+                window.showToast(`${successCount} produtos adicionados ao carrinho!`);
+            }
+        }
+
+        // Update bundle total based on selected checkboxes
+        function updateBundleTotal() {
+            const checkboxes = document.querySelectorAll('.bundle-checkbox:checked');
+            const mainProductPrice = {{ $product->price }};
+            let total = mainProductPrice;
+            let count = 1; // Main product always included
+
+            checkboxes.forEach(checkbox => {
+                const price = parseFloat(checkbox.dataset.price);
+                total += price;
+                count++;
+            });
+
+            // Update total display
+            document.getElementById('bundle-total').textContent =
+                '€' + total.toFixed(2).replace('.', ',');
+
+            // Update button text
+            document.getElementById('bundle-count').textContent =
+                `ADICIONAR ${count} ${count === 1 ? 'ARTIGO' : 'ARTIGOS'}`;
+        }
+
+        // Add selected products from bundle
+        async function addSelectedBundle() {
+            const selectedCheckboxes = document.querySelectorAll('.bundle-checkbox:checked');
+            const productIds = [{{ $product->id }}]; // Always include main product
+
+            selectedCheckboxes.forEach(checkbox => {
+                productIds.push(parseInt(checkbox.dataset.productId));
+            });
+
+            await addBundleToCart(productIds);
+        }
     </script>
 @endsection

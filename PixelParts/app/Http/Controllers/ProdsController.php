@@ -78,9 +78,30 @@ class ProdsController extends Controller
 
         $averageRating = $product->averageRating();
 
+        // Get recommended products (same category, excluding current product)
+        $recommendedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->where('stock', '>', 0)
+            ->inRandomOrder()
+            ->limit(4)
+            ->get();
+
+        // If not enough products in same category, get from other categories
+        if ($recommendedProducts->count() < 4) {
+            $additionalProducts = Product::where('category_id', '!=', $product->category_id)
+                ->where('id', '!=', $product->id)
+                ->where('stock', '>', 0)
+                ->inRandomOrder()
+                ->limit(4 - $recommendedProducts->count())
+                ->get();
+
+            $recommendedProducts = $recommendedProducts->merge($additionalProducts);
+        }
+
         return view('products.details', [
             'product' => $product,
-            'averageRating' => $averageRating
+            'averageRating' => $averageRating,
+            'recommendedProducts' => $recommendedProducts
         ]);
     }
 
