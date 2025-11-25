@@ -169,93 +169,121 @@
 
             </nav>
         </div>
+    </header>
 
-        <!-- Mobile Navigation -->
-        <nav id="mobile-menu" class="hidden md:hidden absolute left-0 right-0 top-full z-50 bg-gray-900 border-t-2 border-brand-green shadow-2xl max-h-[80vh] overflow-y-auto">
-            <div class="flex flex-col px-6 py-4 space-y-3">
+    <!-- Mobile Menu Backdrop -->
+    <div id="mobile-menu-backdrop" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] transition-opacity duration-300 opacity-0"></div>
 
-                <!-- Categorias Dropdown -->
-                <div class="border-b border-gray-700 pb-3">
-                    <button id="mobile-categories-toggle" class="w-full flex items-center justify-between text-gray-200 font-semibold py-2 hover:text-brand-green transition-colors">
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="grid-3x3" class="w-5 h-5"></i>
-                            <span>Categorias</span>
-                        </div>
-                        <i data-lucide="chevron-down" class="w-5 h-5 transition-transform" id="mobile-categories-icon"></i>
+    <!-- Mobile Navigation -->
+    <nav id="mobile-menu" class="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-gray-900 z-[70] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl overflow-y-auto">
+        <div class="flex flex-col h-full">
+                <!-- Header do Menu -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-800">
+                    <h2 class="text-xl font-bold text-gray-200">Menu</h2>
+                    <button id="mobile-menu-close" class="text-gray-400 hover:text-gray-200 transition-colors">
+                        <i data-lucide="x" class="w-6 h-6"></i>
                     </button>
-                    <div id="mobile-categories-list" class="hidden mt-2 ml-7 space-y-2">
-                        @foreach ($categorias as $categoria)
-                            <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
-                                class="block text-gray-300 hover:text-brand-green transition-colors duration-300 py-1.5 pl-2 hover:bg-gray-800/50 rounded">
-                                {{ $categoria->name }}
-                            </a>
-                        @endforeach
-                    </div>
                 </div>
 
-                <!-- Carrinho -->
-                <a href="{{ route('cart.index') }}"
-                    class="flex items-center gap-3 text-gray-200 hover:text-brand-green transition-colors duration-300 py-3 px-2 hover:bg-gray-800/50 rounded-lg">
-                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
-                    <span class="font-medium">Carrinho</span>
-                    @if (count(session('cart', [])) > 0)
-                        <span
-                            class="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs ml-auto font-bold">
-                            {{ count(session('cart', [])) }}
-                        </span>
-                    @endif
-                </a>
-
-                <!-- Divider -->
-                <div class="border-t border-gray-700 my-2"></div>
-
-                <!-- Auth Section -->
-                @guest
-                    <a href="{{ route('login') }}"
-                        class="bg-gradient-to-r from-brand-green to-brand-blue text-white px-4 py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:scale-105 transition-transform duration-300">
-                        <i data-lucide="user" class="w-5 h-5"></i> Entrar
-                    </a>
-                @endguest
-
-                @auth
-                    <div class="space-y-2">
-                        <div class="flex items-center gap-2 text-gray-200 mb-3 pb-3 border-b border-gray-700">
-                            <i data-lucide="user" class="w-5 h-5 text-brand-green"></i>
-                            <span class="font-bold">Olá, {{ Auth::user()->name }}</span>
+                <!-- Conteúdo do Menu (scrollável) -->
+                <div class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <!-- Categorias Dropdown -->
+                    <div class="bg-gray-800/50 rounded-xl p-4 border border-gray-800">
+                        <button id="mobile-categories-toggle" class="w-full flex items-center justify-between text-gray-200 font-semibold hover:text-brand-green transition-colors">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="layers" class="w-5 h-5 text-brand-green"></i>
+                                <span>Categorias</span>
+                            </div>
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300" id="mobile-categories-icon"></i>
+                        </button>
+                        <div id="mobile-categories-list" class="hidden mt-3 space-y-2">
+                            @foreach ($categorias as $categoria)
+                                <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
+                                    class="block text-gray-400 hover:text-brand-green transition-colors duration-300 py-2 pl-8 hover:bg-gray-700/50 rounded-lg">
+                                    {{ $categoria->name }}
+                                </a>
+                            @endforeach
                         </div>
-
-                        <!-- User Links -->
-                        @if (Auth::user()->role === 'user')
-                            <a href="{{ route('profile') }}"
-                                class="flex items-center gap-3 text-gray-200 hover:text-brand-green transition-colors duration-300 py-2.5 px-2 hover:bg-gray-800/50 rounded-lg">
-                                <i data-lucide="user" class="w-5 h-5"></i>
-                                <span class="font-medium">Perfil</span>
-                            </a>
-                        @endif
-
-                        <!-- Admin Link -->
-                        @if (Auth::user()->role === 'admin')
-                            <a href="{{ route('backoffice.index') }}"
-                                class="flex items-center gap-3 text-gray-200 hover:text-brand-green transition-colors duration-300 py-2.5 px-2 hover:bg-gray-800/50 rounded-lg">
-                                <i data-lucide="settings" class="w-5 h-5"></i>
-                                <span class="font-medium">Backoffice</span>
-                            </a>
-                        @endif
-
-                        <!-- Logout -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit"
-                                class="w-full flex items-center gap-3 text-gray-200 hover:text-red-500 transition-colors duration-300 py-2.5 px-2 hover:bg-red-500/10 rounded-lg">
-                                <i data-lucide="log-out" class="w-5 h-5"></i>
-                                <span class="font-medium">Logout</span>
-                            </button>
-                        </form>
                     </div>
-                @endauth
+
+                    <!-- Carrinho -->
+                    <a href="{{ route('cart.index') }}"
+                        class="flex items-center justify-between bg-gray-800/50 rounded-xl p-4 border border-gray-800 hover:border-brand-green transition-all duration-300 group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center group-hover:bg-brand-green/20 transition-colors">
+                                <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-400 group-hover:text-brand-green transition-colors"></i>
+                            </div>
+                            <span class="font-medium text-gray-200 group-hover:text-brand-green transition-colors">Carrinho</span>
+                        </div>
+                        @if (count(session('cart', [])) > 0)
+                            <span class="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                                {{ count(session('cart', [])) }}
+                            </span>
+                        @endif
+                    </a>
+
+                    <div class="border-t border-gray-800 my-4"></div>
+
+                    <!-- Auth Section -->
+                    @guest
+                        <a href="{{ route('login') }}"
+                            class="flex items-center justify-center gap-3 bg-gradient-to-r from-brand-green to-brand-blue text-white px-6 py-4 rounded-xl font-bold hover:scale-105 transition-transform duration-300 shadow-lg">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                            <span>Entrar</span>
+                        </a>
+                    @endguest
+
+                    @auth
+                        <div class="space-y-3">
+                            <!-- User Info -->
+                            <div class="flex items-center gap-3 bg-gray-800/50 rounded-xl p-4 border border-gray-800">
+                                <div class="w-10 h-10 bg-gradient-to-r from-brand-green to-brand-blue rounded-full flex items-center justify-center">
+                                    <i data-lucide="user" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-400">Olá,</p>
+                                    <p class="font-bold text-gray-200">{{ Auth::user()->name }}</p>
+                                </div>
+                            </div>
+
+                            <!-- User Links -->
+                            @if (Auth::user()->role === 'user')
+                                <a href="{{ route('profile') }}"
+                                    class="flex items-center gap-3 bg-gray-800/50 rounded-xl p-4 border border-gray-800 hover:border-brand-green transition-all duration-300 group">
+                                    <div class="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center group-hover:bg-brand-green/20 transition-colors">
+                                        <i data-lucide="user" class="w-5 h-5 text-gray-400 group-hover:text-brand-green transition-colors"></i>
+                                    </div>
+                                    <span class="font-medium text-gray-200 group-hover:text-brand-green transition-colors">Perfil</span>
+                                </a>
+                            @endif
+
+                            <!-- Admin Link -->
+                            @if (Auth::user()->role === 'admin')
+                                <a href="{{ route('backoffice.index') }}"
+                                    class="flex items-center gap-3 bg-gray-800/50 rounded-xl p-4 border border-gray-800 hover:border-brand-blue transition-all duration-300 group">
+                                    <div class="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center group-hover:bg-brand-blue/20 transition-colors">
+                                        <i data-lucide="settings" class="w-5 h-5 text-gray-400 group-hover:text-brand-blue transition-colors"></i>
+                                    </div>
+                                    <span class="font-medium text-gray-200 group-hover:text-brand-blue transition-colors">Backoffice</span>
+                                </a>
+                            @endif
+
+                            <!-- Logout -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full flex items-center gap-3 bg-gray-800/50 rounded-xl p-4 border border-gray-800 hover:border-red-500 transition-all duration-300 group">
+                                    <div class="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
+                                        <i data-lucide="log-out" class="w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors"></i>
+                                    </div>
+                                    <span class="font-medium text-gray-200 group-hover:text-red-500 transition-colors">Logout</span>
+                                </button>
+                            </form>
+                        </div>
+                    @endauth
+                </div>
             </div>
         </nav>
-    </header>
 
     <!-- Main Content -->
     <main class="pt-10 md:pt-32">

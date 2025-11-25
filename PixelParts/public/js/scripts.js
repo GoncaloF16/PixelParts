@@ -55,27 +55,46 @@ document.addEventListener("DOMContentLoaded", function () {
     // Mobile menu toggle
     const mobileMenuBtn = document.getElementById("mobile-menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
+    const mobileMenuBackdrop = document.getElementById("mobile-menu-backdrop");
+    const mobileMenuClose = document.getElementById("mobile-menu-close");
 
-    if (mobileMenuBtn && mobileMenu) {
+    function openMobileMenu() {
+        mobileMenuBackdrop.classList.remove("hidden");
+        setTimeout(() => {
+            mobileMenuBackdrop.classList.remove("opacity-0");
+            mobileMenu.classList.remove("translate-x-full");
+        }, 10);
+        document.body.style.overflow = "hidden";
+        lucide.createIcons();
+    }
+
+    function closeMobileMenu() {
+        mobileMenu.classList.add("translate-x-full");
+        mobileMenuBackdrop.classList.add("opacity-0");
+        setTimeout(() => {
+            mobileMenuBackdrop.classList.add("hidden");
+        }, 300);
+        document.body.style.overflow = "";
+    }
+
+    if (mobileMenuBtn && mobileMenu && mobileMenuBackdrop) {
         mobileMenuBtn.addEventListener("click", (e) => {
             e.stopPropagation();
-            mobileMenu.classList.toggle("hidden");
-            lucide.createIcons();
+            openMobileMenu();
         });
 
-        // Fechar ao clicar fora
-        document.addEventListener("click", (e) => {
-            if (!mobileMenu.classList.contains("hidden")) {
-                if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-                    mobileMenu.classList.add("hidden");
-                }
-            }
+        mobileMenuClose.addEventListener("click", (e) => {
+            e.stopPropagation();
+            closeMobileMenu();
         });
+
+        // Fechar ao clicar no backdrop
+        mobileMenuBackdrop.addEventListener("click", closeMobileMenu);
 
         // Fechar com ESC
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
-                mobileMenu.classList.add("hidden");
+                closeMobileMenu();
             }
         });
     }

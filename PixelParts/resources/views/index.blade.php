@@ -32,7 +32,8 @@
                     </a>
                     <a href="#orcamento">
                         <button
-                            class="border-2 border-brand-green text-brand-green px-8 py-4 rounded-lg font-bold text-lg hover:bg-brand-green hover:text-surface-dark transition-all duration-300 whitespace-nowrap">
+                            class="border-2 border-brand-green text-brand-green rounded-lg font-bold text-lg hover:bg-brand-green hover:text-surface-dark transition-all duration-300 whitespace-nowrap"
+                            style="padding: calc(1rem + 2px) calc(2rem + 2px);">
                             Pedir Orçamento
                         </button>
                     </a>
@@ -81,9 +82,9 @@
                                 </div>
                             @endif
 
-                            <!-- Desconto Badge -->
-                            @if($product->discount_percentage && $product->discount_percentage > 0)
-                                <div class="absolute top-3 {{ $product->created_at->gt(now()->subDays(7)) ? 'left-20' : 'left-3' }} bg-yellow-500 text-gray-900 text-xs font-bold px-2 py-1 rounded z-10">
+                            @if ($product->discount_percentage > 0)
+                                <div
+                                    class="absolute top-3 {{ $product->created_at->gt(now()->subDays(7)) ? 'left-20' : 'left-3' }} bg-yellow-500 text-gray-900 text-xs font-bold px-2 py-1 rounded z-10">
                                     -€{{ number_format($product->discount_amount, 2, ',', '.') }}
                                 </div>
                             @endif
@@ -96,20 +97,20 @@
                                     </p>
                                 </div>
                                 <div class="mt-4 flex items-center justify-between">
-                                    <div class="flex flex-col">
-                                        @if($product->discount_percentage && $product->discount_percentage > 0)
+                                    @if ($product->discount_percentage > 0)
+                                        <div class="flex flex-col">
                                             <span class="text-sm text-gray-400 line-through">
                                                 €{{ number_format($product->price, 2, ',', '.') }}
                                             </span>
                                             <span class="text-xl font-bold bg-gradient-to-r from-brand-green to-brand-blue bg-clip-text text-transparent">
                                                 €{{ number_format($product->discounted_price, 2, ',', '.') }}
                                             </span>
-                                        @else
-                                            <span class="text-xl font-bold text-gray-100">
-                                                €{{ number_format($product->price, 2, ',', '.') }}
-                                            </span>
-                                        @endif
-                                    </div>
+                                        </div>
+                                    @else
+                                        <span class="text-xl font-bold text-gray-100">
+                                            €{{ number_format($product->price, 2, ',', '.') }}
+                                        </span>
+                                    @endif
                                     <form class="add-to-cart-form" data-product-id="{{ $product->id }}">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
