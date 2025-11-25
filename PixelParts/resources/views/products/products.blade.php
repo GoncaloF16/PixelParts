@@ -34,26 +34,32 @@
             <div class="flex flex-col lg:flex-row gap-8">
                 <!-- Filters Sidebar -->
                 <aside id="filtersSidebar" class="lg:w-72 flex-shrink-0 hidden lg:block">
-                    <div class="bg-surface rounded-lg p-6 lg:sticky lg:top-28">
+                    <div class="bg-gray-900 rounded-2xl p-6 lg:sticky lg:top-28 border border-gray-800">
                         <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-xl font-bold text-text-primary">Filtros</h2>
-                            <button id="closeFiltersBtn" class="lg:hidden text-text-secondary hover:text-text-primary">
+                            <h2 class="text-xl font-bold text-gray-200">Filtros</h2>
+                            <button id="closeFiltersBtn" class="lg:hidden text-gray-400 hover:text-gray-200 transition-colors">
                                 <i data-lucide="x" class="w-6 h-6"></i>
                             </button>
                         </div>
 
                         <!-- Category Filter -->
                         <div class="mb-6">
-                            <h3 class="font-semibold text-text-primary mb-3">Categoria</h3>
-                            <div class="space-y-2">
+                            <h3 class="font-semibold text-gray-200 mb-4 flex items-center gap-2">
+                                <i data-lucide="layers" class="w-4 h-4 text-brand-green"></i>
+                                Categoria
+                            </h3>
+                            <div class="space-y-3">
                                 @foreach ($categories as $category)
                                     @if($category->slug !== 'componentes')
-                                    <label class="flex items-center gap-2 cursor-pointer group">
-                                        <input type="checkbox"
-                                            class="filter-category w-4 h-4 rounded text-brand-blue focus:ring-brand-blue"
-                                            value="{{ $category->slug }}"
-                                            data-category-name="{{ strtolower($category->name) }}">
-                                        <span class="text-text-secondary group-hover:text-text-primary transition-colors">
+                                    <label class="flex items-center gap-3 cursor-pointer group relative">
+                                        <div class="relative flex items-center">
+                                            <input type="checkbox"
+                                                class="filter-category peer h-5 w-5 cursor-pointer appearance-none rounded border-2 border-gray-700 bg-gray-800 transition-all checked:border-brand-green checked:bg-brand-green"
+                                                value="{{ $category->slug }}"
+                                                data-category-name="{{ strtolower($category->name) }}">
+                                            <i data-lucide="check" class="w-3 h-3 text-gray-200 absolute left-1 top-1 pointer-events-none hidden peer-checked:block"></i>
+                                        </div>
+                                        <span class="text-gray-400 group-hover:text-gray-200 transition-colors text-sm">
                                             {{ $category->name }}
                                         </span>
                                     </label>
@@ -62,17 +68,25 @@
                             </div>
                         </div>
 
+                        <div class="border-t border-gray-800 my-6"></div>
+
                         <!-- Brand Filter -->
                         <div class="mb-6">
-                            <h3 class="font-semibold text-text-primary mb-3">Marca</h3>
-                            <div class="space-y-2">
+                            <h3 class="font-semibold text-gray-200 mb-4 flex items-center gap-2">
+                                <i data-lucide="tag" class="w-4 h-4 text-brand-blue"></i>
+                                Marca
+                            </h3>
+                            <div class="space-y-3">
                                 @foreach ($brands as $brand)
-                                    <label class="flex items-center gap-2 cursor-pointer group">
-                                        <input type="checkbox"
-                                            class="filter-brand w-4 h-4 rounded text-brand-blue focus:ring-brand-blue"
-                                            value="{{ strtolower($brand) }}"
-                                            data-brand-name="{{ strtolower($brand) }}">
-                                        <span class="text-text-secondary group-hover:text-text-primary transition-colors">
+                                    <label class="flex items-center gap-3 cursor-pointer group relative">
+                                        <div class="relative flex items-center">
+                                            <input type="checkbox"
+                                                class="filter-brand peer h-5 w-5 cursor-pointer appearance-none rounded border-2 border-gray-700 bg-gray-800 transition-all checked:border-brand-blue checked:bg-brand-blue"
+                                                value="{{ strtolower($brand) }}"
+                                                data-brand-name="{{ strtolower($brand) }}">
+                                            <i data-lucide="check" class="w-3 h-3 text-gray-200 absolute left-1 top-1 pointer-events-none hidden peer-checked:block"></i>
+                                        </div>
+                                        <span class="text-gray-400 group-hover:text-gray-200 transition-colors text-sm">
                                             {{ $brand }}
                                         </span>
                                     </label>
@@ -80,8 +94,11 @@
                             </div>
                         </div>
 
+                        <div class="border-t border-gray-800 my-6"></div>
+
                         <button id="clearFilters"
-                            class="w-full bg-surface text-text-primary px-4 py-2 rounded-lg border border-border/20 hover:bg-surface-dark transition-colors">
+                            class="w-full bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-gray-200 px-4 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 border border-gray-700 hover:border-gray-600">
+                            <i data-lucide="x-circle" class="w-4 h-4"></i>
                             Limpar Filtros
                         </button>
                     </div>

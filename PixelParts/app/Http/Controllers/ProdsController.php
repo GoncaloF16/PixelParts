@@ -54,11 +54,17 @@ class ProdsController extends Controller
     $products = $query->paginate(9)->withQueryString();
 
     // Buscar TODAS as marcas e categorias
-    $brands = Product::select('brand')
+    $brands = Product::whereNotNull('brand')
+        ->where('brand', '!=', '')
         ->distinct()
-        ->whereNotNull('brand')
         ->orderBy('brand')
-        ->pluck('brand');
+        ->pluck('brand')
+        ->map(function($brand) {
+            return trim($brand);
+        })
+        ->filter()
+        ->unique()
+        ->values();
 
     $categories = Category::orderBy('name')->get();
 
