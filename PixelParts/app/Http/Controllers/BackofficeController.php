@@ -170,6 +170,7 @@ class BackofficeController extends Controller
             'brand' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|max:2048',
         ]);
@@ -243,6 +244,7 @@ class BackofficeController extends Controller
             'brand' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|max:2048',
         ]);

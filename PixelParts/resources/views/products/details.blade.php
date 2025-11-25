@@ -80,7 +80,7 @@
                                 <input type="checkbox"
                                        class="bundle-checkbox absolute top-1 right-1 w-5 h-5 rounded border-2 border-white cursor-pointer z-10 checked:bg-brand-green checked:border-brand-green"
                                        data-product-id="{{ $rec->id }}"
-                                       data-price="{{ $rec->price }}"
+                                       data-price="{{ $rec->discount_percentage && $rec->discount_percentage > 0 ? $rec->discounted_price : $rec->price }}"
                                        checked
                                        onchange="updateBundleTotal()">
                                 <div class="w-24 h-24 rounded-lg overflow-hidden bg-white">
@@ -103,7 +103,14 @@
                                     <a href="{{ route('products.details', $rec->slug) }}" class="text-white hover:text-brand-green transition-colors flex-1 line-clamp-2">
                                         {{ $rec->name }}
                                     </a>
-                                    <span class="text-gray-100 font-bold ml-4 flex-shrink-0">€{{ number_format($rec->price, 2, ',', '.') }}</span>
+                                    <div class="flex flex-col items-end ml-4 flex-shrink-0">
+                                        @if($rec->discount_percentage && $rec->discount_percentage > 0)
+                                            <span class="text-xs text-gray-400 line-through">€{{ number_format($rec->price, 2, ',', '.') }}</span>
+                                            <span class="text-gray-100 font-bold">€{{ number_format($rec->discounted_price, 2, ',', '.') }}</span>
+                                        @else
+                                            <span class="text-gray-100 font-bold">€{{ number_format($rec->price, 2, ',', '.') }}</span>
+                                        @endif
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -111,7 +118,7 @@
                         <!-- Total e botão -->
                         <div class="flex items-center justify-between pt-4 border-t border-white/10">
                             <div>
-                                <div class="text-gray-100 text-3xl font-bold" id="bundle-total">€{{ number_format($product->price + $recommendedProducts->take(3)->sum('price'), 2, ',', '.') }}</div>
+                                <div class="text-gray-100 text-3xl font-bold" id="bundle-total">€{{ number_format(($product->discount_percentage && $product->discount_percentage > 0 ? $product->discounted_price : $product->price) + $recommendedProducts->take(3)->sum(function($p) { return $p->discount_percentage && $p->discount_percentage > 0 ? $p->discounted_price : $p->price; }), 2, ',', '.') }}</div>
                             </div>
                             <button type="button"
                                     id="add-bundle-btn"
@@ -152,9 +159,25 @@
 
                     <!-- Preço -->
                     <div class="flex items-baseline gap-4 mb-6">
-                        <span class="text-5xl font-bold text-gray-100">
-                            €{{ number_format($product->price, 2, ',', '.') }}
-                        </span>
+                        @if($product->discount_percentage && $product->discount_percentage > 0)
+                            <div class="flex flex-col gap-2">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-5xl font-bold bg-gradient-to-r from-brand-green to-brand-blue bg-clip-text text-transparent">
+                                        €{{ number_format($product->discounted_price, 2, ',', '.') }}
+                                    </span>
+                                    <span class="bg-yellow-500 text-gray-900 text-sm font-bold px-3 py-1 rounded">
+                                        -€{{ number_format($product->discount_amount, 2, ',', '.') }}
+                                    </span>
+                                </div>
+                                <span class="text-2xl text-gray-400 line-through">
+                                    €{{ number_format($product->price, 2, ',', '.') }}
+                                </span>
+                            </div>
+                        @else
+                            <span class="text-5xl font-bold text-gray-100">
+                                €{{ number_format($product->price, 2, ',', '.') }}
+                            </span>
+                        @endif
                     </div>
 
                     <!-- Stock -->
@@ -521,7 +544,7 @@
         // Update bundle total based on selected checkboxes
         function updateBundleTotal() {
             const checkboxes = document.querySelectorAll('.bundle-checkbox:checked');
-            const mainProductPrice = {{ $product->price }};
+            const mainProductPrice = {{ $product->discount_percentage && $product->discount_percentage > 0 ? $product->discounted_price : $product->price }};
             let total = mainProductPrice;
             let count = 1; // Main product always included
 

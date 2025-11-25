@@ -142,6 +142,13 @@
                                         </div>
                                     @endif
 
+                                    <!-- Desconto Badge -->
+                                    @if($product->discount_percentage && $product->discount_percentage > 0)
+                                        <div class="absolute top-3 {{ $product->created_at->gt(now()->subDays(7)) ? 'left-20' : 'left-3' }} bg-yellow-500 text-gray-900 text-xs font-bold px-2 py-1 rounded z-10">
+                                            -€{{ number_format($product->discount_amount, 2, ',', '.') }}
+                                        </div>
+                                    @endif
+
                                     <!-- Product Info -->
                                     <div class="p-4 flex flex-col flex-1">
                                         <div class="flex-1 min-h-0">
@@ -155,9 +162,20 @@
                                         </div>
 
                                         <div class="mt-4 flex items-center justify-between flex-shrink-0">
-                                            <span class="text-xl font-bold text-gray-100">
-                                                €{{ $product->price ? number_format($product->price, 2, ',', '.') : 'Preço indisponível' }}
-                                            </span>
+                                            <div class="flex flex-col">
+                                                @if($product->discount_percentage && $product->discount_percentage > 0)
+                                                    <span class="text-sm text-gray-400 line-through">
+                                                        €{{ number_format($product->price, 2, ',', '.') }}
+                                                    </span>
+                                                    <span class="text-xl font-bold bg-gradient-to-r from-brand-green to-brand-blue bg-clip-text text-transparent">
+                                                        €{{ number_format($product->discounted_price, 2, ',', '.') }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-xl font-bold text-gray-100">
+                                                        €{{ $product->price ? number_format($product->price, 2, ',', '.') : 'Preço indisponível' }}
+                                                    </span>
+                                                @endif
+                                            </div>
                                             <form class="add-to-cart-form flex-shrink-0" data-product-id="{{ $product->id }}">
                                                 @csrf
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">

@@ -74,7 +74,9 @@ public function index()
         $cart[$product->id] = [
             'product_id' => $product->id,
             'name' => $product->name,
-            'price' => $product->price,
+            'price' => $product->discount_percentage && $product->discount_percentage > 0
+                ? $product->discounted_price
+                : $product->price,
             'quantity' => $quantityFromRequest,
             'image' => $product->image
         ];

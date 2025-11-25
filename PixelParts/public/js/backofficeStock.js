@@ -211,6 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("product-brand").value = product.brand || "";
             document.getElementById("product-description").value = product.description || "";
             document.getElementById("product-price").value = product.price || "";
+            document.getElementById("product-discount").value = product.discount_percentage || "";
             document.getElementById("product-stock").value = product.stock || "";
             document.getElementById("product-category").value = product.category_id || "";
 

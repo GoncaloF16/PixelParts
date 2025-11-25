@@ -17,9 +17,26 @@ class Product extends Model
         'brand',
         'description',
         'price',
+        'discount_percentage',
         'stock',
         'image',
     ];
+
+    public function getDiscountedPriceAttribute()
+    {
+        if ($this->discount_percentage && $this->discount_percentage > 0) {
+            return $this->price * (1 - ($this->discount_percentage / 100));
+        }
+        return $this->price;
+    }
+
+    public function getDiscountAmountAttribute()
+    {
+        if ($this->discount_percentage && $this->discount_percentage > 0) {
+            return $this->price * ($this->discount_percentage / 100);
+        }
+        return 0;
+    }
 
       protected static function booted()
     {
