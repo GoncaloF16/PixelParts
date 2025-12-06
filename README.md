@@ -263,12 +263,6 @@ Please ensure your code follows PSR-12 coding standards.
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## 👨‍💻 Author
 
 **Gonçalo**  
