@@ -282,7 +282,5 @@ Please ensure your code follows PSR-12 coding standards.
 
 
 <div align="center">
-  <strong>PixelParts</strong> - Elite Gaming Components  🎮
-  <br>
   Built with ❤️ using Laravel & Tailwind CSS
 </div>
