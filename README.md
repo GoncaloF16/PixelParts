@@ -100,8 +100,6 @@ A modern, full-stack web application built with Laravel 11 and Tailwind CSS, fea
    php artisan serve
    ```
 
-Visit **http://localhost:8000** to see your application!
-
 ---
 
 ## ⚙️ Configuration
@@ -343,7 +341,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ## 👨‍💻 Author
 
 **Gonçalo**  
-[GitHub](https://github.com/yourusername) • [LinkedIn](https://linkedin.com/in/yourprofile)
+[GitHub](https://github.com/GoncaloF16) 
 
 ---
 
@@ -357,16 +355,9 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ---
 
-## 📧 Support
-
-For questions or issues:
-- 📧 Email: support@pixelparts.com
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/pixelparts/issues)
-
----
 
 <div align="center">
-  <strong>PixelParts</strong> - Gaming Components of Elite 🎮
+  <strong>PixelParts</strong> - Elite Gaming Components  🎮
   <br>
   Built with ❤️ using Laravel & Tailwind CSS
 </div>
