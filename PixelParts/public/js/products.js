@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Stars interativas
+    // Interactive stars
     const stars = document.querySelectorAll('input[name="rating"] + label');
     if (stars.length > 0) {
         stars.forEach((star, idx) => {
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Adicionar ao carrinho (AJAX)
+    // Add to cart (AJAX)
     const forms = document.querySelectorAll('.add-to-cart-form');
     forms.forEach(form => {
         form.addEventListener('submit', async e => {
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const originalWidth = submitBtn ? submitBtn.offsetWidth : null;
 
             if (submitBtn) {
-                // Preserva a largura original
+                // Preserve original width
                 if (originalWidth) {
                     submitBtn.style.width = `${originalWidth}px`;
                 }
@@ -161,19 +161,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const data = await response.json();
 
-                // Verificar se é resposta de não autenticado e redirecionar
+                // Check if response is unauthenticated and redirect
                 if (response.status === 401 && data.redirect) {
                     window.location.href = data.redirect;
                     return;
                 }
 
                 if (data.success) {
-                    // Atualiza contador do carrinho
+                    // Update cart count
                     if (typeof window.updateCartCount === 'function') {
                         window.updateCartCount(data.cart_count);
                     }
 
-                    // Mostra toast de sucesso
+                    // Show success toast
                     if (typeof window.showToast === 'function') {
                         window.showToast(data.message || 'Produto adicionado ao carrinho!');
                     }
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(() => {
                         submitBtn.innerHTML = originalText;
                         submitBtn.disabled = false;
-                        // Remove a largura fixa
+                        // Remove fixed width
                         submitBtn.style.width = '';
                         if (typeof lucide !== 'undefined') lucide.createIcons();
                     }, 1000);
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Contador de quantidade
+    // Quantity counter
     const quantityDisplay = document.getElementById('quantity-display');
 const quantityInput = document.getElementById('quantity-input');
 let quantity = 1;

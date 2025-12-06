@@ -266,7 +266,7 @@
             const clearFiltersBtn = document.getElementById('clearFilters');
             const productsGrid = document.getElementById('productsGrid');
 
-            // Capturar parâmetros da URL
+            // === URL Parameter Handling ===
             const urlParams = new URLSearchParams(window.location.search);
             const searchQuery = urlParams.get('q') || '';
 
@@ -288,7 +288,7 @@
                     }
                 });
             }
-            // Se há pesquisa, auto-selecionar baseado nos produtos visíveis
+            // Auto-select based on visible products when searching
             else if (searchQuery.length > 0) {
                 const visibleBrands = new Set();
                 const visibleCategories = new Set();
@@ -315,10 +315,9 @@
                 });
             }
 
-            // Variável para prevenir múltiplos redirecionamentos
+            // === Filter Functions ===
             let isRedirecting = false;
 
-            // Função para mostrar loading overlay
             function showLoading() {
                 const overlay = document.getElementById('loadingOverlay');
                 if (overlay) {
@@ -326,7 +325,6 @@
                 }
             }
 
-            // Função para atualizar URL e recarregar página
             function updateFilters() {
                 if (isRedirecting) return;
                 isRedirecting = true;
@@ -334,29 +332,29 @@
 
                 const url = new URLSearchParams();
 
-                // Manter apenas o parâmetro de pesquisa se existir
+                // Keep search parameter if it exists
                 const searchQuery = new URLSearchParams(window.location.search).get('q');
                 if (searchQuery) {
                     url.set('q', searchQuery);
                 }
 
-                // Adicionar categorias selecionadas
+                // Add selected categories
                 const selectedCategories = Array.from(categoryFilters)
                     .filter(cb => cb.checked)
                     .map(cb => cb.value);
                 selectedCategories.forEach(cat => url.append('categoria[]', cat));
 
-                // Adicionar marcas selecionadas
+                // Add selected brands
                 const selectedBrands = Array.from(brandFilters)
                     .filter(cb => cb.checked)
                     .map(cb => cb.value);
                 selectedBrands.forEach(brand => url.append('brand[]', brand));
 
-                // Redirecionar com novos parâmetros (sempre página 1)
+                // Redirect with new parameters (always page 1)
                 window.location.href = "{{ route('products.index') }}" + (url.toString() ? '?' + url.toString() : '');
             }
 
-            // Event listeners para os filtros
+            // Filter event listeners
             categoryFilters.forEach(cb => cb.addEventListener('change', updateFilters));
             brandFilters.forEach(cb => cb.addEventListener('change', updateFilters));
 
@@ -371,7 +369,7 @@
                 });
             }
 
-            // Adicionar loader aos links de paginação
+            // === Pagination Loader ===
             // Usar setTimeout para garantir que os links foram renderizados
             setTimeout(() => {
                 const paginationContainer = document.querySelector('.mt-8.flex.justify-center');
@@ -379,7 +377,6 @@
                     const paginationLinks = paginationContainer.querySelectorAll('a');
                     paginationLinks.forEach(link => {
                         link.addEventListener('click', (e) => {
-                            // Verificar se o link não está desabilitado
                             if (!link.getAttribute('aria-disabled') && !link.classList.contains('disabled')) {
                                 showLoading();
                             }

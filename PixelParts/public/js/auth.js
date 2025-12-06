@@ -110,21 +110,22 @@ function initFormValidation() {
             }
         });
 
-        // Real-time validation - apenas no blur e se já teve erro
+        // === Real-time Validation ===
+        // Only on blur and if already had error
         const inputs = form.querySelectorAll('.form-input, input[type="email"], input[type="password"]');
         inputs.forEach(input => {
-            // Validar apenas quando sair do campo (blur)
+            // Validate only on blur
             input.addEventListener('blur', function() {
-                // Só validar se o campo tiver algum valor ou for obrigatório
+                // Only validate if field has value or is required
                 if (this.value.trim().length > 0 || this.hasAttribute('required')) {
                     validateInput(this);
                 }
             });
 
-            // Durante digitação, apenas remover erro se já estava marcado como erro
+            // During typing, only remove error if already marked as error
             input.addEventListener('input', function() {
                 if (this.classList.contains('error')) {
-                    // Re-validar para remover o erro se corrigido
+                    // Re-validate to remove error if corrected
                     validateInput(this);
                 }
             });
@@ -149,7 +150,7 @@ function validateInput(input) {
         existingError.remove();
     }
 
-    // Se o campo estiver vazio e não for obrigatório, não validar
+    // If field is empty and not required, don't validate
     if (!value && !input.hasAttribute('required')) {
         return true;
     }
@@ -160,7 +161,7 @@ function validateInput(input) {
         errorMessage = 'Este campo é obrigatório.';
     }
 
-    // Email validation - apenas se tiver valor
+    // Email validation
     if (type === 'email' && value && value.length > 0) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {
@@ -172,7 +173,7 @@ function validateInput(input) {
     // Password validation - apenas se tiver valor e estiver no registo
     if (type === 'password' && name === 'password' && value && value.length > 0) {
         const registerForm = document.getElementById('register-form');
-        // Só validar tamanho no formulário de registo
+        // Only validate size on register form
         if (registerForm && value.length < 8) {
             isValid = false;
             errorMessage = 'A password deve ter pelo menos 8 caracteres.';

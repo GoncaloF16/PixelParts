@@ -135,7 +135,7 @@
         </table>
     </div>
 
-    <!-- Paginação -->
+    <!-- Pagination -->
     <div class="mt-4">
         {{ $users->links() }}
     </div>
@@ -185,7 +185,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmação de salvamento -->
+    <!-- Save confirmation modal -->
     <div id="save-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
             <div class="p-6">
@@ -214,7 +214,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmação de remoção -->
+    <!-- Removal confirmation modal -->
     <div id="delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
             <div class="p-6">

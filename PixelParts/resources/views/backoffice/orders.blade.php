@@ -41,7 +41,7 @@
             <tbody id="orders-table" class="bg-white divide-y divide-gray-200">
                 @forelse ($orders as $order)
                     <tr class="hover:bg-gray-50">
-                        <!-- Número da Encomenda -->
+                        <!-- Order Number -->
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             #ORD-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}
                         </td>
@@ -80,7 +80,7 @@
                             {{ \Carbon\Carbon::parse($order->created_at)->format('d/m/Y H:i') }}
                         </td>
 
-                        <!-- Ações -->
+                        <!-- Actions -->
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="relative inline-block text-left">
                                 <button type="button"
@@ -138,7 +138,7 @@
         </table>
     </div>
 
-    <!-- Paginação -->
+    <!-- Pagination -->
     @if($orders->hasPages())
         <div class="mt-6">
             {{ $orders->appends(request()->query())->links('vendor.pagination.backoffice') }}
@@ -218,7 +218,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmação de salvamento -->
+    <!-- Save confirmation modal -->
     <div id="save-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
             <div class="p-6">
@@ -241,7 +241,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmação de exclusão -->
+    <!-- Delete confirmation modal -->
     <div id="delete-confirm-modal"
         class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
@@ -287,7 +287,7 @@
 
                 menu.classList.toggle('hidden');
 
-                // Ajustar posição se estiver fora da viewport
+                // Adjust position if outside viewport
                 if (!menu.classList.contains('hidden')) {
                     const rect = button.getBoundingClientRect();
                     const viewportHeight = window.innerHeight;

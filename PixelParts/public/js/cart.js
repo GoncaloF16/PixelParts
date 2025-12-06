@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const cartContent = document.querySelector(".cart-content");
 
         if (cartItems.length === 0) {
-            // Mostra mensagem de carrinho vazio
+            // Show empty cart message
             if (cartEmpty) {
                 cartEmpty.style.display = "block";
                 cartEmpty.style.opacity = "0";
@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 10);
             }
 
-            // Esconde todo o conteúdo do carrinho (incluindo resumo)
             if (cartContent) {
                 cartContent.style.transition = "opacity 0.3s";
                 cartContent.style.opacity = "0";
@@ -61,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (data.success) {
                 if (data.cartItems && data.cartItems[productId]) {
-                    // Atualiza a quantidade no item principal
+                    // Update quantity in main item
                     const quantityElement = document.querySelector(
                         `#cart-item-${productId} .item-quantity`
                     );
@@ -69,18 +68,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         quantityElement.textContent =
                             data.cartItems[productId].quantity;
 
-                    // Atualiza o item no resumo detalhado
+                    // Update the item in the detailed summary
                     const summaryItem = document.querySelector(
                         `.cart-summary-item[data-id="${productId}"]`
                     );
                     if (summaryItem) {
-                        // Atualiza quantidade no resumo
+                        // Update quantity in summary
                         const summaryQuantity = summaryItem.querySelector(".item-summary-quantity");
                         if (summaryQuantity) {
                             summaryQuantity.textContent = data.cartItems[productId].quantity;
                         }
 
-                        // Atualiza subtotal com IVA
+                        // Update subtotal with IVA
                         summaryItem.querySelector(
                             ".subtotal-com-iva"
                         ).textContent =
@@ -89,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 .toFixed(2)
                                 .replace(".", ",");
 
-                        // Atualiza subtotal sem IVA
+                        // Update subtotal without IVA
                         summaryItem.querySelector(
                             ".subtotal-sem-iva"
                         ).textContent =
@@ -98,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 .toFixed(2)
                                 .replace(".", ",");
 
-                        // Atualiza valor do IVA
+                        // Update IVA value
                         summaryItem.querySelector(".subtotal-iva").textContent =
                             "€" +
                             data.cartItems[productId].subtotalIva
@@ -115,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         itemEl.style.transform = "translateX(-20px)";
                         setTimeout(() => {
                             itemEl.remove();
-                            // Verifica se o carrinho ficou vazio após remover o elemento
+                            // Check if cart is empty after removing item
                             checkEmptyCart();
                         }, 300);
                     }

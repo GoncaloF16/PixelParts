@@ -40,6 +40,7 @@
             box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
         }
     </style>
+
 </head>
 
 <body class="min-h-screen bg-background pt-[160px] md:pt-0 text-gray-200">
@@ -48,9 +49,6 @@
     <header id="header"
         class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-surface/90 backdrop-blur-md">
         <div class="container mx-auto px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-6">
-
-
-            <!-- Header com Dropdown e Logo -->
             <div class="flex items-center justify-start space-x-4 md:space-x-6">
 
                 <!-- Desktop Dropdown Menu -->
@@ -102,7 +100,7 @@
             <!-- Desktop User / Auth -->
             <nav class="hidden md:flex items-center space-x-4 md:space-x-8 mt-2 md:mt-0 pr-2">
 
-                <!-- Container global do Toast -->
+                <!-- Global Toast Container -->
                 <div id="toast-container" class="fixed bottom-5 left-5 z-[9999] space-y-2"></div>
 
 
@@ -114,7 +112,6 @@
                 @endguest
                 @auth
                     <div class="relative inline-block text-left">
-                        <!-- Botão fixo para todos -->
                         <button id="userMenuButton" type="button"
                             class="inline-flex justify-between items-center  text-white px-4 py-2 rounded-md font-semibold text-sm  transition-colors duration-300 focus:outline-none"
                             aria-expanded="true" aria-haspopup="true">
@@ -143,7 +140,7 @@
                                     </a>
                                 @endif
 
-                                <!-- Logout sempre -->
+                                <!-- Logout -->
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit"
@@ -156,7 +153,7 @@
                     </div>
                 @endauth
 
-                <!-- Ícone do Carrinho -->
+                <!-- Cart Icon -->
                 <a href="{{ route('cart.index') }}"
                     class="pr-6 relative flex items-center justify-center hover:text-brand-green transition">
                     <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-200"></i>
@@ -177,7 +174,7 @@
     <!-- Mobile Navigation -->
     <nav id="mobile-menu" class="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-gray-900 z-[70] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl overflow-y-auto">
         <div class="flex flex-col h-full">
-                <!-- Header do Menu -->
+                <!-- Header of the Menu -->
                 <div class="flex items-center justify-between p-6 border-b border-gray-800">
                     <h2 class="text-xl font-bold text-gray-200">Menu</h2>
                     <button id="mobile-menu-close" class="text-gray-400 hover:text-gray-200 transition-colors">
@@ -185,9 +182,9 @@
                     </button>
                 </div>
 
-                <!-- Conteúdo do Menu (scrollável) -->
+                <!-- Content of the Menu (scrollable) -->
                 <div class="flex-1 overflow-y-auto p-6 space-y-4">
-                    <!-- Categorias Dropdown -->
+                    <!-- Categories Dropdown -->
                     <div class="bg-gray-800/50 rounded-xl p-4 border border-gray-800">
                         <button id="mobile-categories-toggle" class="w-full flex items-center justify-between text-gray-200 font-semibold hover:text-brand-green transition-colors">
                             <div class="flex items-center gap-3">
@@ -420,7 +417,7 @@
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/products.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
-    <script src="{{ asset('js/n8n-chat-widget.js') }}"></script>
+    <script src="{{ asset('js/n8n-chat-widget.js') }}" defer></script>
 
     <script>
         function showToast(message) {
@@ -436,12 +433,11 @@
                 toast.classList.add('translate-x-0');
             }, 10);
 
-            // Re-inicializar ícones do Lucide
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
 
-            // Fechar automaticamente após 5 segundos
+            // Auto-close after 5 seconds
             setTimeout(() => {
                 closeToast();
             }, 5000);
@@ -457,7 +453,6 @@
             }, 300);
         }
 
-        // Verificar se existe mensagem de sucesso da sessão
         @if(session('success'))
             document.addEventListener('DOMContentLoaded', function() {
                 showToast("{{ session('success') }}");

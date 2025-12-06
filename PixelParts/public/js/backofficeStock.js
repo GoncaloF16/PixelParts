@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const addProductBtn = document.getElementById("add-product-btn");
     const productsTable = document.getElementById("products-table");
 
-    // Navegação entre páginas
+    // === Page Navigation ===
     const page1 = document.getElementById("page-1");
     const page2 = document.getElementById("page-2");
     const prevPageBtn = document.getElementById("prev-page-btn");
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitBtn = document.getElementById("submit-product-btn");
     const pageIndicator = document.getElementById("page-indicator");
 
-    // Modals de confirmação
+    // === Confirmation Modals ===
     const productSaveConfirmModal = document.getElementById("product-save-confirm-modal");
     const productSaveConfirmTitle = document.getElementById("product-save-confirm-title");
     const productSaveConfirmMessage = document.getElementById("product-save-confirm-message");
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentPage = 1;
     let modalMode = 'add'; // 'add', 'edit', 'view'
 
-    // --- FUNÇÕES DE NAVEGAÇÃO ---
+    // === Navigation Functions ===
     function showPage(pageNumber) {
         currentPage = pageNumber;
 
@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
             prevPageBtn.classList.remove("hidden");
             nextPageBtn.classList.add("hidden");
 
-            // Mostrar botão de submit apenas se não estiver em modo visualização
             if (modalMode !== 'view') {
                 submitBtn.classList.remove("hidden");
             }
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     prevPageBtn.addEventListener("click", () => showPage(1));
     nextPageBtn.addEventListener("click", () => showPage(2));
 
-    // --- FUNÇÕES PARA ESPECIFICAÇÕES/CARACTERÍSTICAS/COMPATIBILIDADE ---
+    // === Dynamic Fields Functions ===
     function addSpecificationField(key = '', value = '') {
         const container = document.getElementById("specifications-container");
         const div = document.createElement("div");
@@ -131,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("add-feature-btn")?.addEventListener("click", () => addFeatureField());
     document.getElementById("add-compatibility-btn")?.addEventListener("click", () => addCompatibilityField());
 
-    // --- FUNÇÕES MODAL ---
+    // === Modal Functions ===
     function clearDynamicFields() {
         document.getElementById("specifications-container").innerHTML = '';
         document.getElementById("features-container").innerHTML = '';
@@ -205,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
             const product = data.product;
 
-            // Preencher dados básicos
+            // Fill basic data
             document.getElementById("product-id").value = product.id;
             document.getElementById("product-name").value = product.name || "";
             document.getElementById("product-brand").value = product.brand || "";
@@ -217,11 +216,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Mostrar imagem atual se existir
             if (product.image) {
-                // Verifica se é uma URL externa (começa com http:// ou https://)
+                // Check if it's an external URL
                 if (product.image.startsWith('http://') || product.image.startsWith('https://')) {
                     document.getElementById("current-image").src = product.image;
                 } else {
-                    // É um caminho local do storage
+                    // Local storage path
                     document.getElementById("current-image").src = `/storage/${product.image}`;
                 }
                 document.getElementById("current-image-preview").classList.remove("hidden");
@@ -229,34 +228,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("current-image-preview").classList.add("hidden");
             }
 
-            // Limpar campos dinâmicos
+            // Clear dynamic fields
             clearDynamicFields();
 
             // Configurar modo ANTES de adicionar campos
             modalMode = mode;
 
-            // Preencher especificações
+            // Fill specifications
             if (product.specifications && product.specifications.length > 0) {
                 product.specifications.forEach(spec => {
                     addSpecificationField(spec.key, spec.value);
                 });
             }
 
-            // Preencher características
+            // Fill features
             if (product.features && product.features.length > 0) {
                 product.features.forEach(feature => {
                     addFeatureField(feature.feature);
                 });
             }
 
-            // Preencher compatibilidade
+            // Fill compatibility
             if (product.compatibility && product.compatibility.length > 0) {
                 product.compatibility.forEach(comp => {
                     addCompatibilityField(comp.compatible_with);
                 });
             }
 
-            // Aplicar estilos do modo aos campos básicos
+            // Apply mode styles to basic fields
             setFormMode(mode);
 
             if (mode === 'edit') {
@@ -280,7 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
             productModal.style.display = "flex";
             productModal.classList.remove("hidden");
 
-            // Forçar um pequeno delay para garantir que o modal permaneça aberto
+            // Small delay to ensure modal stays open
             setTimeout(() => {
                 productModal.style.display = "flex";
                 productModal.classList.remove("hidden");
@@ -298,24 +297,24 @@ document.addEventListener("DOMContentLoaded", () => {
         showPage(1);
     }
 
-    // --- EVENTOS MODAL ---
+    // --- MODAL EVENTS ---
     if (addProductBtn) addProductBtn.addEventListener("click", openProductModal);
     cancelProductBtn.addEventListener("click", closeProductModal);
     productModal.addEventListener("click", (e) => {
         if (e.target === productModal) closeProductModal();
     });
 
-    // Prevenir que o modal feche imediatamente após abrir
+    // Prevent modal from closing immediately after opening
     productModal.addEventListener("click", (e) => {
         e.stopPropagation();
     });
 
-    // --- CONFIRMAÇÃO DE SALVAMENTO ---
+    // === Save Confirmation ===
     submitBtn.addEventListener("click", function(e) {
         e.preventDefault();
 
         if (modalMode === 'view') {
-            return; // Não permitir submissão em modo visualização
+            return; // Don't allow submission in view mode
         }
 
         const productId = document.getElementById("product-id").value;
@@ -343,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
         productSaveConfirmModal.classList.remove('flex');
     });
 
-    // --- SUBMISSÃO FORMULÁRIO VIA AJAX ---
+    // === AJAX Form Submission ===
     function submitProductForm() {
 
         const productId = document.getElementById("product-id").value;
@@ -375,16 +374,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- CONFIRMAÇÃO DE REMOÇÃO ---
+    // === Removal Confirmation ===
     productsTable.querySelectorAll(".delete-btn").forEach((btn) => {
         btn.addEventListener("click", function (e) {
-            e.preventDefault(); // Prevenir navegação
-            e.stopPropagation(); // Prevenir propagação
+            e.preventDefault();
+            e.stopPropagation();
 
             const productId = btn.dataset.id;
             pendingDeleteProductId = productId;
 
-            // Fechar o dropdown manualmente
+            // Close the dropdown manually
             const dropdown = btn.closest('[data-dropdown-menu]');
             if (dropdown) {
                 dropdown.classList.add('hidden');
@@ -423,14 +422,14 @@ document.addEventListener("DOMContentLoaded", () => {
         pendingDeleteProductId = null;
     });
 
-    // --- VISUALIZAR PRODUTO ---
+    // --- VIEW PRODUCT ---
     productsTable.querySelectorAll(".view-btn").forEach((btn) => {
         btn.addEventListener("click", function (e) {
-            e.preventDefault(); // Prevenir navegação
-            e.stopPropagation(); // Prevenir que o clique feche o modal
+            e.preventDefault();
+            e.stopPropagation();
             const productId = btn.dataset.id;
 
-            // Fechar o dropdown manualmente
+            // Close the dropdown manually
             const dropdown = btn.closest('[data-dropdown-menu]');
             if (dropdown) {
                 dropdown.classList.add('hidden');
@@ -440,14 +439,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // --- EDITAR PRODUTO ---
+    // --- EDIT PRODUCT ---
     productsTable.querySelectorAll(".edit-btn").forEach((btn) => {
         btn.addEventListener("click", function (e) {
-            e.preventDefault(); // Prevenir navegação
-            e.stopPropagation(); // Prevenir que o clique feche o modal
+            e.preventDefault();
+            e.stopPropagation();
             const productId = btn.dataset.id;
 
-            // Fechar o dropdown manualmente
+            // Close the dropdown manually
             const dropdown = btn.closest('[data-dropdown-menu]');
             if (dropdown) {
                 dropdown.classList.add('hidden');
@@ -457,7 +456,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // --- DROPDOWN DE AÇÕES ---
+    // === Actions Dropdown ===
     const dropdownTriggers = document.querySelectorAll("[data-dropdown-trigger]");
     dropdownTriggers.forEach(trigger => {
         const menu = trigger.parentElement.querySelector("[data-dropdown-menu]");
@@ -465,7 +464,7 @@ document.addEventListener("DOMContentLoaded", () => {
         trigger.addEventListener("click", e => {
             e.stopPropagation();
 
-            // Fechar outros dropdowns primeiro
+            // Close other dropdowns first
             document.querySelectorAll("[data-dropdown-menu]").forEach(m => {
                 if (m !== menu) {
                     m.classList.add("hidden");
@@ -478,16 +477,16 @@ document.addEventListener("DOMContentLoaded", () => {
             // Toggle the menu first
             menu.classList.toggle("hidden");
 
-            // Verificar se o dropdown ultrapassa o viewport após abrir
+            // Check if dropdown exceeds viewport after opening
             if (!menu.classList.contains('hidden')) {
                 const rect = trigger.getBoundingClientRect();
                 const viewportHeight = window.innerHeight;
 
-                // Usar posicionamento fixed para evitar cortes
+                // Use fixed positioning to avoid clipping
                 menu.style.position = 'fixed';
                 menu.style.left = `${rect.right - menu.offsetWidth}px`;
 
-                // Se o dropdown ultrapassar o viewport, posiciona para cima
+                // If the dropdown exceeds the viewport, position it above
                 if (rect.bottom + menu.offsetHeight > viewportHeight - 20) {
                     menu.style.top = `${rect.top - menu.offsetHeight - 8}px`;
                     menu.classList.remove('origin-top-right', 'mt-2');
@@ -505,7 +504,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });    document.addEventListener("click", (e) => {
-        // Não fechar dropdowns se o clique for dentro de um modal
+        // Don't close dropdowns if click is inside a modal
         if (e.target.closest('#product-modal') ||
             e.target.closest('#product-save-confirm-modal') ||
             e.target.closest('#product-delete-confirm-modal') ||
@@ -513,7 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Fechar todos os dropdowns se clicar fora
+        // Close all dropdowns if clicking outside
         if (!e.target.closest('[data-dropdown-trigger]') && !e.target.closest('[data-dropdown-menu]')) {
             document.querySelectorAll("[data-dropdown-menu]").forEach(menu => menu.classList.add("hidden"));
         }

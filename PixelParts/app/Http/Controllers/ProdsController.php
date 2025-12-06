@@ -13,21 +13,22 @@ class ProdsController extends Controller
 {
     $query = Product::with('category');
 
-    // Filtrar por categoria via menu (parâmetro único)
+    // === Filtering Logic ===
+    // Single category filter (from menu)
     if ($request->has('categoria') && $request->categoria && !is_array($request->categoria)) {
         $query->whereHas('category', function($q) use ($request) {
             $q->where('slug', $request->categoria);
         });
     }
 
-    // Filtrar por múltiplas categorias (checkboxes)
+    // Multiple categories filter (checkboxes)
     if ($request->has('categoria') && is_array($request->categoria)) {
         $query->whereHas('category', function($q) use ($request) {
             $q->whereIn('slug', $request->categoria);
         });
     }
 
-    // Filtrar por múltiplas marcas (checkboxes)
+    // Multiple brands filter (checkboxes)
     if ($request->has('brand') && is_array($request->brand)) {
         $brands = $request->brand;
         $query->where(function($q) use ($brands) {

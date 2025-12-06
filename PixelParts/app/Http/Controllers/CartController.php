@@ -172,7 +172,7 @@ public function order (Request $request)
         $amount = $amount + ($value['quantity'] * $value['price']);
     }
 
-    // Guardar em cêntimos (com arredondamento correto)
+    // Store in cents (with correct rounding)
     $orderTotalCents = (int) round($amount * 100);
     $order->amount = $orderTotalCents;
     $order->save();
@@ -239,8 +239,8 @@ public function orderSuccess(Request $request)
         return redirect()->route('home')->with('success', 'Pedido realizado com sucesso!');
     }
 
-    // Pagamento não foi completado
-    $order->status = 0; // Manter como Pendente (não apagar a encomenda)
+    // Payment not completed
+    $order->status = 0; // Keep as Pending (don't delete the order)
     $order->save();
 
     return redirect()->route('cart.index')->with('error', 'Pagamento não foi concluído. Por favor, tente novamente.');

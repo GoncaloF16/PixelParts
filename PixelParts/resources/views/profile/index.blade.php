@@ -111,7 +111,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- Status e Ação -->
+                                    <!-- Status and Action -->
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-2 {{ $status['bg'] }} {{ $status['border'] }} border px-3 py-1.5 rounded-lg">
                                             <i data-lucide="{{ $status['icon'] }}" class="w-3.5 h-3.5 {{ $status['color'] }}"></i>
@@ -125,7 +125,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Detalhes Expansível -->
+                                <!-- Expandable Details -->
                                 <div id="details-{{ $order->id }}" class="hidden border-t border-border/30">
                                     <div class="p-4 bg-surface-dark/40 space-y-4">
 

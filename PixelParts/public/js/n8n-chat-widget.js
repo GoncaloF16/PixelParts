@@ -8,11 +8,11 @@
         color: "#4F46E5",
         endpoint: null,
         sessionKey: "n8nChatSessionId",
-        headers: {}, // ex.: {"x-api-key":"..."} (configurável via data-headers='{"x-api-key":"..."}')
+        headers: {}, // e.g.: {"x-api-key":"..."} (configurable via data-headers='{"x-api-key":"..."}')
         autoresizeMobile: true,
     };
 
-    // Pequena função de query por data-* com fallback a atributo do <script>
+    // Simple query function for data-* with script element fallback
     function getConfig() {
         const hostDiv = document.getElementById("n8n-chat");
         const scriptEl =
@@ -95,7 +95,7 @@
         try {
             let id = localStorage.getItem(idKey);
             if (!id) {
-                // crypto.randomUUID pode não existir em browsers muito antigos
+                // crypto.randomUUID may not exist in very old browsers
                 id =
                     crypto && crypto.randomUUID
                         ? crypto.randomUUID()
@@ -105,14 +105,14 @@
             }
             return id;
         } catch {
-            // fallback sem localStorage
+            // fallback without localStorage
             return crypto && crypto.randomUUID
                 ? crypto.randomUUID()
                 : String(Date.now()) + Math.random().toString(16).slice(2);
         }
     }
 
-    // Sanitização MUITO simples (para evitar injeções acidentais no innerHTML)
+    // Very simple sanitization (to avoid accidental injections in innerHTML)
     function escapeHTML(s) {
         return s.replace(
             /[&<>"']/g,
@@ -136,7 +136,7 @@
         );
     }
 
-    // Aceita respostas do n8n em JSON ({response:"..."}) ou string crua; também tenta n8n chat outputs tipo data[0].output
+    // Accept n8n responses in JSON ({response:"..."}) or raw string; also tries n8n chat outputs like data[0].output
     function parseResponseText(t) {
         try {
             const j = JSON.parse(t);
@@ -151,14 +151,14 @@
     }
 
     function formatMessage(s) {
-        // suporta **negrito**, \n -> <br>, e meta-infos simples (horário/local/oradores/júri/chair/moderador)
+        // Supports **bold**, \n -> <br>, and simple meta-info (time/location/speakers/jury/chair/moderator)
         let text = String(s);
         text = escapeHTML(text);
 
-        // negrito markdown
+        // bold markdown
         text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
-        // blocos especiais simples
+        // simple special blocks
         text = text.replace(
             /⏰\s*<strong>(.*?)<\/strong>/g,
             '<div class="n8n-time">⏰ <strong>$1</strong></div>'
@@ -190,7 +190,7 @@
     }
 
     function buildUI(cfg) {
-        // Botão toggle
+        // Toggle button
         const btn = document.createElement("button");
         btn.id = "n8n-chat-toggle";
         btn.setAttribute("aria-label", "Abrir chat");
@@ -200,7 +200,7 @@
 </svg>`;
         document.body.appendChild(btn);
 
-        // Contentor
+        // Container
         const box = document.createElement("div");
         box.id = "n8n-chat-container";
         box.setAttribute("role", "dialog");
@@ -227,7 +227,7 @@
             box.classList.add("n8n-left");
         }
 
-        // Abertura
+        // Opening
         btn.addEventListener("click", () => {
             const opening = box.style.display === "none";
             box.style.display = opening ? "flex" : "none";
@@ -238,7 +238,7 @@
             if (opening) input.focus();
         });
 
-        // Fechar
+        // Closing
         box.querySelector("#n8n-chat-close").addEventListener(
             "click",
             () => (box.style.display = "none")
@@ -338,7 +338,7 @@
         });
         sendBtn.addEventListener("click", sendCurrent);
 
-        // Mobile: ocupar ecrã inteiro (opcional)
+        // Mobile: fullscreen (optional)
         if (cfg.autoresizeMobile) {
             const mql = window.matchMedia("(max-width: 768px)");
             function applyMobile(e) {

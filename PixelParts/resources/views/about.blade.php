@@ -7,7 +7,7 @@
         <div class="absolute inset-0 bg-gradient-to-br from-surface-dark via-surface to-surface-dark opacity-90"></div>
         <div class="container mx-auto px-6 relative z-10">
             <div class="max-w-5xl mx-auto">
-                <!-- História -->
+                <!-- History -->
                 <div class="grid md:grid-cols-2 gap-12 items-center mb-24 animate-fade-up">
                     <div>
                         <h2 class="text-4xl font-bold text-text-primary mb-6">A Nossa História</h2>
@@ -32,7 +32,7 @@
                     </div>
                 </div>
 
-                <!-- Missão, Visão, Valores -->
+                <!-- Mission, Vision, Values -->
                 <div class="grid md:grid-cols-3 gap-8 mb-24 animate-fade-up">
                     <div
                         class="bg-surface-card p-8 rounded-2xl shadow-lg hover:scale-[1.02] transition-transform duration-300">
@@ -73,7 +73,7 @@
                     </div>
                 </div>
 
-                <!-- Porquê Escolher -->
+                <!-- Why Choose -->
                 <div
                     class="bg-surface-card rounded-2xl p-12 mb-24 animate-fade-up shadow-lg hover:shadow-xl transition-all duration-500">
                     <h2 class="text-4xl font-bold text-white mb-12 text-center">

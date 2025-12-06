@@ -22,7 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Usar Tailwind CSS para paginação
         Paginator::useTailwind();
 
         // Compartilhar categorias com todas as views

@@ -28,7 +28,7 @@
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Filtrar</button>
         </form>
 
-        <!-- Botões de ação -->
+        <!-- Action Buttons -->
         <div class="flex gap-2 mt-4 sm:mt-0">
             <button id="add-product-btn"
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
@@ -51,7 +51,7 @@
 
     <form method="POST" action="{{ route('backoffice.stock.bulk-delete') }}">
         @csrf
-        <!-- Preservar filtros atuais após apagar -->
+        <!-- Preserve current filters after delete -->
         @if(request('search'))
             <input type="hidden" name="search" value="{{ request('search') }}">
         @endif
@@ -144,7 +144,7 @@
         </table>
     </div>
 
-        <!-- Ações em massa + Paginação alinhadas -->
+        <!-- Bulk actions + Pagination aligned -->
         <div class="mt-6 flex items-center justify-between gap-3 flex-col sm:flex-row">
             <button id="bulk-delete-btn" type="button"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
@@ -163,7 +163,7 @@
         </div>
     </form>
 
-    <!-- Modal de confirmação de remoção em massa -->
+    <!-- Bulk removal confirmation modal -->
     <div id="bulk-delete-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
             <div class="p-6">
@@ -210,7 +210,7 @@
                         </div>
                     </div>
 
-                    <!-- Página 1: Dados Básicos -->
+                    <!-- Page 1: Basic Data -->
                     <div id="page-1" class="page-content">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
@@ -272,10 +272,10 @@
                         </div>
                     </div>
 
-                    <!-- Página 2: Especificações, Características e Compatibilidade -->
+                    <!-- Page 2: Specifications, Features and Compatibility -->
                     <div id="page-2" class="page-content hidden">
                         <div class="space-y-6">
-                            <!-- Especificações -->
+                            <!-- Specifications -->
                             <div>
                                 <div class="flex items-center justify-between mb-3">
                                     <label class="block text-sm font-medium text-gray-700">Especificações</label>
@@ -286,11 +286,11 @@
                                     </button>
                                 </div>
                                 <div id="specifications-container" class="space-y-2">
-                                    <!-- Dinâmico via JS -->
+                                    <!-- Dynamic via JS -->
                                 </div>
                             </div>
 
-                            <!-- Características -->
+                            <!-- Features -->
                             <div>
                                 <div class="flex items-center justify-between mb-3">
                                     <label class="block text-sm font-medium text-gray-700">Características</label>
@@ -301,7 +301,7 @@
                                     </button>
                                 </div>
                                 <div id="features-container" class="space-y-2">
-                                    <!-- Dinâmico via JS -->
+                                    <!-- Dynamic via JS -->
                                 </div>
                             </div>
 
@@ -316,13 +316,13 @@
                                     </button>
                                 </div>
                                 <div id="compatibility-container" class="space-y-2">
-                                    <!-- Dinâmico via JS -->
+                                    <!-- Dynamic via JS -->
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Footer com navegação -->
+                    <!-- Footer with navigation -->
                     <div class="flex justify-between items-center gap-2 pt-6 border-t border-gray-200">
                         <div>
                             <button type="button" id="prev-page-btn"
@@ -350,7 +350,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmação de salvamento de produto -->
+    <!-- Product save confirmation modal -->
     <div id="product-save-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
             <div class="p-6">
@@ -379,7 +379,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmação de remoção individual de produto -->
+    <!-- Individual product removal confirmation modal -->
     <div id="product-delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
             <div class="p-6">
@@ -448,7 +448,7 @@
 
         rowCheckboxes().forEach(cb => cb.addEventListener('change', updateBulkState));
 
-        // Abrir modal ao clicar em apagar seleção
+        // Open modal when delete selection is clicked
         if (bulkBtn) {
             bulkBtn.addEventListener('click', function() {
                 const checked = rowCheckboxes().filter(cb => cb.checked).length;
@@ -460,7 +460,7 @@
             });
         }
 
-        // Confirmar remoção
+        // Confirm removal
         if (confirmBtn) {
             confirmBtn.addEventListener('click', function() {
                 bulkForm.submit();

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Inicializa Lucide icons
-    lucide.createIcons({ width: 20, height: 20 }); // 👈 ícones ligeiramente mais pequenos
+    // Initialize Lucide icons
+    lucide.createIcons({ width: 20, height: 20 });
 
     // Header scroll effect
     const header = document.getElementById("header");
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     window.addEventListener("scroll", handleScroll);
 
-    // Desktop hamburger menu (categorias)
+    // Desktop hamburger menu (categories)
     const menuToggle = document.getElementById("menu-toggle");
     const menuDropdown = document.getElementById("menu-dropdown");
 
@@ -88,10 +88,10 @@ document.addEventListener("DOMContentLoaded", function () {
             closeMobileMenu();
         });
 
-        // Fechar ao clicar no backdrop
+        // Close on backdrop click
         mobileMenuBackdrop.addEventListener("click", closeMobileMenu);
 
-        // Fechar com ESC
+        // Close with ESC
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
                 closeMobileMenu();
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
         card.addEventListener("mouseleave", () => (card.style.transform = "translateY(0)"));
     });
 
-    // Atualiza o contador do carrinho (função global)
+    // Update cart counter (global function)
     window.updateCartCount = function(newCount) {
         const cartCountEl = document.getElementById("cart-count");
         if (!cartCountEl) return;
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Cria um toast (função global)
+    // Create toast (global function)
     window.showToast = function(message, isError = false) {
         const existingToast = document.getElementById("toast-message");
         if (existingToast) existingToast.remove();
@@ -211,14 +211,14 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.appendChild(toast);
         lucide.createIcons();
 
-        // Sai automaticamente após 4 segundos
+        // Auto-exit after 4 seconds
         setTimeout(() => {
             toast.classList.add("opacity-0", "transition-opacity", "duration-500");
             setTimeout(() => toast.remove(), 500);
         }, 4000);
     }
 
-    // Animações de entrada
+    // Entry animations
     const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(el);
     });
 
-    // Estilo para animação do toast
+    // Toast animation style
     const style = document.createElement("style");
     style.textContent = `
         @keyframes fadeIn {
@@ -254,23 +254,23 @@ document.addEventListener("DOMContentLoaded", function () {
         budgetForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            // Simular loading
+            // Simulate loading
             budgetSubmitBtn.disabled = true;
             budgetSubmitBtn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Enviando...';
             lucide.createIcons();
 
-            // Simular envio após 1.5 segundos
+            // Simulate submission after 1.5 seconds
             setTimeout(() => {
                 budgetForm.classList.add('hidden');
                 budgetSuccessMessage.classList.remove('hidden');
                 lucide.createIcons();
 
-                // Scroll suave para a mensagem
+                // Smooth scroll to the message
                 budgetSuccessMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 1500);
         });
 
-        // Botão de novo pedido
+        // New request button
         if (budgetNewRequest) {
             budgetNewRequest.addEventListener('click', () => {
                 budgetForm.reset();
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 budgetSubmitBtn.innerHTML = '<i data-lucide="send" class="w-5 h-5"></i> Enviar Pedido de Orçamento';
                 lucide.createIcons();
 
-                // Scroll para o formulário
+                // Scroll to form
                 budgetForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         }

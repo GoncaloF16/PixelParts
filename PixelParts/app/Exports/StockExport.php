@@ -69,7 +69,7 @@ class StockExport implements FromCollection, WithHeadings, WithStyles, WithMappi
         $lastRow = count($this->products) + 1;
         $totalRow = $lastRow + 2;
 
-        // ===== CABEÇALHO =====
+        // === HEADER ===
         $sheet->getStyle('A1:G1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -92,7 +92,7 @@ class StockExport implements FromCollection, WithHeadings, WithStyles, WithMappi
             ]
         ]);
 
-        // ===== FORMATAÇÃO DAS LINHAS DE DADOS =====
+        // === DATA ROWS FORMATTING ===
         for ($row = 2; $row <= $lastRow; $row++) {
             // Cor alternada nas linhas
             $fillColor = ($row % 2 == 0) ? 'F3F4F6' : 'FFFFFF';
@@ -154,7 +154,7 @@ class StockExport implements FromCollection, WithHeadings, WithStyles, WithMappi
             }
         }
 
-        // ===== FORMATAÇÃO DE PREÇOS =====
+        // === PRICE FORMATTING ===
         $sheet->getStyle('D2:D' . $lastRow)->getNumberFormat()
             ->setFormatCode('€#,##0.00');
         $sheet->getStyle('G2:G' . $lastRow)->getNumberFormat()

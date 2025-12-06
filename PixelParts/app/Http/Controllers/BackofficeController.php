@@ -21,21 +21,21 @@ class BackofficeController extends Controller
         $totalUsers = DB::table('users')->count();
         $totalProducts = DB::table('products')->count();
 
-        // Encomendas do mês atual (apenas pagas)
+        // Orders for current month (paid only)
         $ordersThisMonth = Order::whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
             ->where('status', '>=', 1)
             ->whereNotNull('stripe_id')
             ->count();
 
-        // Receita do mês atual (soma dos amounts apenas de encomendas pagas)
+        // Revenue for current month (sum of paid order amounts)
         $revenueThisMonth = Order::whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
             ->where('status', '>=', 1)
             ->whereNotNull('stripe_id')
             ->sum('amount');
 
-        // Encomendas recentes (últimas 5 com nome do utilizador)
+        // Recent orders (last 5 with user name)
         $recentOrders = Order::join('users', 'orders.user_id', '=', 'users.id')
             ->select('orders.id', 'orders.status', 'orders.created_at', 'users.name as user_name')
             ->orderBy('orders.created_at', 'desc')
@@ -182,7 +182,7 @@ class BackofficeController extends Controller
         $data['slug'] = Str::slug($data['name']);
         $product = Product::create($data);
 
-        // Adicionar especificações
+        // Add specifications
         if ($request->has('specifications')) {
             $specs = $request->input('specifications');
 
@@ -199,7 +199,7 @@ class BackofficeController extends Controller
             }
         }
 
-        // Adicionar características
+        // Add features
         if ($request->has('features') && is_array($request->input('features'))) {
             $features = array_filter($request->input('features'), function($feature) {
                 return !empty(trim($feature));
@@ -260,7 +260,7 @@ class BackofficeController extends Controller
         $data['slug'] = Str::slug($data['name']);
         $produto->update($data);
 
-        // Atualizar especificações
+        // Update specifications
         $produto->specifications()->delete();
         if ($request->has('specifications')) {
             $specs = $request->input('specifications');
@@ -278,7 +278,7 @@ class BackofficeController extends Controller
             }
         }
 
-        // Atualizar características
+        // Update features
         $produto->features()->delete();
         if ($request->has('features') && is_array($request->input('features'))) {
             $features = array_filter($request->input('features'), function($feature) {
@@ -332,11 +332,11 @@ class BackofficeController extends Controller
     // Compatibilidade com rota atual: proxy para deleteProduct
     public function destroyProduct(Request $request, Product $produto)
     {
-        // Reutilizar a lógica existente de deleteProduct
+        // Reuse existing deleteProduct logic
         return $this->deleteProduct($request, $produto);
     }
 
-    // Remoção em massa de produtos selecionados
+    // Bulk removal of selected products
     public function bulkDelete(Request $request)
     {
         $data = $request->validate([
@@ -361,7 +361,7 @@ class BackofficeController extends Controller
         // Usar destroy para disparar eventos de modelo (se existirem)
         Product::destroy($ids);
 
-        // Redirecionar mantendo filtros (sem a página para evitar ficar numa página vazia)
+        // Redirect maintaining filters (without page to avoid empty page)
         $redirectParams = [];
         if ($request->filled('search')) $redirectParams['search'] = $request->input('search');
         if ($request->filled('category')) $redirectParams['category'] = $request->input('category');

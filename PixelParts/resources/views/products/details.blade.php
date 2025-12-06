@@ -96,7 +96,7 @@
                             @endforeach
                         </div>
 
-                        <!-- Lista de produtos com preços -->
+                        <!-- Product list with prices -->
                         <div class="space-y-3 mb-6" id="bundle-products-list">
                             @foreach($recommendedProducts->take(3) as $rec)
                                 <div class="flex items-start justify-between text-sm bundle-product-item" data-product-id="{{ $rec->id }}">
@@ -115,7 +115,7 @@
                             @endforeach
                         </div>
 
-                        <!-- Total e botão -->
+                        <!-- Total and button -->
                         <div class="flex items-center justify-between pt-4 border-t border-white/10">
                             <div>
                                 <div class="text-gray-100 text-3xl font-bold" id="bundle-total">€{{ number_format(($product->discount_percentage && $product->discount_percentage > 0 ? $product->discounted_price : $product->price) + $recommendedProducts->take(3)->sum(function($p) { return $p->discount_percentage && $p->discount_percentage > 0 ? $p->discounted_price : $p->price; }), 2, ',', '.') }}</div>
@@ -157,7 +157,7 @@
                             ({{ $product->reviews->count() }} avaliações)</span>
                     </div>
 
-                    <!-- Preço -->
+                    <!-- Price -->
                     <div class="flex items-baseline gap-4 mb-6">
                         @if($product->discount_percentage && $product->discount_percentage > 0)
                             <div class="flex flex-col gap-2">
@@ -190,10 +190,10 @@
                         </span>
                     </div>
 
-                    <!-- Descrição -->
+                    <!-- Description -->
                     <p class="text-text-muted leading-relaxed mb-6">{{ $product->description }}</p>
 
-                    <!-- Quantidade e Botão -->
+                    <!-- Quantity and Button -->
                     <div class="space-y-4 border-t border-white/10 pt-6">
                         <form class="add-to-cart-form" method="POST">
                             @csrf
@@ -239,7 +239,7 @@
                         ({{ $product->reviews->count() }})</button>
                 </div>
 
-                <!-- Especificações -->
+                <!-- Specifications -->
                 <div id="tab-specs" class="tab-content bg-surface-elevated border border-white/10 rounded-lg p-8">
                     <h3 class="text-2xl font-bold text-white text-text-inverse mb-6">Especificações Técnicas</h3>
                     <div class="grid md:grid-cols-2 gap-4">
@@ -254,7 +254,7 @@
                     </div>
                 </div>
 
-                <!-- Características -->
+                <!-- Features -->
                 <div id="tab-features" class="tab-content hidden bg-surface-elevated border border-white/10 rounded-lg p-8">
                     <h3 class="text-white text-2xl font-bold text-text-inverse mb-6">Características Principais</h3>
                     <div class="grid md:grid-cols-2 gap-4">
@@ -331,7 +331,7 @@
                         @endauth
                     </div>
 
-                    <!-- Formulário de review -->
+                    <!-- Review form -->
                     @auth
                         <form id="reviewForm" action="{{ route('reviews.store', $product->slug) }}" method="POST"
                             class="mb-8 hidden">
@@ -372,7 +372,7 @@
                     <div class="space-y-6">
                         @forelse ($product->reviews as $review)
                             <div class="border-b border-white/10 pb-6 last:border-0 flex justify-between items-start">
-                                <!-- Conteúdo do review -->
+                                <!-- Review content -->
                                 <div class="flex-1 pr-4">
                                     <h4 class="text-white text-text-inverse font-bold">{{ $review->user->name }}</h4>
                                     <div class="flex items-center gap-1 mt-1">
@@ -394,7 +394,7 @@
                                     <p class="text-white text-text-muted mt-2">{{ $review->comment }}</p>
                                 </div>
 
-                                <!-- Botão apagar -->
+                                <!-- Delete button -->
                                 @auth
                                     @if (auth()->id() === $review->user_id)
                                         <form action="{{ route('reviews.destroy', $review->id) }}" method="POST"

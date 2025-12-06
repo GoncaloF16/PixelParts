@@ -9,7 +9,7 @@
   --chat-glow: rgba(41, 176, 230, 0.4);
 }
 
-/* === Botão Flutuante === */
+/* === Floating Button === */
 #n8n-chat-toggle {
   position: fixed;
   right: 24px;
@@ -54,7 +54,7 @@
   z-index: 10000;
 }
 
-/* Cabeçalho */
+/* Header */
 #n8n-chat-header {
   padding: 14px 16px;
   background: var(--chat-accent);
@@ -73,7 +73,7 @@
   cursor: pointer;
 }
 
-/* Área de mensagens */
+/* Messages area */
 #n8n-chat-messages {
   flex: 1;
   padding: 16px;
@@ -176,7 +176,7 @@
   }
 }
 
-/* Animações */
+/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }

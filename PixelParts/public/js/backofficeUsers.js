@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search-users");
     const roleFilter = document.getElementById("role-filter");
 
-    // Modals de confirmação
+    // Confirmation modals
     const saveConfirmModal = document.getElementById("save-confirm-modal");
     const saveConfirmTitle = document.getElementById("save-confirm-title");
     const saveConfirmMessage = document.getElementById("save-confirm-message");
@@ -44,17 +44,17 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = url.toString();
     }
 
-    // Pesquisa ao digitar (debounce)
+    // Search on typing (debounce)
     let searchTimeout;
     searchInput.addEventListener('input', () => {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(applyFilters, 500);
     });
 
-    // Filtro de role
+    // Role filter
     roleFilter.addEventListener('change', applyFilters);
 
-    // Carregar valores dos filtros da URL
+    // Load filter values from URL
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('search')) {
         searchInput.value = urlParams.get('search');
@@ -137,9 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
     tbody.addEventListener("click", (e) => {
         const viewBtn = e.target.closest(".view-btn");
         if (viewBtn) {
-            e.stopPropagation(); // Prevenir que o clique feche o modal
+            e.stopPropagation(); // Prevent the click from closing the modal
 
-            // Fechar o dropdown manualmente
+            // Close the dropdown manually
             const dropdown = viewBtn.closest('[data-dropdown-menu]');
             if (dropdown) {
                 dropdown.classList.add('hidden');
@@ -162,9 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const editBtn = e.target.closest(".edit-btn");
         if (editBtn) {
-            e.stopPropagation(); // Prevenir que o clique feche o modal
+            e.stopPropagation(); // Prevent the click from closing the modal
 
-            // Fechar o dropdown manualmente
+            // Close the dropdown manually
             const dropdown = editBtn.closest('[data-dropdown-menu]');
             if (dropdown) {
                 dropdown.classList.add('hidden');
@@ -431,7 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     window.addEventListener("click", (e) => {
-        // Não fechar dropdowns se o clique for dentro de um modal
+        // Don't close dropdowns if click is inside a modal
         if (e.target.closest('#user-modal') ||
             e.target.closest('#save-confirm-modal') ||
             e.target.closest('#delete-confirm-modal')) {

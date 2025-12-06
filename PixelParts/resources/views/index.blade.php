@@ -4,7 +4,7 @@
     <main>
         <!-- Hero Section -->
     <section id="inicio" class="relative min-h-[80vh] lg:min-h-screen flex items-start justify-center overflow-hidden">
-            <!-- Partículas -->
+            <!-- Particles -->
             <div class="particles-container absolute inset-0">
                 @for ($i = 0; $i < 10; $i++)
                     <div class="particle"></div>
@@ -218,7 +218,7 @@
                                 </div>
                             </div>
 
-                            <!-- Orçamento -->
+                            <!-- Budget -->
                             <div>
                                 <label for="contact-budget" class="block text-sm font-semibold text-gray-300 mb-2">
                                     <i data-lucide="euro" class="w-4 h-4 inline mr-2 text-brand-green"></i>Orçamento Estimado

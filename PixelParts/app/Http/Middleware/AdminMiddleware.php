@@ -12,11 +12,11 @@ class AdminMiddleware
     {
         $user = Auth::user();
 
-        // Se não estiver autenticado ou não for admin
+        // If not authenticated or not admin
         if (!$user || $user->role !== 'admin') {
             return redirect()->route('fallback');
         }
-    
+
 
         // Caso seja admin, continua
         return $next($request);
