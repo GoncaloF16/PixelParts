@@ -22,6 +22,12 @@ class HomeController extends Controller
 
     }
 
+    public function faq() {
+
+        return view('faq');
+
+    }
+
     public function searchbar(Request $request)
 {
     $query = $request->input('q');

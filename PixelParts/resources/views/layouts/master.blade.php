@@ -350,6 +350,9 @@
                         <li><a href="{{ route('about') }}"
                                 class="text-text-secondary hover:text-brand-green transition-colors duration-300">Sobre
                                 Nós</a></li>
+                        <li><a href="{{ route('faq') }}"
+                                class="text-text-secondary hover:text-brand-green transition-colors duration-300">FAQ</a>
+                        </li>
                         <li><a href="#"
                                 class="text-text-secondary hover:text-brand-green transition-colors duration-300">Contacto</a>
                         </li>
