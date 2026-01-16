@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const addProductBtn = document.getElementById("add-product-btn");
     const productsTable = document.getElementById("products-table");
 
+    // Filters
+    const searchInput = document.getElementById("search-products");
+    const categoryFilter = document.getElementById("category-filter");
+
     // === Page Navigation ===
     const page1 = document.getElementById("page-1");
     const page2 = document.getElementById("page-2");
@@ -29,6 +33,40 @@ document.addEventListener("DOMContentLoaded", () => {
     let pendingDeleteProductId = null;
     let currentPage = 1;
     let modalMode = 'add'; // 'add', 'edit', 'view'
+
+    /* ------------------ FILTROS ------------------ */
+    function applyFilters() {
+        const search = searchInput.value;
+        const category = categoryFilter.value;
+
+        const url = new URL(window.location.href);
+        url.searchParams.set('search', search);
+        url.searchParams.set('category', category);
+
+        if (!search) url.searchParams.delete('search');
+        if (!category) url.searchParams.delete('category');
+
+        window.location.href = url.toString();
+    }
+
+    // Search on typing (debounce)
+    let searchTimeout;
+    searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(applyFilters, 500);
+    });
+
+    // Category filter
+    categoryFilter.addEventListener('change', applyFilters);
+
+    // Load filter values from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('search')) {
+        searchInput.value = urlParams.get('search');
+    }
+    if (urlParams.has('category')) {
+        categoryFilter.value = urlParams.get('category');
+    }
 
     // === Navigation Functions ===
     function showPage(pageNumber) {

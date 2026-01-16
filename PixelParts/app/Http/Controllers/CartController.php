@@ -155,11 +155,95 @@ public function remove($id)
     ]);
 }
 
-public function order (Request $request)
+public function showCheckout()
 {
-    $order = Order::create([
-        'user_id' => auth()->user()->id,
+    $cart = session()->get('cart', []);
+
+    if (empty($cart)) {
+        return redirect()->route('cart.index')->with('error', 'O seu carrinho está vazio.');
+    }
+
+    $ivaRate = 0.23;
+    $cartItems = [];
+    $total = [
+        'totalSemIva' => 0,
+        'totalIva' => 0,
+        'totalComIva' => 0
+    ];
+
+    foreach ($cart as $pid => $item) {
+        $unitPriceComIva = $item['price'];
+        $unitPriceSemIva = $unitPriceComIva / (1 + $ivaRate);
+        $unitIva = $unitPriceComIva - $unitPriceSemIva;
+
+        $subtotalComIva = $unitPriceComIva * $item['quantity'];
+        $subtotalSemIva = $unitPriceSemIva * $item['quantity'];
+        $subtotalIva = $unitIva * $item['quantity'];
+
+        $total['totalSemIva'] += $subtotalSemIva;
+        $total['totalIva'] += $subtotalIva;
+        $total['totalComIva'] += $subtotalComIva;
+
+        $cartItems[$pid] = [
+            'product_id' => $pid,
+            'name' => $item['name'],
+            'quantity' => $item['quantity'],
+            'price' => $item['price'],
+            'subtotalComIva' => $subtotalComIva,
+            'subtotalSemIva' => $subtotalSemIva,
+            'subtotalIva' => $subtotalIva,
+        ];
+    }
+
+    return view('checkout.index', [
+        'cartItems' => $cartItems,
+        'totalSemIva' => $total['totalSemIva'],
+        'totalIva' => $total['totalIva'],
+        'totalComIva' => $total['totalComIva'],
+        'ivaRate' => $ivaRate
     ]);
+}
+
+public function processCheckout(Request $request)
+{
+    $validated = $request->validate([
+        'billing_name' => 'required|string|max:255',
+        'billing_address' => 'required|string|max:255',
+        'billing_city' => 'required|string|max:255',
+        'billing_postal_code' => 'required|string|max:20',
+        'billing_country' => 'required|string|max:255',
+        'billing_phone' => 'required|string|max:20',
+        'billing_nif' => 'nullable|string|max:20',
+        'shipping_name' => 'required|string|max:255',
+        'shipping_address' => 'required|string|max:255',
+        'shipping_city' => 'required|string|max:255',
+        'shipping_postal_code' => 'required|string|max:20',
+        'shipping_country' => 'required|string|max:255',
+        'shipping_phone' => 'required|string|max:20',
+    ]);
+
+    // Update user's saved addresses
+    $user = auth()->user();
+    $user->update($validated);
+
+    // Create order with address snapshot
+    $order = Order::create([
+        'user_id' => $user->id,
+        'billing_name' => $validated['billing_name'],
+        'billing_address' => $validated['billing_address'],
+        'billing_city' => $validated['billing_city'],
+        'billing_postal_code' => $validated['billing_postal_code'],
+        'billing_country' => $validated['billing_country'],
+        'billing_phone' => $validated['billing_phone'],
+        'billing_nif' => $validated['billing_nif'] ?? null,
+        'shipping_name' => $validated['shipping_name'],
+        'shipping_address' => $validated['shipping_address'],
+        'shipping_city' => $validated['shipping_city'],
+        'shipping_postal_code' => $validated['shipping_postal_code'],
+        'shipping_country' => $validated['shipping_country'],
+        'shipping_phone' => $validated['shipping_phone'],
+    ]);
+
     $amount = 0;
     foreach (session('cart') as $key => $value) {
         $linePriceCents = (int) round($value['price'] * 100);
@@ -178,7 +262,6 @@ public function order (Request $request)
     $order->save();
 
     // Mark any abandoned cart as recovered since user is placing order
-    $user = auth()->user();
     if ($user) {
         \App\Models\AbandonedCart::where('user_id', $user->id)
             ->whereNull('recovered_at')
@@ -190,21 +273,21 @@ public function order (Request $request)
     $successURL = route('order.success').'?session_id={CHECKOUT_SESSION_ID}&order_id='. $order->id;
 
     $response = $stripe->checkout->sessions->create([
-    'success_url' => $successURL,
-    'customer_email' => auth()->user()->email,
-    'line_items' => [
-        [
-        'price_data' => [
-            'product_data' => [
-                'name' => "Shopping"
+        'success_url' => $successURL,
+        'customer_email' => $user->email,
+        'line_items' => [
+            [
+                'price_data' => [
+                    'product_data' => [
+                        'name' => "Shopping"
+                    ],
+                    'unit_amount' => $orderTotalCents,
+                    'currency' => 'eur',
+                ],
+                'quantity' => 1
             ],
-            'unit_amount' => $orderTotalCents,
-            'currency' => 'eur',
         ],
-        'quantity' => 1
-        ],
-    ],
-    'mode' => 'payment',
+        'mode' => 'payment',
     ]);
 
     return redirect($response['url']);

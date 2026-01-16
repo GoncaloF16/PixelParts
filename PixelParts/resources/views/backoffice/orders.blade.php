@@ -177,6 +177,31 @@
                     <div id="view-order-products" class="space-y-2"></div>
                 </div>
 
+                <!-- Billing Address -->
+                <div id="view-billing-section" class="border-t pt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Endereço de Faturação</label>
+                    <div class="bg-gray-50 rounded-lg p-4 space-y-1">
+                        <p id="view-billing-name" class="font-medium text-gray-900"></p>
+                        <p id="view-billing-address" class="text-sm text-gray-600"></p>
+                        <p id="view-billing-city-postal" class="text-sm text-gray-600"></p>
+                        <p id="view-billing-country" class="text-sm text-gray-600"></p>
+                        <p id="view-billing-phone" class="text-sm text-gray-600"></p>
+                        <p id="view-billing-nif" class="text-sm text-gray-600"></p>
+                    </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div id="view-shipping-section">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Endereço de Entrega</label>
+                    <div class="bg-gray-50 rounded-lg p-4 space-y-1">
+                        <p id="view-shipping-name" class="font-medium text-gray-900"></p>
+                        <p id="view-shipping-address" class="text-sm text-gray-600"></p>
+                        <p id="view-shipping-city-postal" class="text-sm text-gray-600"></p>
+                        <p id="view-shipping-country" class="text-sm text-gray-600"></p>
+                        <p id="view-shipping-phone" class="text-sm text-gray-600"></p>
+                    </div>
+                </div>
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Stripe ID</label>
                     <p id="view-stripe-id" class="text-gray-600 text-sm font-mono"></p>
@@ -398,6 +423,38 @@
                         `;
                         productsContainer.appendChild(productDiv);
                     });
+
+                    // Display billing address
+                    const billingSection = document.getElementById('view-billing-section');
+                    if (order.billing_name || order.billing_address) {
+                        billingSection.style.display = 'block';
+                        document.getElementById('view-billing-name').textContent = order.billing_name || 'N/A';
+                        document.getElementById('view-billing-address').textContent = order.billing_address || '';
+                        document.getElementById('view-billing-city-postal').textContent =
+                            `${order.billing_postal_code || ''} ${order.billing_city || ''}`.trim();
+                        document.getElementById('view-billing-country').textContent = order.billing_country || '';
+                        document.getElementById('view-billing-phone').textContent =
+                            order.billing_phone ? `Tel: ${order.billing_phone}` : '';
+                        document.getElementById('view-billing-nif').textContent =
+                            order.billing_nif ? `NIF: ${order.billing_nif}` : '';
+                    } else {
+                        billingSection.style.display = 'none';
+                    }
+
+                    // Display shipping address
+                    const shippingSection = document.getElementById('view-shipping-section');
+                    if (order.shipping_name || order.shipping_address) {
+                        shippingSection.style.display = 'block';
+                        document.getElementById('view-shipping-name').textContent = order.shipping_name || 'N/A';
+                        document.getElementById('view-shipping-address').textContent = order.shipping_address || '';
+                        document.getElementById('view-shipping-city-postal').textContent =
+                            `${order.shipping_postal_code || ''} ${order.shipping_city || ''}`.trim();
+                        document.getElementById('view-shipping-country').textContent = order.shipping_country || '';
+                        document.getElementById('view-shipping-phone').textContent =
+                            order.shipping_phone ? `Tel: ${order.shipping_phone}` : '';
+                    } else {
+                        shippingSection.style.display = 'none';
+                    }
 
                     const viewModal = document.getElementById('view-modal');
                     viewModal.classList.remove('hidden');

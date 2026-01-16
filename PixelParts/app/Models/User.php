@@ -17,6 +17,19 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'billing_name',
+        'billing_address',
+        'billing_city',
+        'billing_postal_code',
+        'billing_country',
+        'billing_phone',
+        'billing_nif',
+        'shipping_name',
+        'shipping_address',
+        'shipping_city',
+        'shipping_postal_code',
+        'shipping_country',
+        'shipping_phone',
     ];
 
 

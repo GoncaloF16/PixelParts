@@ -70,4 +70,54 @@ class HomeController extends Controller
 
         return redirect()->route('profile')->with('success', 'Perfil atualizado com sucesso!');
     }
+
+    public function updateBilling(Request $request)
+    {
+        $request->validate([
+            'billing_name' => 'nullable|string|max:255',
+            'billing_address' => 'nullable|string|max:255',
+            'billing_city' => 'nullable|string|max:255',
+            'billing_postal_code' => 'nullable|string|max:20',
+            'billing_country' => 'nullable|string|max:255',
+            'billing_phone' => 'nullable|string|max:20',
+            'billing_nif' => 'nullable|string|max:20',
+        ]);
+
+        $user = Auth::user();
+        $user->update($request->only([
+            'billing_name',
+            'billing_address',
+            'billing_city',
+            'billing_postal_code',
+            'billing_country',
+            'billing_phone',
+            'billing_nif',
+        ]));
+
+        return redirect()->route('profile')->with('success', 'Endereço de faturação atualizado com sucesso!');
+    }
+
+    public function updateShipping(Request $request)
+    {
+        $request->validate([
+            'shipping_name' => 'nullable|string|max:255',
+            'shipping_address' => 'nullable|string|max:255',
+            'shipping_city' => 'nullable|string|max:255',
+            'shipping_postal_code' => 'nullable|string|max:20',
+            'shipping_country' => 'nullable|string|max:255',
+            'shipping_phone' => 'nullable|string|max:20',
+        ]);
+
+        $user = Auth::user();
+        $user->update($request->only([
+            'shipping_name',
+            'shipping_address',
+            'shipping_city',
+            'shipping_postal_code',
+            'shipping_country',
+            'shipping_phone',
+        ]));
+
+        return redirect()->route('profile')->with('success', 'Endereço de entrega atualizado com sucesso!');
+    }
 }

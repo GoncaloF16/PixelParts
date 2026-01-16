@@ -31,11 +31,17 @@ Route::middleware('auth')->group(function() {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::post('/order', [CartController::class, 'order'])->name('order.post');
+
+    // Checkout routes
+    Route::get('/checkout', [CartController::class, 'showCheckout'])->name('checkout.index');
+    Route::post('/checkout/process', [CartController::class, 'processCheckout'])->name('checkout.process');
     Route::get('/order-success', [CartController::class, 'orderSuccess'])->name('order.success');
 
+    // Profile routes
     Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
     Route::put('/profile/update', [HomeController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/profile/update-billing', [HomeController::class, 'updateBilling'])->name('profile.update.billing');
+    Route::put('/profile/update-shipping', [HomeController::class, 'updateShipping'])->name('profile.update.shipping');
 });
 
 Route::middleware('web')->group(function () {

@@ -6,27 +6,32 @@
 @section('content')
     <div class="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
         <!-- Filtros -->
-        <form method="GET" action="{{ route('backoffice.stock') }}" class="flex flex-col sm:flex-row gap-4">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Pesquisar produtos..."
+        <div class="flex flex-col sm:flex-row gap-4">
+            <input type="text" id="search-products" value="{{ request('search') }}" placeholder="Pesquisar produtos..."
                 class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64">
-            <select name="category"
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todas as Categorias</option>
-                <option value="Processadores" {{ request('category') == 'Processadores' ? 'selected' : '' }}>Processadores
-                </option>
-                <option value="Placas Gráficas" {{ request('category') == 'Placas Gráficas' ? 'selected' : '' }}>Placas
-                    Gráficas</option>
-                <option value="Memória RAM" {{ request('category') == 'Memória RAM' ? 'selected' : '' }}>Memória RAM
-                </option>
-                <option value="Motherboard" {{ request('category') == 'Motherboard' ? 'selected' : '' }}>Motherboard
-                </option>
-                <option value="Portáteis" {{ request('category') == 'Portáteis' ? 'selected' : '' }}>Portáteis</option>
-                <option value="Storage" {{ request('category') == 'Storage' ? 'selected' : '' }}>Storage</option>
-                <option value="PSU" {{ request('category') == 'PSU' ? 'selected' : '' }}>PSU</option>
-            </select>
-            <button type="submit"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Filtrar</button>
-        </form>
+            <div class="relative">
+                <select id="category-filter"
+                    class="appearance-none px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white cursor-pointer hover:border-gray-400 transition min-w-[180px]">
+                    <option value="">Todas as Categorias</option>
+                    <option value="Processadores" {{ request('category') == 'Processadores' ? 'selected' : '' }}>Processadores
+                    </option>
+                    <option value="Placas Gráficas" {{ request('category') == 'Placas Gráficas' ? 'selected' : '' }}>Placas
+                        Gráficas</option>
+                    <option value="Memória RAM" {{ request('category') == 'Memória RAM' ? 'selected' : '' }}>Memória RAM
+                    </option>
+                    <option value="Motherboard" {{ request('category') == 'Motherboard' ? 'selected' : '' }}>Motherboard
+                    </option>
+                    <option value="Portáteis" {{ request('category') == 'Portáteis' ? 'selected' : '' }}>Portáteis</option>
+                    <option value="Storage" {{ request('category') == 'Storage' ? 'selected' : '' }}>Storage</option>
+                    <option value="PSU" {{ request('category') == 'PSU' ? 'selected' : '' }}>PSU</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+        </div>
 
         <!-- Action Buttons -->
         <div class="flex gap-2 mt-4 sm:mt-0">
