@@ -194,7 +194,7 @@
                     </div>
 
                     <!-- Form -->
-                    <div class="bg-surface-card rounded-2xl shadow-xl p-8 md:p-10 border border-border">
+                    <div class="bg-gradient-to-br from-gray-900/40 to-gray-900/60 rounded-2xl shadow-xl p-8 md:p-10 border border-gray-700/50 backdrop-blur-sm">
                         <form id="budget-form" class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Nome -->
@@ -203,7 +203,7 @@
                                         <i data-lucide="user" class="w-4 h-4 inline mr-2 text-brand-green"></i>Nome
                                     </label>
                                     <input type="text" id="contact-name" required
-                                        class="w-full px-4 py-3 bg-surface border border-border rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
+                                        class="w-full px-4 py-3 bg-gray-900/90 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green/50 focus:border-brand-green/50 transition-all"
                                         placeholder="O teu nome">
                                 </div>
 
@@ -213,7 +213,7 @@
                                         <i data-lucide="mail" class="w-4 h-4 inline mr-2 text-brand-green"></i>Email
                                     </label>
                                     <input type="email" id="contact-email" required
-                                        class="w-full px-4 py-3 bg-surface border border-border rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
+                                        class="w-full px-4 py-3 bg-gray-900/90 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green/50 focus:border-brand-green/50 transition-all"
                                         placeholder="seuemail@exemplo.com">
                                 </div>
                             </div>
@@ -223,14 +223,19 @@
                                 <label for="contact-budget" class="block text-sm font-semibold text-gray-300 mb-2">
                                     <i data-lucide="euro" class="w-4 h-4 inline mr-2 text-brand-green"></i>Orçamento Estimado
                                 </label>
-                                <select id="contact-budget" required
-                                    class="w-full px-4 py-3 bg-surface border border-border rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300">
-                                    <option value="">Seleciona um valor aproximado</option>
-                                    <option value="500-1000">€500 - €1.000</option>
-                                    <option value="1000-2000">€1.000 - €2.000</option>
-                                    <option value="2000-3000">€2.000 - €3.000</option>
-                                    <option value="3000+">€3.000+</option>
-                                </select>
+                                <div class="relative">
+                                    <select id="contact-budget" required
+                                        class="w-full px-4 py-3 pr-10 bg-gray-900/90 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-green/50 focus:border-brand-green/50 transition-all appearance-none">
+                                        <option value="">Seleciona um valor aproximado</option>
+                                        <option value="500-1000">€500 - €1.000</option>
+                                        <option value="1000-2000">€1.000 - €2.000</option>
+                                        <option value="2000-3000">€2.000 - €3.000</option>
+                                        <option value="3000+">€3.000+</option>
+                                    </select>
+                                    <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Tipo de Setup -->
@@ -239,7 +244,7 @@
                                     <i data-lucide="cpu" class="w-4 h-4 inline mr-2 text-brand-green"></i>Tipo de Setup
                                 </label>
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                    <label class="relative flex items-center justify-center p-4 bg-surface border border-border rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
+                                    <label class="relative flex items-center justify-center p-4 bg-gray-900/60 border border-gray-700 rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
                                         <input type="radio" name="setup-type" value="gaming" class="sr-only peer" required>
                                         <div class="text-center text-gray-400 peer-checked:text-brand-green transition-colors">
                                             <i data-lucide="gamepad-2" class="w-6 h-6 mx-auto mb-2"></i>
@@ -247,7 +252,7 @@
                                         </div>
                                         <div class="absolute inset-0 border-2 border-brand-green rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity"></div>
                                     </label>
-                                    <label class="relative flex items-center justify-center p-4 bg-surface border border-border rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
+                                    <label class="relative flex items-center justify-center p-4 bg-gray-900/60 border border-gray-700 rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
                                         <input type="radio" name="setup-type" value="work" class="sr-only peer">
                                         <div class="text-center text-gray-400 peer-checked:text-brand-green transition-colors">
                                             <i data-lucide="briefcase" class="w-6 h-6 mx-auto mb-2"></i>
@@ -255,7 +260,7 @@
                                         </div>
                                         <div class="absolute inset-0 border-2 border-brand-green rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity"></div>
                                     </label>
-                                    <label class="relative flex items-center justify-center p-4 bg-surface border border-border rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
+                                    <label class="relative flex items-center justify-center p-4 bg-gray-900/60 border border-gray-700 rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
                                         <input type="radio" name="setup-type" value="streaming" class="sr-only peer">
                                         <div class="text-center text-gray-400 peer-checked:text-brand-green transition-colors">
                                             <i data-lucide="video" class="w-6 h-6 mx-auto mb-2"></i>
@@ -263,7 +268,7 @@
                                         </div>
                                         <div class="absolute inset-0 border-2 border-brand-green rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity"></div>
                                     </label>
-                                    <label class="relative flex items-center justify-center p-4 bg-surface border border-border rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
+                                    <label class="relative flex items-center justify-center p-4 bg-gray-900/60 border border-gray-700 rounded-lg cursor-pointer hover:border-brand-green transition-all duration-300 group">
                                         <input type="radio" name="setup-type" value="all" class="sr-only peer">
                                         <div class="text-center text-gray-400 peer-checked:text-brand-green transition-colors">
                                             <i data-lucide="sparkles" class="w-6 h-6 mx-auto mb-2"></i>
@@ -280,7 +285,7 @@
                                     <i data-lucide="message-square" class="w-4 h-4 inline mr-2 text-brand-green"></i>Descreve a Tua Ideia
                                 </label>
                                 <textarea id="contact-message" rows="5" required
-                                    class="w-full px-4 py-3 bg-surface border border-border rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300 resize-none"
+                                    class="w-full px-4 py-3 bg-gray-900/90 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green/50 focus:border-brand-green/50 transition-all resize-none"
                                     placeholder="Conta-nos o que tens em mente... Quais jogos vais jogar? Que tipo de trabalho vais fazer? Alguma preferência de marca ou componente?"></textarea>
                             </div>
 
@@ -326,7 +331,7 @@
                                 Recebemos o teu pedido de orçamento. A nossa equipa irá analisar e entrar em contacto contigo em breve com uma proposta personalizada!
                             </p>
                             <button id="budget-new-request"
-                                class="bg-surface-card border border-border text-gray-300 px-6 py-3 rounded-lg font-semibold hover:bg-surface transition-all duration-300">
+                                class="bg-gray-900/60 border border-gray-700 text-gray-300 px-6 py-3 rounded-lg font-semibold hover:bg-gray-900/90 transition-all duration-300">
                                 Fazer Novo Pedido
                             </button>
                         </div>

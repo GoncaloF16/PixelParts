@@ -16,11 +16,11 @@
     @endif
 
     <!-- Layout 2 Colunas -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
         <!-- Coluna Esquerda - Info Básica -->
         <div class="lg:col-span-4">
-            <div class="bg-gradient-to-br from-surface-card to-surface-dark rounded-2xl p-6 border border-border/30 backdrop-blur-sm h-full">
+            <div class="bg-gradient-to-br from-gray-900/40 to-gray-900/60 rounded-2xl p-6 border border-gray-700/50 backdrop-blur-sm h-full flex flex-col">
                 <!-- Avatar -->
                 <div class="flex flex-col items-center text-center mb-6 pb-6 border-b border-border/30">
                     <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-brand-green via-brand-green to-brand-blue flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-brand-green/20 mb-4">
@@ -32,7 +32,7 @@
                 </div>
 
                 <!-- Form Editar Nome -->
-                <form method="POST" action="{{ route('profile.update') }}" class="space-y-4">
+                <form method="POST" action="{{ route('profile.update') }}" class="space-y-4 flex-1 flex flex-col">
                     @csrf
                     @method('PUT')
 
@@ -54,7 +54,9 @@
                         <p class="text-xs text-gray-500 mt-1">O email não pode ser alterado</p>
                     </div>
 
-                    <button type="submit" class="w-full bg-[#374151] hover:bg-[#4B5563] text-[#E5E7EB] px-6 py-3 rounded-lg text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                    <div class="flex-1"></div>
+
+                    <button type="submit" class="w-full bg-[#374151] hover:bg-[#4B5563] text-[#E5E7EB] px-6 py-3 rounded-lg text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 mt-auto">
                         <i data-lucide="save" class="w-4 h-4"></i>
                         Guardar Alterações
                     </button>
@@ -78,9 +80,9 @@
 
             <!-- Addresses Tab -->
             <div id="content-addresses" class="tab-content">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Billing Address -->
-                    <div class="bg-gradient-to-br from-surface-card to-surface-dark rounded-2xl p-6 border border-border/30 backdrop-blur-sm h-full">
+                    <div class="bg-gradient-to-br from-gray-900/40 to-gray-900/60 rounded-2xl p-6 border border-gray-700/50 backdrop-blur-sm h-full flex flex-col">
                         <div class="flex items-center gap-2 mb-6">
                             <div class="w-10 h-10 bg-brand-green/10 rounded-lg flex items-center justify-center border border-brand-green/20">
                                 <i data-lucide="file-text" class="w-5 h-5 text-brand-green"></i>
@@ -91,7 +93,7 @@
                             </div>
                         </div>
 
-                        <form method="POST" action="{{ route('profile.update.billing') }}" class="space-y-4">
+                        <form method="POST" action="{{ route('profile.update.billing') }}" class="space-y-4 flex-1 flex flex-col">
                             @csrf
                             @method('PUT')
 
@@ -142,7 +144,9 @@
                                     class="w-full bg-gray-900/90 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-green/50 focus:border-brand-green/50 transition-all"/>
                             </div>
 
-                            <button type="submit" class="w-full bg-[#374151] hover:bg-[#4B5563] text-[#E5E7EB] px-6 py-3 rounded-lg text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                            <div class="flex-1"></div>
+
+                            <button type="submit" class="w-full bg-[#374151] hover:bg-[#4B5563] text-[#E5E7EB] px-6 py-3 rounded-lg text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 mt-auto">
                                 <i data-lucide="save" class="w-4 h-4"></i>
                                 Guardar Faturação
                             </button>
@@ -150,7 +154,7 @@
                     </div>
 
                     <!-- Shipping Address -->
-                    <div class="bg-gradient-to-br from-surface-card to-surface-dark rounded-2xl p-6 border border-border/30 backdrop-blur-sm h-full">
+                    <div class="bg-gradient-to-br from-gray-900/40 to-gray-900/60 rounded-2xl p-6 border border-gray-700/50 backdrop-blur-sm h-full flex flex-col">
                         <div class="flex items-center gap-2 mb-6">
                             <div class="w-10 h-10 bg-brand-blue/10 rounded-lg flex items-center justify-center border border-brand-blue/20">
                                 <i data-lucide="truck" class="w-5 h-5 text-brand-blue"></i>
@@ -161,7 +165,7 @@
                             </div>
                         </div>
 
-                        <form method="POST" action="{{ route('profile.update.shipping') }}" class="space-y-4">
+                        <form method="POST" action="{{ route('profile.update.shipping') }}" class="space-y-4 flex-1 flex flex-col">
                             @csrf
                             @method('PUT')
 
@@ -205,7 +209,9 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="w-full bg-[#374151] hover:bg-[#4B5563] text-[#E5E7EB] px-6 py-3 rounded-lg text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                            <div class="flex-1"></div>
+
+                            <button type="submit" class="w-full bg-[#374151] hover:bg-[#4B5563] text-[#E5E7EB] px-6 py-3 rounded-lg text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 mt-auto">
                                 <i data-lucide="save" class="w-4 h-4"></i>
                                 Guardar Entrega
                             </button>

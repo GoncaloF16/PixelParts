@@ -113,11 +113,11 @@
                 @auth
                     <div class="relative inline-block text-left">
                         <button id="userMenuButton" type="button"
-                            class="inline-flex justify-between items-center  text-white px-4 py-2 rounded-md font-semibold text-sm  transition-colors duration-300 focus:outline-none"
+                            class="inline-flex items-center text-white px-4 py-2 rounded-md font-semibold text-sm transition-colors duration-300 focus:outline-none"
                             aria-expanded="true" aria-haspopup="true">
                             <i data-lucide="user" class="w-4 h-4 mr-2"></i>
-                            Olá, {{ Auth::user()->name }}
-                            <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
+                            <span>Olá, {{ Auth::user()->name }}</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 ml-0.5"></i>
                         </button>
 
                         <!-- Dropdown -->
