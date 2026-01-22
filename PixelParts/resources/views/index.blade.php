@@ -3,7 +3,7 @@
 @section('content')
     <main>
         <!-- Hero Section -->
-    <section id="inicio" class="relative min-h-[80vh] lg:min-h-screen flex items-start justify-center overflow-hidden">
+    <section id="inicio" class="relative min-h-[70vh] lg:min-h-[80vh] flex items-start justify-center overflow-hidden">
             <!-- Particles -->
             <div class="particles-container absolute inset-0">
                 @for ($i = 0; $i < 10; $i++)
@@ -12,7 +12,7 @@
             </div>
 
             <!-- Hero Content -->
-            <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
+            <div class="relative z-10 text-center max-w-4xl mx-auto px-6 flex flex-col items-center">
                 <h1 class="text-5xl md:text-7xl font-bold text-gray-200 mb-6 animate-fade-up">
                     Componentes Gaming <br>
                     de <span class="text-gradient-brand">Elite</span>
@@ -38,16 +38,15 @@
                         </button>
                     </a>
                 </div>
-            </div>
-
-            <!-- Scroll Indicator -->
-            <div class="absolute bottom-4 sm:bottom-8 md:bottom-12 lg:bottom-32 left-1/2 transform -translate-x-1/2 animate-bounce pointer-events-none">
-                <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400"></i>
+                <!-- Scroll Indicator -->
+                <div class="mt-20 md:mt-24 lg:mt-28 animate-bounce pointer-events-none">
+                    <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400"></i>
+                </div>
             </div>
         </section>
 
         <!-- Products Section -->
-        <section id="produtos" class="pb-10 bg-surface">
+        <section id="produtos" class="pt-12 md:pt-1 pb-10 bg-surface">
             <div class="container mx-auto px-6 lg:px-12">
                 <div class="text-center mb-10 md:mb-16 animate-fade-up">
                     <h2 class="text-4xl md:text-5xl font-bold text-gray-200 mb-4">

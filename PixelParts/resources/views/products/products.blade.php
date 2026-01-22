@@ -130,9 +130,9 @@
                     </div>
 
                     <!-- Products Grid -->
-                    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+                    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr max-w-[1100px] mx-auto">
                         @foreach ($products as $product)
-                            <div class="product-card min-h-[440px]" data-name="{{ strtolower($product->name) }}"
+                            <div class="product-card h-[440px]" data-name="{{ strtolower($product->name) }}"
                                 data-price="{{ $product->price }}" data-brand="{{ strtolower($product->brand) }}"
                                 data-category="{{ $product->category ? $product->category->slug : 'uncategorized' }}">
 
