@@ -56,6 +56,7 @@ Route::middleware(['admin']) -> group(function() {
     Route::post('/backoffice/users', [BackofficeController::class, 'storeUser'])->name('backoffice.users.store');
     Route::put('/backoffice/users/{id}', [BackofficeController::class, 'updateUser'])->name('backoffice.users.update');
     Route::delete('/backoffice/users/{id}', [BackofficeController::class, 'deleteUser'])->name('backoffice.users.delete');
+    Route::post('/backoffice/users/bulk-delete', [BackofficeController::class, 'bulkDeleteUsers'])->name('backoffice.users.bulk-delete');
 
     Route::get('/backoffice/stock', [BackofficeController::class, 'stock'])->name('backoffice.stock');
     Route::get('/backoffice/stock/excel', [BackofficeController::class, 'exportStockExcel'])->name('backoffice.stock.excel');
@@ -69,6 +70,7 @@ Route::middleware(['admin']) -> group(function() {
     Route::get('/backoffice/orders/{id}', [BackofficeController::class, 'getOrder'])->name('backoffice.orders.get');
     Route::put('/backoffice/orders/{id}', [BackofficeController::class, 'updateOrder'])->name('backoffice.orders.update');
     Route::delete('/backoffice/orders/{id}', [BackofficeController::class, 'deleteOrder'])->name('backoffice.orders.delete');
+    Route::post('/backoffice/orders/bulk-delete', [BackofficeController::class, 'bulkDeleteOrders'])->name('backoffice.orders.bulk-delete');
 
 });
 

@@ -26,7 +26,6 @@
                 id="name"
                 name="name"
                 value="{{ old('name') }}"
-                required
                 autofocus
                 class="w-full px-4 py-3 bg-muted border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300 @error('name') border-destructive ring-destructive/10 @enderror"
                 placeholder="O teu nome"
@@ -47,7 +46,6 @@
                 id="email"
                 name="email"
                 value="{{ old('email') }}"
-                required
                 class="w-full px-4 py-3 bg-muted border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300 @error('email') border-destructive ring-destructive/10 @enderror"
                 placeholder="o.teu@email.com"
             >
@@ -67,10 +65,8 @@
                     type="password"
                     id="password"
                     name="password"
-                    required
                     class="w-full px-4 py-3 pr-12 bg-muted border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300 @error('password') border-destructive ring-destructive/10 @enderror"
                     placeholder="Mínimo 8 caracteres"
-                    minlength="8"
                 >
                 <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-secondary hover:text-brand-green transition-colors duration-300 password-toggle" data-target="password">
                     <i data-lucide="eye" class="w-4 h-4"></i>
@@ -92,15 +88,15 @@
                     type="password"
                     id="password_confirmation"
                     name="password_confirmation"
-                    required
-                    class="w-full px-4 py-3 pr-12 bg-muted border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
+                    class="w-full px-4 py-3 pr-12 bg-muted border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300 @error('password_confirmation') border-destructive ring-destructive/10 @enderror"
                     placeholder="Confirma a tua password"
-                    minlength="8"
                 >
-                <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-secondary hover:text-brand-green transition-colors duration-300 password-toggle" data-target="password_confirmation">
                     <i data-lucide="eye" class="w-4 h-4"></i>
                 </button>
             </div>
+            @error('password_confirmation')
+                <span class="block mt-2 text-xs text-destructive">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Password Strength Indicator -->
@@ -115,7 +111,7 @@
         <div class="mb-6">
             <label class="flex items-start space-x-3 cursor-pointer group">
                 <input type="checkbox" name="terms" required class="w-4 h-4 mt-1 bg-muted border border-border rounded transition-all duration-300 checked:bg-brand-green checked:border-brand-green">
-                <span class="text-text-secondary text-sm leading-relaxed group-hover:text-text-primary transition-colors duration-300">
+                <span class="text-text-secondary texing-relaxed group-hover:text-text-primary transition-colors duration-300">
                     Aceito os
                     <a href="#" class="text-brand-green hover:text-brand-blue transition-colors duration-300 hover:underline">Termos de Serviço</a>
                     e

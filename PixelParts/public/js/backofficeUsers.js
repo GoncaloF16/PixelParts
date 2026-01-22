@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputEmail = document.getElementById("user-email");
     const inputRole = document.getElementById("user-role");
     const inputPassword = document.getElementById("user-password");
+    const inputCreated = document.getElementById("user-created");
+    const inputCreatedContainer = document.getElementById("user-created-container");
     const cancelBtn = document.getElementById("cancel-user-btn");
     const tbody = document.getElementById("users-table");
     const inputMode = document.getElementById("user-mode");
@@ -45,10 +47,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Search on typing (debounce)
+    // Evita que a página recarregue pouco depois de abrires um modal:
+    // só aplica o filtro se o campo de pesquisa ainda estiver focado
+    // passado o tempo de debounce e o valor não tiver mudado.
     let searchTimeout;
     searchInput.addEventListener('input', () => {
         clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(applyFilters, 500);
+        const currentValue = searchInput.value;
+
+        searchTimeout = setTimeout(() => {
+            // Se entretanto clicaste noutro sítio (por exemplo, para abrir um modal),
+            // não vamos aplicar o filtro automaticamente.
+            if (document.activeElement === searchInput && searchInput.value === currentValue) {
+                applyFilters();
+            }
+        }, 500);
     });
 
     // Role filter
@@ -87,8 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Show/hide submit button
         if (isView) {
             saveBtn.classList.add('hidden');
+            inputCreatedContainer.classList.remove('hidden');
         } else {
             saveBtn.classList.remove('hidden');
+            inputCreatedContainer.classList.add('hidden');
         }
     }
 
@@ -131,6 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         inputEmail.value = "";
         inputRole.value = "";
         inputPassword.value = "";
+        inputCreated.value = "";
         modal.classList.remove("hidden");
     });
 
@@ -156,6 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
             inputEmail.value = viewBtn.dataset.email || "";
             inputRole.value = viewBtn.dataset.role || "user";
             inputPassword.value = "********"; // Placeholder for view mode
+            inputCreated.value = viewBtn.dataset.created || "";
             modal.classList.remove("hidden");
             return;
         }
@@ -181,6 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
             inputEmail.value = editBtn.dataset.email || "";
             inputRole.value = editBtn.dataset.role || "user";
             inputPassword.value = "";
+            inputCreated.value = editBtn.dataset.created || "";
             modal.classList.remove("hidden");
         }
     });
@@ -369,6 +387,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let openDropdown = null;
 
     document.addEventListener("click", (e) => {
+        // Don't close dropdowns if click is inside a modal
+        if (e.target.closest('#user-modal') ||
+            e.target.closest('#save-confirm-modal') ||
+            e.target.closest('#delete-confirm-modal')) {
+            return;
+        }
+
         const trigger = e.target.closest("[data-dropdown-trigger]");
 
         if (!trigger) {
@@ -458,4 +483,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function escapeHtmlAttr(str) {
         return escapeHtml(str).replace(/"/g, "&quot;");
     }
+
+    // Close modal when clicking outside
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.classList.add("hidden");
+        }
+    });
 });

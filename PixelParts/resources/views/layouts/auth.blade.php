@@ -121,9 +121,8 @@
         <div class="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6">
             <div class="w-full max-w-md">
                 <!-- Mobile Logo -->
-                <div class="lg:hidden flex items-center justify-center space-x-3 mb-6 sm:mb-8 transition-all duration-300 hover:scale-105">
+                <div class="lg:hidden flex items-center justify-center mb-6 sm:mb-8 transition-all duration-300 hover:scale-105">
                     <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo" class="h-[40px] w-[60px] sm:h-[50px] sm:w-[70px]">
-                    <span class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-brand-green to-brand-blue bg-clip-text text-transparent">PixelParts</span>
                 </div>
 
                 <!-- Auth Form Container -->

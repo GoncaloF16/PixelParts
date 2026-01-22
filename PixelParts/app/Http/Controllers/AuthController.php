@@ -16,7 +16,8 @@ class AuthController extends Controller
         $request -> validate([
             'name' => 'required|max:50',
             'email' => 'required|unique:users|email|max:35',
-            'password' => 'required|min:8',
+            'password' => 'required|min:8|confirmed',
+            'terms' => 'required',
         ]);
 
         User::insert([

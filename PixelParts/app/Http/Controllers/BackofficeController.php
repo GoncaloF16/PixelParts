@@ -461,4 +461,49 @@ class BackofficeController extends Controller
 
         return response()->json(['message' => 'Encomenda excluída com sucesso', 'id' => $id]);
     }
+
+    // Bulk removal of selected orders
+    public function bulkDeleteOrders(Request $request)
+    {
+        $data = $request->validate([
+            'selected' => 'required|array',
+            'selected.*' => 'integer|exists:orders,id',
+        ], [
+            'selected.required' => 'Selecione pelo menos uma encomenda para apagar.',
+        ]);
+
+        $ids = $data['selected'];
+
+        // Usar destroy para disparar eventos de modelo (se existirem)
+        Order::destroy($ids);
+
+        return redirect()->route('backoffice.orders')
+            ->with('success', 'Encomendas selecionadas apagadas com sucesso!');
+    }
+
+    // Bulk removal of selected users
+    public function bulkDeleteUsers(Request $request)
+    {
+        $data = $request->validate([
+            'selected' => 'required|array',
+            'selected.*' => 'integer|exists:users,id',
+        ], [
+            'selected.required' => 'Selecione pelo menos um utilizador para apagar.',
+        ]);
+
+        $ids = $data['selected'];
+
+        // Prevenir que o admin apague a si próprio
+        $currentUserId = Auth::id();
+        if (in_array($currentUserId, $ids)) {
+            return redirect()->route('backoffice.users')
+                ->with('error', 'Não pode apagar o seu próprio utilizador.');
+        }
+
+        // Usar destroy para disparar eventos de modelo (se existirem)
+        \App\Models\User::destroy($ids);
+
+        return redirect()->route('backoffice.users')
+            ->with('success', 'Utilizadores selecionados apagados com sucesso!');
+    }
 }

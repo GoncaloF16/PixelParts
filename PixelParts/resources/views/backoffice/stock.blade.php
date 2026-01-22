@@ -120,19 +120,19 @@
                                 <div class="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 hidden z-[9999]"
                                     data-dropdown-menu>
                                     <div class="py-1">
-                                        <button
+                                        <button type="button"
                                             class="view-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
                                             data-id="{{ $product->id }}">
                                             <i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>
                                             Visualizar
                                         </button>
-                                        <button
+                                        <button type="button"
                                             class="edit-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
                                             data-id="{{ $product->id }}">
                                             <i data-lucide="edit" class="w-4 h-4 text-gray-500"></i>
                                             Editar
                                         </button>
-                                        <button
+                                        <button type="button"
                                             class="delete-btn w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
                                             data-id="{{ $product->id }}">
                                             <i data-lucide="trash-2" class="w-4 h-4 text-red-500"></i>

@@ -272,7 +272,13 @@
 
             // Marcar checkboxes baseado nos parâmetros da URL (filtros aplicados)
             const selectedBrandsFromUrl = urlParams.getAll('brand[]');
-            const selectedCategoriesFromUrl = urlParams.getAll('categoria[]');
+
+            // Suporta tanto "categoria" (links do menu/hamburger) como "categoria[]" (checkboxes)
+            let selectedCategoriesFromUrl = urlParams.getAll('categoria[]');
+            const singleCategoryFromUrl = urlParams.get('categoria');
+            if (singleCategoryFromUrl) {
+                selectedCategoriesFromUrl.push(singleCategoryFromUrl);
+            }
 
             // Se há filtros na URL, marcar os checkboxes
             if (selectedBrandsFromUrl.length > 0 || selectedCategoriesFromUrl.length > 0) {

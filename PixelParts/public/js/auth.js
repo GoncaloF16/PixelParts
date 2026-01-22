@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Password strength checker (for register page)
     initPasswordStrength();
 
-    // Form validation
-    initFormValidation();
+    // Form validation (DISABLED - Let server handle validation)
+    // initFormValidation();
 
     // Enhanced animations
     initAnimations();
@@ -167,25 +167,6 @@ function validateInput(input) {
         if (!emailRegex.test(value)) {
             isValid = false;
             errorMessage = 'Por favor, introduza um email válido.';
-        }
-    }
-
-    // Password validation - apenas se tiver valor e estiver no registo
-    if (type === 'password' && name === 'password' && value && value.length > 0) {
-        const registerForm = document.getElementById('register-form');
-        // Only validate size on register form
-        if (registerForm && value.length < 8) {
-            isValid = false;
-            errorMessage = 'A password deve ter pelo menos 8 caracteres.';
-        }
-    }
-
-    // Password confirmation - apenas se tiver valor
-    if (name === 'password_confirmation' && value && value.length > 0) {
-        const passwordInput = document.getElementById('password');
-        if (passwordInput && value !== passwordInput.value) {
-            isValid = false;
-            errorMessage = 'As passwords não coincidem.';
         }
     }
 

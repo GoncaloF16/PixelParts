@@ -226,8 +226,14 @@
             });
         });
     </script>
-    <script src="{{ asset('js/backofficeUsers.js') }}"></script>
-    <script src="{{ asset('js/backofficeStock.js') }}"></script>
+
+    @if (request()->is('backoffice/users'))
+        <script src="{{ asset('js/backofficeUsers.js') }}"></script>
+    @endif
+
+    @if (request()->is('backoffice/stock'))
+        <script src="{{ asset('js/backofficeStock.js') }}"></script>
+    @endif
 </body>
 
 </html>

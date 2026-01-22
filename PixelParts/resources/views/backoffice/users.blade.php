@@ -31,22 +31,29 @@
         </button>
     </div>
 
+    <form method="POST" action="{{ route('backoffice.users.bulk-delete') }}">
+        @csrf
+
     <div class="bg-white rounded-lg shadow overflow-hidden overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
+                        <input id="select-all" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
+                    </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Utilizador
                     </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
-                    <th class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data de
-                        Registo</th>
                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                 </tr>
             </thead>
             <tbody id="users-table" class="bg-white divide-y divide-gray-200">
                 @forelse ($users as $user)
                     <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <input type="checkbox" name="selected[]" value="{{ $user->id }}" class="row-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
+                        </td>
                         <!-- Nome -->
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{ $user->name }}
@@ -67,12 +74,6 @@
                             @endif
                         </td>
 
-                        <!-- Data de Registo -->
-                        <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ \Carbon\Carbon::parse($user->created_at)->format('d/m/Y') }}
-                        </td>
-
-
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium relative overflow-visible">
                             <div class="relative inline-block text-left">
                                 <button type="button"
@@ -92,21 +93,23 @@
                                 <div class="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 hidden"
                                     data-dropdown-menu>
                                     <div class="py-1">
-                                        <button
+                                        <button type="button"
                                             class="view-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
                                             data-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                            data-email="{{ $user->email }}" data-role="{{ $user->role }}">
+                                            data-email="{{ $user->email }}" data-role="{{ $user->role }}"
+                                            data-created="{{ \Carbon\Carbon::parse($user->created_at)->format('d/m/Y H:i') }}">
                                             <i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>
                                             Visualizar
                                         </button>
-                                        <button
+                                        <button type="button"
                                             class="edit-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
                                             data-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                            data-email="{{ $user->email }}" data-role="{{ $user->role }}">
+                                            data-email="{{ $user->email }}" data-role="{{ $user->role }}"
+                                            data-created="{{ \Carbon\Carbon::parse($user->created_at)->format('d/m/Y H:i') }}">
                                             <i data-lucide="edit" class="w-4 h-4 text-gray-500"></i>
                                             Editar
                                         </button>
-                                        <button
+                                        <button type="button"
                                             class="delete-btn w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
                                             data-id="{{ $user->id }}">
                                             <i data-lucide="trash-2" class="w-4 h-4 text-red-500"></i>
@@ -135,9 +138,53 @@
         </table>
     </div>
 
-    <!-- Pagination -->
-    <div class="mt-4">
-        {{ $users->links() }}
+    <!-- Bulk actions + Pagination -->
+    <div class="mt-6 flex items-center justify-between gap-3 flex-col sm:flex-row">
+        <button id="bulk-delete-btn" type="button"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0V5a2 2 0 012-2h2a2 2 0 012 2v2" />
+            </svg>
+            Apagar Seleção
+        </button>
+
+        @if($users->hasPages())
+            <div class="self-stretch sm:self-auto">
+                {{ $users->links('vendor.pagination.backoffice') }}
+            </div>
+        @endif
+    </div>
+    </form>
+
+    <!-- Bulk removal confirmation modal -->
+    <div id="bulk-delete-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Apagar utilizadores selecionados?</h3>
+                        <p class="text-sm text-gray-500 mt-1">Esta ação não pode ser desfeita.</p>
+                    </div>
+                </div>
+                <p id="bulk-delete-count" class="text-sm text-gray-600 mb-6"></p>
+                <div class="flex gap-3 justify-end">
+                    <button type="button" id="cancel-bulk-delete"
+                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                        Cancelar
+                    </button>
+                    <button type="button" id="confirm-bulk-delete"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                        Sim, apagar
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Add/Edit User Modal -->
@@ -174,6 +221,11 @@
                     <input type="password" id="user-password"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <p class="text-xs text-gray-500 mt-1">Deixar vazio para manter a password atual (apenas na edição)</p>
+                </div>
+                <div id="user-created-container" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Data de Registo</label>
+                    <input type="text" id="user-created" readonly
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
                 </div>
                 <div class="flex justify-end gap-2 pt-4">
                     <button type="button" id="cancel-user-btn"
@@ -243,5 +295,93 @@
             </div>
         </div>
     </div>
+
+    <script>
+    // Bulk delete functionality
+    (function() {
+        const selectAll = document.getElementById('select-all');
+        const rowCheckboxes = () => Array.from(document.querySelectorAll('.row-checkbox'));
+        const bulkBtn = document.getElementById('bulk-delete-btn');
+        const bulkModal = document.getElementById('bulk-delete-modal');
+        const bulkForm = bulkBtn ? bulkBtn.closest('form') : null;
+        const confirmBtn = document.getElementById('confirm-bulk-delete');
+        const cancelBtn = document.getElementById('cancel-bulk-delete');
+        const countText = document.getElementById('bulk-delete-count');
+
+        function updateBulkState() {
+            const anyChecked = rowCheckboxes().some(cb => cb.checked);
+            if (bulkBtn) bulkBtn.disabled = !anyChecked;
+
+            // Atualizar estado do select-all (indeterminate)
+            const total = rowCheckboxes().length;
+            const checked = rowCheckboxes().filter(cb => cb.checked).length;
+            if (checked === 0) {
+                if (selectAll) {
+                    selectAll.checked = false;
+                    selectAll.indeterminate = false;
+                }
+            } else if (checked === total) {
+                if (selectAll) {
+                    selectAll.checked = true;
+                    selectAll.indeterminate = false;
+                }
+            } else {
+                if (selectAll) {
+                    selectAll.checked = false;
+                    selectAll.indeterminate = true;
+                }
+            }
+        }
+
+        if (selectAll) {
+            selectAll.addEventListener('change', function() {
+                rowCheckboxes().forEach(cb => cb.checked = selectAll.checked);
+                updateBulkState();
+            });
+        }
+
+        rowCheckboxes().forEach(cb => cb.addEventListener('change', updateBulkState));
+
+        // Open modal when delete selection is clicked
+        if (bulkBtn) {
+            bulkBtn.addEventListener('click', function() {
+                const checked = rowCheckboxes().filter(cb => cb.checked).length;
+                if (checked > 0) {
+                    countText.textContent = `Tem a certeza que pretende apagar ${checked} utilizador${checked > 1 ? 'es' : ''}?`;
+                    bulkModal.classList.remove('hidden');
+                    bulkModal.classList.add('flex');
+                }
+            });
+        }
+
+        // Confirm removal
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', function() {
+                if (bulkForm) bulkForm.submit();
+            });
+        }
+
+        // Cancelar modal
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', function() {
+                bulkModal.classList.add('hidden');
+                bulkModal.classList.remove('flex');
+            });
+        }
+
+        // Fechar modal ao clicar fora
+        if (bulkModal) {
+            bulkModal.addEventListener('click', function(e) {
+                if (e.target === bulkModal) {
+                    bulkModal.classList.add('hidden');
+                    bulkModal.classList.remove('flex');
+                }
+            });
+        }
+
+        // Inicializar estado no load
+        updateBulkState();
+    })();
+    </script>
 
 @endsection

@@ -60,10 +60,12 @@
                     <div id="menu-dropdown"
                         class="hidden absolute top-full left-0 mt-2 bg-gray-900 rounded-xl shadow-xl w-56 p-2">
                         @foreach ($categorias as $categoria)
-                            <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
-                                class="block px-4 py-2 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-brand-green transition">
-                                {{ $categoria->name }}
-                            </a>
+                            @if ($categoria->slug !== 'componentes')
+                                <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
+                                    class="block px-4 py-2 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-brand-green transition">
+                                    {{ $categoria->name }}
+                                </a>
+                            @endif
                         @endforeach
                     </div>
                 </div>
@@ -195,10 +197,12 @@
                         </button>
                         <div id="mobile-categories-list" class="hidden mt-3 space-y-2">
                             @foreach ($categorias as $categoria)
-                                <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
-                                    class="block text-gray-400 hover:text-brand-green transition-colors duration-300 py-2 pl-8 hover:bg-gray-700/50 rounded-lg">
-                                    {{ $categoria->name }}
-                                </a>
+                                @if ($categoria->slug !== 'componentes')
+                                    <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
+                                        class="block text-gray-400 hover:text-brand-green transition-colors duration-300 py-2 pl-8 hover:bg-gray-700/50 rounded-lg">
+                                        {{ $categoria->name }}
+                                    </a>
+                                @endif
                             @endforeach
                         </div>
                     </div>
@@ -367,12 +371,14 @@
                     <h4 class="text-lg font-bold text-text-primary mb-4">Categorias</h4>
                     <ul class="space-y-3">
                         @foreach ($categorias->take(5) as $categoria)
-                            <li>
-                                <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
-                                    class="text-text-secondary hover:text-brand-green transition-colors duration-300">
-                                    {{ $categoria->name }}
-                                </a>
-                            </li>
+                            @if ($categoria->slug !== 'componentes')
+                                <li>
+                                    <a href="{{ route('products.index', ['categoria' => Str::slug($categoria->name)]) }}"
+                                        class="text-text-secondary hover:text-brand-green transition-colors duration-300">
+                                        {{ $categoria->name }}
+                                    </a>
+                                </li>
+                            @endif
                         @endforeach
                     </ul>
                 </div>
@@ -420,7 +426,9 @@
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/products.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
-    <script src="{{ asset('js/n8n-chat-widget.js') }}" defer></script>
+    @if (request()->routeIs('home'))
+        <script src="{{ asset('js/n8n-chat-widget.js') }}" defer></script>
+    @endif
 
     <script>
         function showToast(message) {
@@ -463,12 +471,14 @@
         @endif
     </script>
 
-    <!-- Chatbot do n8n -->
-    <div id="n8n-chat" data-endpoint="http://localhost:5678/webhook/29b79101-e2b3-4556-9ebe-2c922853687f"
-        data-title="Assistente PixelParts"
-        data-welcome="Olá 👋 Sou a Pixel, assistente virtual da loja PixelParts! Em que posso ajudar?"
-        data-color="#10B981">
-    </div>
+    @if (request()->routeIs('home'))
+        <!-- Chatbot do n8n -->
+        <div id="n8n-chat" data-endpoint="http://localhost:5678/webhook/29b79101-e2b3-4556-9ebe-2c922853687f"
+            data-title="Assistente PixelParts"
+            data-welcome="Olá 👋 Sou a Pixel, assistente virtual da loja PixelParts! Em que posso ajudar?"
+            data-color="#10B981">
+        </div>
+    @endif
 
 
 </body>
