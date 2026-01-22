@@ -9,7 +9,7 @@ use App\Models\ProductReview;
 
 class ProdsController extends Controller
 {
-   public function index(Request $request)
+    public function index(Request $request)
 {
     $query = Product::with('category');
 
@@ -71,6 +71,44 @@ class ProdsController extends Controller
 
     return view('products.products', compact('products', 'categories', 'brands'));
 }
+
+
+    public function searchAjax(Request $request)
+    {
+        $search = trim($request->get('q', ''));
+
+        if ($search === '') {
+            return response()->json([]);
+        }
+
+        $products = Product::with('category')
+            ->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('brand', 'like', "%{$search}%");
+            })
+            ->where('stock', '>', 0)
+            ->orderBy('name')
+            ->limit(8)
+            ->get();
+
+        $results = $products->map(function ($product) {
+            $image = $product->image;
+
+            if ($image && !preg_match('/^https?:\/\//', $image)) {
+                $image = asset('storage/' . $image);
+            }
+
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'image' => $image,
+                'price' => $product->discounted_price ?? $product->price,
+            ];
+        });
+
+        return response()->json($results);
+    }
 
 
     public function show($slug)

@@ -20,6 +20,7 @@ Route::post('/register-user', [AuthController::class, 'registerUser'])->name('re
 
 Route::get('/produtos', [ProdsController::class, 'index'])->name('products.index');
 Route::get('/produtos/{slug}', [ProdsController::class, 'show'])->name('products.details');
+Route::get('/produtos/search/ajax', [ProdsController::class, 'searchAjax'])->name('products.search');
 
 // Cart recovery route (public, no auth required)
 Route::get('/carrinho/recuperar/{token}', [CartController::class, 'recover'])->name('cart.recover');

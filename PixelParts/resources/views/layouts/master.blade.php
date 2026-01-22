@@ -39,6 +39,16 @@
             transform: translateY(-4px);
             box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
         }
+
+        /* Hide scrollbar for search dropdown but keep scroll functionality */
+        .no-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
     </style>
 
 </head>
@@ -84,13 +94,15 @@
             <form action="{{ route('products.index') }}" method="GET"
                 class="flex-grow w-full md:max-w-xl md:ml-2 mx-0 md:mx-4">
                 <div class="relative p-[1px] rounded-lg bg-gradient-to-r from-brand-green to-brand-blue">
-                    <input type="text" name="q" placeholder="Pesquisar produtos..."
+                    <input id="global-search-input" type="text" name="q" placeholder="Pesquisar produtos..."
                         class="w-full px-4 py-2 bg-surface rounded-lg text-gray-200 placeholder-gray-400 focus:outline-none text-sm"
+                        autocomplete="off"
                         value="{{ request('q') }}">
                     <button type="submit"
                         class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-green text-sm">
                         <i data-lucide="search" class="w-4 h-4"></i>
                     </button>
+                    <div id="global-search-dropdown" class="absolute left-0 right-0 mt-1 bg-gray-900 rounded-lg shadow-xl border border-gray-800 max-h-80 overflow-y-auto no-scrollbar hidden z-50"></div>
                 </div>
             </form>
 
@@ -469,6 +481,145 @@
                 showToast("{{ session('success') }}");
             });
         @endif
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('global-search-input');
+            const dropdown = document.getElementById('global-search-dropdown');
+
+            if (!searchInput || !dropdown) return;
+
+            const searchUrl = "{{ route('products.search') }}";
+            const productBaseUrl = "{{ url('/produtos') }}/";
+
+            let debounceTimer = null;
+            let lastQuery = '';
+            let activeRequest = null;
+
+            function clearDropdown() {
+                dropdown.innerHTML = '';
+            }
+
+            function hideDropdown() {
+                dropdown.classList.add('hidden');
+            }
+
+            function showDropdown() {
+                if (dropdown.children.length > 0) {
+                    dropdown.classList.remove('hidden');
+                }
+            }
+
+            function renderResults(items) {
+                clearDropdown();
+
+                if (!items || items.length === 0) {
+                    hideDropdown();
+                    return;
+                }
+
+                items.forEach(item => {
+                    const link = document.createElement('a');
+                    link.href = productBaseUrl + encodeURIComponent(item.slug);
+                    link.className = 'flex items-center gap-3 px-3 py-2 hover:bg-gray-800 transition-colors cursor-pointer';
+
+                    const img = document.createElement('img');
+                    img.src = item.image || '{{ asset('images/PixelParts.png') }}';
+                    img.alt = item.name;
+                    img.className = 'w-10 h-10 rounded object-cover flex-shrink-0 bg-gray-800';
+
+                    const info = document.createElement('div');
+                    info.className = 'flex flex-col min-w-0';
+
+                    const nameEl = document.createElement('span');
+                    nameEl.textContent = item.name;
+                    nameEl.className = 'text-sm text-gray-200 truncate';
+
+                    info.appendChild(nameEl);
+
+                    if (item.price) {
+                        const priceEl = document.createElement('span');
+                        priceEl.textContent = '€' + Number(item.price).toFixed(2).replace('.', ',');
+                        priceEl.className = 'text-xs text-gray-400';
+                        info.appendChild(priceEl);
+                    }
+
+                    link.appendChild(img);
+                    link.appendChild(info);
+                    dropdown.appendChild(link);
+                });
+
+                showDropdown();
+            }
+
+            async function fetchResults(query) {
+                if (activeRequest && typeof activeRequest.abort === 'function') {
+                    activeRequest.abort();
+                }
+
+                const controller = new AbortController();
+                activeRequest = controller;
+
+                const url = new URL(searchUrl, window.location.origin);
+                url.searchParams.set('q', query);
+
+                try {
+                    const response = await fetch(url.toString(), {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' },
+                        signal: controller.signal,
+                    });
+
+                    if (!response.ok) {
+                        clearDropdown();
+                        hideDropdown();
+                        return;
+                    }
+
+                    const data = await response.json();
+                    renderResults(data);
+                } catch (error) {
+                    if (error.name === 'AbortError') return;
+                    clearDropdown();
+                    hideDropdown();
+                }
+            }
+
+            searchInput.addEventListener('input', function (e) {
+                const query = e.target.value.trim();
+                lastQuery = query;
+
+                if (query.length < 2) {
+                    clearDropdown();
+                    hideDropdown();
+                    return;
+                }
+
+                if (debounceTimer) clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    fetchResults(query);
+                }, 120);
+            });
+
+            searchInput.addEventListener('focus', function () {
+                if (dropdown.children.length > 0) {
+                    showDropdown();
+                }
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!dropdown.contains(e.target) && e.target !== searchInput) {
+                    hideDropdown();
+                }
+            });
+
+            searchInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    hideDropdown();
+                }
+            });
+        });
     </script>
 
     @if (request()->routeIs('home'))
