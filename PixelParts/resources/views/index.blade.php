@@ -38,16 +38,17 @@
                         </button>
                     </a>
                 </div>
-                <!-- Scroll Indicator -->
-                <div class="mt-20 md:mt-24 lg:mt-28 animate-bounce pointer-events-none">
-                    <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400"></i>
-                </div>
             </div>
         </section>
 
         <!-- Products Section -->
-        <section id="produtos" class="pt-12 md:pt-1 pb-10 bg-surface">
+        <section id="produtos" class="pt-4 md:pt-0 pb-10 bg-surface">
             <div class="container mx-auto px-6 lg:px-12">
+                <!-- Scroll Indicator (linked to products) -->
+                <div class="flex justify-center -mt-16 md:-mt-28 mb-10 md:mb-14 lg:mb-16 animate-bounce pointer-events-none">
+                    <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400"></i>
+                </div>
+
                 <div class="text-center mb-10 md:mb-16 animate-fade-up">
                     <h2 class="text-4xl md:text-5xl font-bold text-gray-200 mb-4">
                         Produtos em <span class="text-gradient-brand">Destaque</span>
