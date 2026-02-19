@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/n8n-chat-widget.css') }}">
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
 
     <style>
         :root {
@@ -63,7 +63,7 @@
 
                 <!-- Desktop Dropdown Menu -->
                 <div class="relative">
-                    <button id="menu-toggle"
+                    <button id="menu-toggle" aria-label="Abrir menu"
                         class="hidden md:block p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green cursor-pointer">
                         <i data-lucide="menu" class="w-6 h-6 text-gray-200"></i>
                     </button>
@@ -98,7 +98,7 @@
                         class="w-full px-4 py-2 bg-surface rounded-lg text-gray-200 placeholder-gray-400 focus:outline-none text-sm"
                         autocomplete="off"
                         value="{{ request('q') }}">
-                    <button type="submit"
+                    <button type="submit" aria-label="Pesquisar"
                         class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-green text-sm">
                         <i data-lucide="search" class="w-4 h-4"></i>
                     </button>
@@ -107,7 +107,7 @@
             </form>
 
             <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-gray-200">
+            <button id="mobile-menu-btn" class="md:hidden text-gray-200" aria-label="Abrir menu mobile">
                 <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
 
@@ -168,7 +168,7 @@
                 @endauth
 
                 <!-- Cart Icon -->
-                <a href="{{ route('cart.index') }}"
+                <a href="{{ route('cart.index') }}" aria-label="Ver carrinho"
                     class="pr-6 relative flex items-center justify-center hover:text-brand-green transition">
                     <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-200"></i>
 
@@ -191,7 +191,7 @@
                 <!-- Header of the Menu -->
                 <div class="flex items-center justify-between p-6 border-b border-gray-800">
                     <h2 class="text-xl font-bold text-gray-200">Menu</h2>
-                    <button id="mobile-menu-close" class="text-gray-400 hover:text-gray-200 transition-colors">
+                    <button id="mobile-menu-close" class="text-gray-400 hover:text-gray-200 transition-colors" aria-label="Fechar menu mobile">
                         <i data-lucide="x" class="w-6 h-6"></i>
                     </button>
                 </div>
@@ -327,7 +327,7 @@
                 <div class="space-y-4">
                     <div class="flex items-center space-x-3 logo-hover">
                         <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo"
-                            class="h-[40px] w-[50px]">
+                            class="h-[40px] w-auto">
                         <span class="text-2xl font-bold text-gradient-brand">PixelParts</span>
                     </div>
                     <p class="text-text-secondary">
@@ -335,15 +335,15 @@
                         Performance, qualidade e inovação em cada produto.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#"
+                        <a href="#" aria-label="Facebook"
                             class="w-10 h-10 bg-brand-green/20 rounded-lg flex items-center justify-center text-brand-green hover:bg-brand-green hover:text-surface-dark transition-all duration-300">
                             <i data-lucide="facebook" class="w-5 h-5"></i>
                         </a>
-                        <a href="#"
+                        <a href="#" aria-label="Twitter"
                             class="w-10 h-10 bg-brand-green/20 rounded-lg flex items-center justify-center text-brand-green hover:bg-brand-green hover:text-surface-dark transition-all duration-300">
                             <i data-lucide="twitter" class="w-5 h-5"></i>
                         </a>
-                        <a href="#"
+                        <a href="#" aria-label="Instagram"
                             class="w-10 h-10 bg-brand-green/20 rounded-lg flex items-center justify-center text-brand-green hover:bg-brand-green hover:text-surface-dark transition-all duration-300">
                             <i data-lucide="instagram" class="w-5 h-5"></i>
                         </a>
@@ -352,7 +352,7 @@
 
                 <!-- Quick Links -->
                 <div>
-                    <h4 class="text-lg font-bold text-text-primary mb-4">Links Rápidos</h4>
+                    <h3 class="text-lg font-bold text-text-primary mb-4">Links Rápidos</h3>
                     <ul class="space-y-3">
                         <li><a href="{{ route('home') }}"
                                 class="text-text-secondary hover:text-brand-green transition-colors duration-300">Início</a>

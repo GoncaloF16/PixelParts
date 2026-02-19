@@ -281,9 +281,9 @@
                                                     <div class="flex items-center justify-between bg-gray-900/60 border border-gray-700/50 p-3 rounded-lg hover:border-brand-green/20 transition-all">
                                                         <div class="flex items-center gap-3">
                                                             @if($item->product && $item->product->image)
-                                                                <img src="{{ asset('storage/' . $item->product->image) }}"
-                                                                     alt="{{ $item->product->name }}"
-                                                                     class="w-10 h-10 rounded-lg object-cover border border-gray-700/50"/>
+                                                                        <img src="{{ asset('storage/' . $item->product->image) }}"
+                                                                            alt="{{ $item->product->name }}"
+                                                                            class="w-10 h-10 rounded-lg object-cover border border-gray-700/50"/>
                                                             @else
                                                                 <div class="w-10 h-10 bg-brand-green/10 rounded-lg flex items-center justify-center border border-brand-green/20">
                                                                     <i data-lucide="box" class="w-4 h-4 text-brand-green"></i>

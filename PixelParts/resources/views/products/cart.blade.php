@@ -43,9 +43,9 @@
                                         style="opacity: 1; transform: translateX(0);">
                                         <!-- Imagem do produto -->
                                         @if(isset($item['image']))
-                                            <img src="{{ Str::startsWith($item['image'], ['http://', 'https://']) ? $item['image'] : asset('storage/' . $item['image']) }}"
-                                                 alt="{{ $item['name'] }}"
-                                                 class="w-20 h-20 object-cover rounded-lg flex-shrink-0">
+                                                    <img src="{{ Str::startsWith($item['image'], ['http://', 'https://']) ? $item['image'] : asset('storage/' . $item['image']) }}"
+                                                        alt="{{ $item['name'] }}"
+                                                        class="w-20 h-20 object-cover rounded-lg flex-shrink-0">
                                         @else
                                             <div class="w-20 h-20 bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
                                                 <i data-lucide="image" class="w-8 h-8 text-gray-600"></i>

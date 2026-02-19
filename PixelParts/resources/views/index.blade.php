@@ -5,7 +5,7 @@
         <!-- Hero Section -->
     <section id="inicio" class="relative min-h-[70vh] lg:min-h-[80vh] flex items-start justify-center overflow-hidden">
             <!-- Particles -->
-            <div class="particles-container absolute inset-0">
+            <div id="hero-particles" class="particles-container absolute inset-0">
                 @for ($i = 0; $i < 10; $i++)
                     <div class="particle"></div>
                 @endfor
@@ -13,16 +13,15 @@
 
             <!-- Hero Content -->
             <div class="relative z-10 text-center max-w-4xl mx-auto px-6 flex flex-col items-center">
-                <h1 class="text-5xl md:text-7xl font-bold text-gray-200 mb-6 animate-fade-up">
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-200 mb-6">
                     Componentes Gaming <br>
                     de <span class="text-gradient-brand">Elite</span>
                 </h1>
-                <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-up"
-                    style="animation-delay: 0.2s;">
+                <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
                     Eleva o teu setup gaming com os melhores componentes do mercado.
                     Performance extrema, qualidade premium, resultados extraordinários.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up" style="animation-delay: 0.4s;">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="#produtos">
                         <button
                             class="bg-gradient-to-r from-brand-green to-brand-blue text-surface-dark rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 glow-brand"
@@ -137,7 +136,7 @@
         </section>
 
         <!-- Newsletter -->
-        <section class="relative py-20 overflow-hidden">
+        <section class="relative py-20 overflow-hidden cv-auto">
             <div class="absolute inset-0 bg-gradient-to-r from-brand-green to-brand-blue"></div>
             <div class="container mx-auto px-6 relative z-10 text-center">
                 <h2 class="text-4xl md:text-5xl font-bold text-gray-200 mb-6">Mantém-te Atualizado</h2>
@@ -174,7 +173,7 @@
         </section>
 
         <!-- Contact / Budget Request Section -->
-        <section id="orcamento" class="py-20 bg-surface">
+        <section id="orcamento" class="py-20 bg-surface cv-auto">
             <div class="container mx-auto px-6">
                 <div class="max-w-4xl mx-auto">
                     <!-- Header -->
@@ -343,35 +342,38 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.replace();
+        (() => {
+            if (window.lucide && typeof lucide.replace === 'function') {
+                lucide.replace();
+            }
 
             const toggle = document.getElementById('menu-toggle');
             const dropdown = document.getElementById('menu-dropdown');
 
-            toggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdown.classList.toggle('hidden');
-            });
+            if (toggle && dropdown) {
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('hidden');
+                });
 
-            // Fecha ao clicar fora
-            document.addEventListener('click', () => {
-                if (!dropdown.classList.contains('hidden')) dropdown.classList.add('hidden');
-            });
+                // Fecha ao clicar fora
+                document.addEventListener('click', () => {
+                    if (!dropdown.classList.contains('hidden')) dropdown.classList.add('hidden');
+                });
 
-            dropdown.addEventListener('click', e => e.stopPropagation());
+                dropdown.addEventListener('click', e => e.stopPropagation());
 
-            // Fechar com ESC
-            document.addEventListener('keydown', e => {
-                if (e.key === 'Escape' && !dropdown.classList.contains('hidden')) {
-                    dropdown.classList.add('hidden');
-                }
-            });
+                // Fechar com ESC
+                document.addEventListener('keydown', e => {
+                    if (e.key === 'Escape' && !dropdown.classList.contains('hidden')) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            }
 
-        });
-
-        window.routes = {
-            cartAdd: "{{ route('cart.add') }}"
-        };
+            window.routes = {
+                cartAdd: "{{ route('cart.add') }}"
+            };
+        })();
     </script>
 @endsection

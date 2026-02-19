@@ -203,29 +203,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Quantity counter
     const quantityDisplay = document.getElementById('quantity-display');
-const quantityInput = document.getElementById('quantity-input');
-let quantity = 1;
-const maxStock = parseInt(quantityDisplay.dataset.stock || 99);
+    const quantityInput = document.getElementById('quantity-input');
 
-function updateQuantityDisplay() {
-    quantityDisplay.textContent = quantity;
-    quantityInput.value = quantity;
-}
+    if (quantityDisplay && quantityInput) {
+        let quantity = 1;
+        const maxStock = parseInt(quantityDisplay.dataset.stock || 99, 10);
 
-window.increaseQuantity = function () {
-    if (quantity < maxStock) {
-        quantity++;
+        function updateQuantityDisplay() {
+            quantityDisplay.textContent = quantity;
+            quantityInput.value = quantity;
+        }
+
+        window.increaseQuantity = function () {
+            if (quantity < maxStock) {
+                quantity++;
+                updateQuantityDisplay();
+            }
+        };
+
+        window.decreaseQuantity = function () {
+            if (quantity > 1) {
+                quantity--;
+                updateQuantityDisplay();
+            }
+        };
+
         updateQuantityDisplay();
     }
-};
-
-window.decreaseQuantity = function () {
-    if (quantity > 1) {
-        quantity--;
-        updateQuantityDisplay();
-    }
-};
-
-updateQuantityDisplay();
 
 });
