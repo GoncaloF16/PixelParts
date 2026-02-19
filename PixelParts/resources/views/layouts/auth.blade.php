@@ -80,7 +80,10 @@
             <div class="relative z-10 flex flex-col justify-center items-center text-center p-12">
                 <!-- Logo -->
                 <div class="flex items-center space-x-3 mb-8 transition-all duration-300 hover:scale-105 hover:drop-shadow-2xl">
-                    <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo" class="h-[80px] w-[100px]">
+                    <picture>
+                        <source srcset="{{ asset('images/PixelParts.webp') }}" type="image/webp">
+                        <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo" class="h-[80px] w-[100px]" width="100" height="80" loading="eager">
+                    </picture>
                     <span class="text-4xl font-bold bg-gradient-to-r from-brand-green to-brand-blue bg-clip-text text-transparent">PixelParts</span>
                 </div>
 
@@ -122,7 +125,10 @@
             <div class="w-full max-w-md">
                 <!-- Mobile Logo -->
                 <div class="lg:hidden flex items-center justify-center mb-6 sm:mb-8 transition-all duration-300 hover:scale-105">
-                    <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo" class="h-[40px] w-[60px] sm:h-[50px] sm:w-[70px]">
+                    <picture>
+                        <source srcset="{{ asset('images/PixelParts.webp') }}" type="image/webp">
+                        <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo" class="h-[40px] w-[60px] sm:h-[50px] sm:w-[70px]" width="60" height="40" loading="eager">
+                    </picture>
                 </div>
 
                 <!-- Auth Form Container -->

@@ -71,7 +71,7 @@
                             <!-- Image -->
                             <a href="{{ route('products.details', ['slug' => $product->slug]) }}">
                                 <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset('storage/' . $product->image) }}"
-                                    alt="{{ $product->name }}" class="w-full h-[210px] object-cover cursor-pointer">
+                                    alt="{{ $product->name }}" class="w-full h-[210px] object-cover cursor-pointer" width="355" height="355" loading="lazy" decoding="async">
                             </a>
 
                             @if ($product->created_at->gt(now()->subDays(7)))

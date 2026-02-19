@@ -83,8 +83,11 @@
                 <!-- Logo -->
                 <div class="logo-hover">
                     <a href="{{ route('home') }}">
-                        <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo"
-                            class="h-[80px] w-[100px] object-contain">
+                        <picture>
+                            <source srcset="{{ asset('images/PixelParts.webp') }}" type="image/webp">
+                            <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo"
+                                class="h-[80px] w-[100px] object-contain" width="100" height="80" loading="eager">
+                        </picture>
                     </a>
                 </div>
             </div>
@@ -326,8 +329,11 @@
                 <!-- Company Info -->
                 <div class="space-y-4">
                     <div class="flex items-center space-x-3 logo-hover">
-                        <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo"
-                            class="h-[40px] w-auto">
+                        <picture>
+                            <source srcset="{{ asset('images/PixelParts.webp') }}" type="image/webp">
+                            <img src="{{ asset('images/PixelParts.png') }}" alt="PixelParts Logo"
+                                class="h-[40px] w-auto" width="50" height="40" loading="lazy">
+                        </picture>
                         <span class="text-2xl font-bold text-gradient-brand">PixelParts</span>
                     </div>
                     <p class="text-text-secondary">

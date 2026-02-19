@@ -41,7 +41,7 @@
                                 : asset('storage/' . $product->image))
                             : 'https://via.placeholder.com/400' }}"
                             alt="{{ $product->name }}"
-                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" width="600" height="600" loading="eager" decoding="async">
 
                     </div>
 
@@ -70,7 +70,7 @@
                                             : asset('storage/' . $product->image))
                                         : 'https://via.placeholder.com/96' }}"
                                         alt="{{ $product->name }}"
-                                        class="w-full h-full object-cover">
+                                        class="w-full h-full object-cover" width="96" height="96" loading="lazy" decoding="async">
                                 </div>
                             </div>
 
@@ -90,7 +90,7 @@
                                             : asset('storage/' . $rec->image))
                                         : 'https://via.placeholder.com/96' }}"
                                         alt="{{ $rec->name }}"
-                                        class="w-full h-full object-cover">
+                                        class="w-full h-full object-cover" width="96" height="96" loading="lazy" decoding="async">
                                 </div>
                             </div>
                             @endforeach
