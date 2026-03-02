@@ -105,7 +105,7 @@ public function remove($id)
     $cart = session()->get('cart', []);
 
     if(isset($cart[$id])) {
-        $cart[$id]['quantity']--;
+        $cart[$id]['quantity']--;   
 
         if($cart[$id]['quantity'] <= 0) {
             unset($cart[$id]);

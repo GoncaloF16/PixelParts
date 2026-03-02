@@ -1,6 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize Lucide icons
-    lucide.createIcons({ width: 20, height: 20 });
+    // Helper function to safely create Lucide icons
+    const safeCreateIcons = () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons({ width: 20, height: 20 });
+        }
+    };
+
+    // Initialize Lucide icons with a fallback
+    safeCreateIcons();
 
     // Header scroll effect
     const header = document.getElementById("header");
@@ -65,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
             mobileMenu.classList.remove("translate-x-full");
         }, 10);
         document.body.style.overflow = "hidden";
-        lucide.createIcons();
+        safeCreateIcons();
     }
 
     function closeMobileMenu() {
@@ -77,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.style.overflow = "";
     }
 
-    if (mobileMenuBtn && mobileMenu && mobileMenuBackdrop) {
+    if (mobileMenuBtn && mobileMenu && mobileMenuBackdrop && mobileMenuClose) {
         mobileMenuBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             openMobileMenu();
@@ -209,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
         toast.appendChild(closeBtn);
 
         document.body.appendChild(toast);
-        lucide.createIcons();
+        safeCreateIcons();
 
         // Auto-exit after 4 seconds
         setTimeout(() => {
@@ -257,13 +264,13 @@ document.addEventListener("DOMContentLoaded", function () {
             // Simulate loading
             budgetSubmitBtn.disabled = true;
             budgetSubmitBtn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Enviando...';
-            lucide.createIcons();
+            safeCreateIcons();
 
             // Simulate submission after 1.5 seconds
             setTimeout(() => {
                 budgetForm.classList.add('hidden');
                 budgetSuccessMessage.classList.remove('hidden');
-                lucide.createIcons();
+                safeCreateIcons();
 
                 // Smooth scroll to the message
                 budgetSuccessMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -278,7 +285,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 budgetSuccessMessage.classList.add('hidden');
                 budgetSubmitBtn.disabled = false;
                 budgetSubmitBtn.innerHTML = '<i data-lucide="send" class="w-5 h-5"></i> Enviar Pedido de Orçamento';
-                lucide.createIcons();
+                safeCreateIcons();
 
                 // Scroll to form
                 budgetForm.scrollIntoView({ behavior: 'smooth', block: 'start' });

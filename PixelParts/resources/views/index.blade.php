@@ -342,38 +342,8 @@
 
 
     <script>
-        (() => {
-            if (window.lucide && typeof lucide.replace === 'function') {
-                lucide.replace();
-            }
-
-            const toggle = document.getElementById('menu-toggle');
-            const dropdown = document.getElementById('menu-dropdown');
-
-            if (toggle && dropdown) {
-                toggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    dropdown.classList.toggle('hidden');
-                });
-
-                // Fecha ao clicar fora
-                document.addEventListener('click', () => {
-                    if (!dropdown.classList.contains('hidden')) dropdown.classList.add('hidden');
-                });
-
-                dropdown.addEventListener('click', e => e.stopPropagation());
-
-                // Fechar com ESC
-                document.addEventListener('keydown', e => {
-                    if (e.key === 'Escape' && !dropdown.classList.contains('hidden')) {
-                        dropdown.classList.add('hidden');
-                    }
-                });
-            }
-
-            window.routes = {
-                cartAdd: "{{ route('cart.add') }}"
-            };
-        })();
+        window.routes = {
+            cartAdd: "{{ route('cart.add') }}"
+        };
     </script>
 @endsection

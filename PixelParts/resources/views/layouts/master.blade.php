@@ -441,9 +441,9 @@
         </div>
     </footer>
 
-    <script src="{{ asset('js/scripts.js') }}"></script>
-    <script src="{{ asset('js/products.js') }}"></script>
-    <script src="{{ asset('js/cart.js') }}"></script>
+    <script src="{{ asset('js/scripts.js') }}" defer></script>
+    <script src="{{ asset('js/products.js') }}" defer></script>
+    <script src="{{ asset('js/cart.js') }}" defer></script>
     @if (request()->routeIs('home'))
         <script src="{{ asset('js/n8n-chat-widget.js') }}" defer></script>
     @endif
