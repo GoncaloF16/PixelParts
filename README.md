@@ -88,7 +88,6 @@ The project should now be available at `http://127.0.0.1:8000`.
 ## 📝 Notes
 
 **⚠️ This project is for academic purposes only.**  
-**Some features are still under development** (e.g., cart and checkout) 🛠️
 
 ---
 
