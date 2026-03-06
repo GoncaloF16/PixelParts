@@ -10,7 +10,7 @@ This project was developed for academic purposes, focusing on modern full-stack 
 - ⚡ **[Laravel 12](https://laravel.com/)** — Modern PHP web development framework  
 - 💅 **[TailwindCSS](https://tailwindcss.com/)** — Utility-first CSS framework for fast and responsive styling  
 - 🛢️ **MySQL** — Relational database  
-- 🔐 **Laravel Fortify and Socialite** — Authentication (login, registration, route protection)  
+- 🔐 **Laravel Fortify and Socialite** — Authentication (login, registration, route protection and Google OAuth)  
 - 🌐 **HTML5 & Blade** — Dynamic templates using Laravel Blade
 
 ---
@@ -21,7 +21,7 @@ This project was developed for academic purposes, focusing on modern full-stack 
 - 🛍️ **Product Catalog** with categories, brands, and dynamic details  
 - ⭐ **User Reviews & Ratings** with automatic rating average  
 - 🧩 **Product Compatibility** (e.g., compatible PC components)  
-- 🛒 **Shopping Cart** *(in development)*  
+- 🛒 **Shopping Cart** *(with Stripe)*  
 - 📱 **Responsive Design** powered by TailwindCSS
 
 ---
